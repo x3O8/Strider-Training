@@ -14,7 +14,7 @@ function OrbitalCard({ feature, align, delay }: { feature: FeatureHighlight; ali
       transition={{ duration: 0.8, delay }}
       className={`flex flex-col ${
         isLeftAlign ? "lg:items-start lg:text-left" : "lg:items-end lg:text-right"
-      } items-center text-center max-w-sm`}
+      } items-center text-center max-w-sm p-6 lg:p-0 rounded-2xl bg-white/[0.02] lg:bg-transparent border border-white/[0.05] lg:border-transparent backdrop-blur-md lg:backdrop-blur-none hover:bg-white/[0.04] lg:hover:bg-transparent transition-all`}
     >
       <div className="relative w-14 h-14 rounded-full border border-white/20 bg-[#0a0a0a] flex items-center justify-center text-2xl mb-5 group">
         <div className="absolute inset-0 rounded-full border border-white/0 group-hover:border-white/40 transition-colors duration-500" />
@@ -27,7 +27,7 @@ function OrbitalCard({ feature, align, delay }: { feature: FeatureHighlight; ali
         {feature.title}
       </h3>
       <p
-        className="text-xs text-white/50 leading-relaxed max-w-xs"
+        className="text-xs text-white/70 lg:text-white/50 leading-relaxed max-w-xs"
         style={{ fontFamily: "var(--font-inter), sans-serif" }}
       >
         {feature.description}
@@ -52,7 +52,7 @@ export default function FeatureSection() {
         }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-10 pt-28 pb-20 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 pt-16 md:pt-28 pb-16 md:pb-20 relative z-10">
         
         {/* Header */}
         <motion.div

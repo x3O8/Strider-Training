@@ -48,8 +48,8 @@ export default function ClientForm() {
         }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-10 py-28 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 py-16 md:py-28 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 items-start">
 
           {/* ── Left: Copy ─────────────────────────────────────────────── */}
           <div className="lg:sticky lg:top-28">
@@ -93,7 +93,6 @@ export default function ClientForm() {
               {/* Promises */}
               {[
                 "Free 30-minute consultation with a certified coach",
-                "Custom sample plan within 48 hours",
                 "Transparent pricing — no hidden fees",
               ].map((p, i) => (
                 <motion.div
@@ -302,12 +301,7 @@ export default function ClientForm() {
                     )}
                   </motion.button>
 
-                  <p
-                    className="text-center text-[8px] text-white/18 tracking-wider"
-                    style={{ fontFamily: "var(--font-inter), sans-serif" }}
-                  >
-                    No spam. No commitment. Just coaching.
-                  </p>
+
                 </motion.form>
               )}
             </AnimatePresence>

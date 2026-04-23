@@ -39,7 +39,7 @@ export default function ProductShowcase() {
 
       {/* Program Grid */}
       <div className="max-w-7xl mx-auto px-6 md:px-10 pb-28">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/[0.06]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-px bg-white/[0.06]">
           {coachingPrograms.map((program, index) => (
             <div key={program.id} className="bg-black">
               <ProgramCard 
@@ -60,7 +60,7 @@ export default function ProductShowcase() {
           className="text-center mt-16"
         >
           <a
-            href="#contact"
+            href="/#contact"
             className="inline-block px-12 py-3.5 border border-white/18 text-[10px] text-white/45 tracking-[0.3em] uppercase hover:border-white/45 hover:text-white/75 transition-all duration-300"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >

@@ -62,7 +62,7 @@ export default function FinalCTA() {
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
             <motion.a
-              href="#contact"
+              href="/#contact"
               id="book-consultation-cta"
               whileHover={{ scale: 1.03, backgroundColor: "#e8e8e8" }}
               whileTap={{ scale: 0.97 }}
@@ -73,7 +73,7 @@ export default function FinalCTA() {
             </motion.a>
 
             <motion.a
-              href="#programs"
+              href="/#programs"
               whileHover={{ scale: 1.02, borderColor: "rgba(255,255,255,0.38)" }}
               whileTap={{ scale: 0.98 }}
               className="px-14 py-4 border border-white/14 text-white/38 text-[10px] tracking-[0.3em] uppercase transition-all duration-200 hover:text-white/65"

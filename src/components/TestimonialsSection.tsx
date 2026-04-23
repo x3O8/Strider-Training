@@ -143,7 +143,7 @@ export default function TestimonialsSection() {
 
                 {/* Short quote */}
                 <blockquote
-                  className="text-base text-white/55 leading-[1.8] italic"
+                  className="text-sm md:text-base text-white/55 leading-[1.8] italic"
                   style={{ fontFamily: "var(--font-inter), sans-serif" }}
                 >
                   "{story.shortQuote}"
@@ -217,7 +217,7 @@ export default function TestimonialsSection() {
             className="inline-flex items-center gap-3 px-12 py-4 bg-white text-black text-xs font-bold tracking-[0.28em] uppercase hover:bg-white/88 transition-colors duration-200"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            View All Transformations with Full Data ↗
+            View All ↗
           </Link>
         </motion.div>
 

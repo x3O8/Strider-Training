@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function MeetTheCoachSection() {
   return (
-    <section className="bg-black py-28 relative border-t border-white/[0.07] overflow-hidden">
+    <section className="bg-black py-16 md:py-28 relative border-t border-white/[0.07] overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10">
         <div>
           <motion.p
@@ -39,7 +39,7 @@ export default function MeetTheCoachSection() {
               }}
             />
 
-            <div className="relative z-10 flex flex-col md:flex-row gap-10 items-center md:items-start">
+            <div className="relative z-10 flex flex-col md:flex-row gap-10 items-start md:items-start text-left md:text-left">
               {/* Avatar image */}
               <div className="relative w-32 h-32 md:w-48 md:h-48 rounded-full flex-shrink-0 overflow-hidden border-2 border-white/10 bg-[#08090D] shadow-2xl">
                 <Image
@@ -51,7 +51,7 @@ export default function MeetTheCoachSection() {
               </div>
 
               {/* Details */}
-              <div className="flex-1">
+              <div className="flex-1 flex flex-col items-center md:items-start">
                 <h4
                   className="text-4xl md:text-5xl text-white leading-none mb-3"
                   style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.04em" }}

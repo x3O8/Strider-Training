@@ -72,15 +72,17 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Resize only when needed (avoids flicker from unnecessary clears)
-    const w = window.innerWidth;
-    const h = window.innerHeight;
+    const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
+    const w = window.innerWidth * dpr;
+    const h = window.innerHeight * dpr;
+    
     if (canvas.width !== w || canvas.height !== h) {
       canvas.width = w;
       canvas.height = h;
+      ctx.scale(dpr, dpr);
     }
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
     const sp = scrollYProgress.get();
     const fi = Math.round(frameIndex.get());
@@ -94,13 +96,13 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
     const drawImg = (img: HTMLImageElement, alpha: number) => {
       if (alpha < 0.005) return;
       const ia = img.width / img.height;
-      const ca = canvas.width / canvas.height;
+      const ca = window.innerWidth / window.innerHeight;
       let dw: number, dh: number;
-      if (ca > ia) { dh = canvas.height; dw = dh * ia; }
-      else { dw = canvas.width; dh = dw / ia; }
+      if (ca > ia) { dh = window.innerHeight; dw = dh * ia; }
+      else { dw = window.innerWidth; dh = dw / ia; }
       dw *= 0.85; dh *= 0.85;
-      const dx = (canvas.width - dw) / 2;
-      const dy = (canvas.height - dh) / 2;
+      const dx = (window.innerWidth - dw) / 2;
+      const dy = (window.innerHeight - dh) / 2;
       ctx.globalAlpha = alpha;
       ctx.drawImage(img, dx, dy, dw, dh);
     };
@@ -373,7 +375,7 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
             onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
           >
-            Discover More
+            Discover
           </button>
         </div>
 
@@ -396,49 +398,11 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
   );
 }
 
-// ─── Loading Screen ───────────────────────────────────────────────────────────
-function InnerLoadingScreen({ progress, error }: { progress: number; error: boolean }) {
-  return (
-    <div className="fixed inset-0 bg-[#08090D] flex flex-col items-center justify-center z-50">
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `
-            repeating-linear-gradient(-55deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 32px),
-            repeating-linear-gradient( 55deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 32px)
-          `,
-        }}
-      />
-      <div className="relative z-10 flex flex-col items-center gap-4 mb-14">
-        <img src="/stryder-logo.jpeg" alt="Strider" className="w-14 h-14 object-contain" />
-        <h1 className="text-5xl text-white tracking-[0.15em]" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
-          STRIDER
-        </h1>
-        <p className="text-[9px] text-white/25 tracking-[0.5em] uppercase" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-          Athletic Excellence
-        </p>
-      </div>
-      <div className="relative z-10 w-52">
-        <div className="w-full h-px bg-white/10 overflow-hidden mb-3">
-          <div className="h-full bg-white transition-all duration-150 ease-out" style={{ width: `${progress}%` }} />
-        </div>
-        <div className="flex justify-between">
-          <span className="text-[9px] text-white/20 tracking-[0.35em] uppercase" style={{ fontFamily: "var(--font-inter), sans-serif" }}>Loading</span>
-          <span className="text-[9px] text-white/40" style={{ fontFamily: "var(--font-inter), sans-serif" }}>{Math.round(progress)}%</span>
-        </div>
-      </div>
-      {error && <p className="text-white/20 text-xs mt-6 relative z-10">Some frames unavailable.</p>}
-    </div>
-  );
-}
-
 // ─── Main export — pre-loads ALL images before mounting HeroPlayer ─────────────
 export default function HeroCanvasAnimation() {
   const [runImages, setRunImages] = useState<HTMLImageElement[]>([]);
   const [muscleImg, setMuscleImg] = useState<HTMLImageElement | null>(null);
   const [skelImg, setSkelImg] = useState<HTMLImageElement | null>(null);
-  const [loadProgress, setLoadProgress] = useState(0);
-  const [loadError, setLoadError] = useState(false);
   const [allLoaded, setAllLoaded] = useState(false);
 
   useEffect(() => {
@@ -448,25 +412,32 @@ export default function HeroCanvasAnimation() {
 
     const onProgress = () => {
       loaded++;
-      setLoadProgress((loaded / TOTAL) * 100);
       if (loaded >= TOTAL) setAllLoaded(true);
     };
 
     // ── Load run frames ──────────────────────────────────────────────────────
     const runLoaded: HTMLImageElement[] = new Array(TOTAL_FRAMES);
+    let framesLoadedCount = 0;
+
     Array.from({ length: TOTAL_FRAMES }, (_, i) => {
       const img = new Image();
       const num = String(i + 1).padStart(3, "0");
-      img.src = `${FRAME_PATH}/run-${num}.jpeg`;
+      img.src = `${FRAME_PATH}/run-${num}.png`;
       img.onload = () => {
         runLoaded[i] = img;
-        if (i === TOTAL_FRAMES - 1) setRunImages([...runLoaded]);
+        framesLoadedCount++;
         onProgress();
+        if (framesLoadedCount === TOTAL_FRAMES) {
+          setRunImages([...runLoaded]);
+        }
       };
       img.onerror = () => {
-        if (i > 0 && runLoaded[i - 1]) runLoaded[i] = runLoaded[i - 1];
-        if (i === TOTAL_FRAMES - 1) setRunImages([...runLoaded]);
+        framesLoadedCount++;
         onProgress();
+        if (i > 0 && runLoaded[i - 1]) runLoaded[i] = runLoaded[i - 1];
+        if (framesLoadedCount === TOTAL_FRAMES) {
+          setRunImages([...runLoaded]);
+        }
       };
     });
 
@@ -474,15 +445,21 @@ export default function HeroCanvasAnimation() {
     const muscle = new Image();
     muscle.src = `${FRAME_PATH}/muscle.png`;
     muscle.onload = () => { setMuscleImg(muscle); onProgress(); };
-    muscle.onerror = () => { setLoadError(true); onProgress(); };
+    muscle.onerror = () => { onProgress(); };
 
     // ── Load skel.png ────────────────────────────────────────────────────────
     const skel = new Image();
     skel.src = `${FRAME_PATH}/skel.png`;
     skel.onload = () => { setSkelImg(skel); onProgress(); };
-    skel.onerror = () => { setLoadError(true); onProgress(); };
+    skel.onerror = () => { onProgress(); };
   }, []);
 
-  if (!allLoaded) return <InnerLoadingScreen progress={loadProgress} error={loadError} />;
+  if (!allLoaded) {
+    return (
+      <div className="relative" style={{ height: `${(MAX_CHECKPOINT + 1) * 100}vh` }}>
+         <div className="sticky top-0 h-screen w-full bg-[#08090D]" />
+      </div>
+    );
+  }
   return <HeroPlayer images={runImages} muscleImg={muscleImg} skelImg={skelImg} />;
 }

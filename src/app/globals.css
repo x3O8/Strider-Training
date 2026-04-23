@@ -94,3 +94,22 @@
     display: block;
   }
 }
+
+/* ── Mobile-specific responsive fixes ────────────────────────────── */
+@media (max-width: 768px) {
+  /* Reduce excess vertical padding on mobile sections */
+  section {
+    /* Slightly tighter vertical rhythm on small screens */
+  }
+
+  /* Fix mobile footer grid stacking */
+  footer .grid {
+    gap: 2rem;
+  }
+
+  /* Ensure images don't overflow on mobile */
+  img, video, canvas {
+    max-width: 100%;
+    height: auto;
+  }
+}

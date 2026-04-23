@@ -2,23 +2,35 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 const columns = [
   {
     heading: "Company",
-    links: ["About Strider", "Meet the Coaches", "Careers", "Press", "Contact Us"],
+    links: [
+      { label: "About Strider", href: "/#about" },
+      { label: "Meet the Coaches", href: "/#about" },
+      { label: "Careers", href: "#" },
+      { label: "Press", href: "#" },
+      { label: "Contact Us", href: "/#contact" },
+    ],
   },
   {
     heading: "Coaching",
-    links: ["1-on-1 Coaching", "Group Programs", "Online Coaching", "Corporate Wellness", "Student Athletes"],
-  },
-  {
-    heading: "Resources",
-    links: ["Calorie Calculator", "Macro Tracker", "Training Plans", "Nutrition Guide", "Client Portal"],
+    links: [
+      { label: "1-on-1 Coaching", href: "/#programs" },
+      { label: "Group Programs", href: "/#programs" },
+      { label: "Online Coaching", href: "/#programs" },
+      { label: "Corporate Wellness", href: "/#programs" },
+      { label: "Student Athletes", href: "/#programs" },
+    ],
   },
   {
     heading: "Legal",
-    links: ["Terms & Conditions", "Privacy Policy", "Refund Policy", "Cookie Policy"],
+    links: [
+      { label: "Terms & Conditions", href: "/terms" },
+      { label: "Return Policy", href: "/return-policy" },
+    ],
   },
 ];
 
@@ -77,7 +89,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 md:px-10 pt-16 pb-8 relative z-10">
 
         {/* ── Top row: logo + description + link columns ──────────────── */}
-        <div className="grid grid-cols-1 md:grid-cols-[1.8fr_1fr_1fr_1fr_1fr] gap-12 pb-14 border-b border-white/[0.07]">
+        <div className="grid grid-cols-1 md:grid-cols-[1.8fr_1fr_1fr_1fr] gap-12 pb-14 border-b border-white/[0.07]">
 
           {/* Brand column */}
           <div className="flex flex-col gap-5">
@@ -106,9 +118,9 @@ export default function Footer() {
             {/* Contact */}
             <div className="flex flex-col gap-2.5 mt-2">
               {[
-                { icon: "✉", text: "hello@stryderfit.com" },
-                { icon: "📞", text: "+1 (800) STRIDER" },
-                { icon: "📍", text: "San Francisco, CA · Remote Worldwide" },
+                { icon: "✉", text: "info@striderfitness.com" },
+                { icon: "📞", text: "9995906262" },
+                { icon: "📍", text: "Kerala, India · Remote Worldwide" },
               ].map((c, i) => (
                 <div key={i} className="flex items-start gap-2.5">
                   <span className="text-[10px] mt-0.5 text-white/25">{c.icon}</span>
@@ -133,14 +145,14 @@ export default function Footer() {
                 {col.heading}
               </p>
               {col.links.map((link) => (
-                <a
-                  key={link}
-                  href="#"
+                <Link
+                  key={link.label}
+                  href={link.href}
                   className="text-[11px] text-white/28 hover:text-white/65 transition-colors duration-200 leading-none"
                   style={{ fontFamily: "var(--font-inter), sans-serif" }}
                 >
-                  {link}
-                </a>
+                  {link.label}
+                </Link>
               ))}
             </div>
           ))}

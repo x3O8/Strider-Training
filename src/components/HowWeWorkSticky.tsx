@@ -64,10 +64,10 @@ export default function HowWeWorkSticky() {
   }, []);
 
   return (
-    <section className="relative bg-black w-full border-t border-white/[0.07] pt-28">
+    <section className="relative bg-black w-full border-t border-white/[0.07] pt-16 md:pt-28">
 
       {/* ---- Centered Heading Before Effects ---- */}
-      <div className="max-w-4xl mx-auto px-6 text-center mb-16 relative z-20">
+      <div className="max-w-4xl mx-auto px-6 text-center mb-10 md:mb-16 relative z-20">
         <h2
           className="text-[clamp(50px,8vw,100px)] text-white leading-none"
           style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
@@ -76,71 +76,13 @@ export default function HowWeWorkSticky() {
         </h2>
       </div>
 
-      <div className="max-w-[1400px] w-full mx-auto px-6 flex flex-col md:flex-row relative">
+      <div className="max-w-[1400px] w-full mx-auto px-6 block md:flex relative">
 
-        {/* ---- Left Side (Scrolling Text) ---- */}
-        <div className="w-full md:w-1/2 flex flex-col pb-[20vh] relative z-20">
-          {steps.map((step, index) => (
-            <div
-              key={index}
-              ref={(el) => { textRefs.current[index] = el; }}
-              data-index={index}
-              className="min-h-screen flex flex-col justify-center min-h-[80vh] md:pr-16"
-            >
-              <motion.div
-                initial={{ opacity: 0.3 }}
-                animate={{ opacity: activeStep === index ? 1 : 0.3 }}
-                transition={{ duration: 0.4 }}
-                className="max-w-md w-full transition-opacity"
-              >
-                <p
-                  className="text-[10px] md:text-xs text-white/40 tracking-[0.4em] uppercase mb-6"
-                  style={{ fontFamily: "var(--font-inter), sans-serif" }}
-                >
-                  Step {step.step}
-                </p>
-                <h3
-                  className="text-[clamp(40px,5vw,72px)] text-white leading-none mb-8"
-                  style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
-                >
-                  {step.heading}
-                </h3>
-                <p
-                  className="text-sm md:text-base text-white/70 leading-[1.8] font-light"
-                  style={{ fontFamily: "var(--font-inter), sans-serif" }}
-                >
-                  {step.description}
-                </p>
-              </motion.div>
-            </div>
-          ))}
-        </div>
-
-        {/* ---- Center Divider & Diamond (Sticky to Viewport) ---- */}
-        <div className="hidden md:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[2px] bg-white/[0.1] z-20 pointer-events-none">
-          <div className="sticky top-0 h-screen w-full">
-            <div className="absolute top-1/2 left-1/2 w-16 h-16 bg-[#08090D] border border-white/20 flex items-center justify-center transition-all duration-300 ease-in-out"
-              style={{ transform: "translate(-50%, -50%) rotate(45deg)" }}>
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={activeStep}
-                  initial={{ opacity: 0, scale: 0.5, rotate: -45 }}
-                  animate={{ opacity: 1, scale: 1, rotate: -45 }}
-                  exit={{ opacity: 0, scale: 0.5, rotate: -45 }}
-                  transition={{ duration: 0.2 }}
-                  className="text-white font-bold text-lg pointer-events-auto"
-                  style={{ fontFamily: "var(--font-inter), sans-serif", transform: "rotate(-45deg)" }}
-                >
-                  {steps[activeStep].step}
-                </motion.span>
-              </AnimatePresence>
-            </div>
-          </div>
-        </div>
-
-        {/* ---- Right Side (Sticky Media) ---- */}
-        <div className="w-full md:w-1/2 h-screen sticky top-0 flex items-center justify-center md:pl-16 pb-8 md:pb-0 overflow-hidden z-10">
-          <div className="w-full h-[95%] max-h-[850px] relative overflow-hidden bg-[#08090D]">
+        {/* ---- Right Side (Sticky Media) - Placed first for mobile stacking under text ---- */}
+        <div className="w-full md:w-1/2 h-[50vh] md:h-[100vh] sticky top-1/4 md:top-0 flex items-center justify-center md:pl-16 pb-8 md:pb-0 overflow-hidden z-0">
+          <div className="w-full h-full md:h-[95%] max-h-[850px] relative overflow-hidden bg-[#08090D]">
+            {/* Mobile dark overlay so text is readable over image */}
+            <div className="absolute inset-0 bg-black/60 md:bg-transparent z-10 pointer-events-none" />
 
             {/* 1. Base Layer: anat0. "anat0 stays in position" -> Always opacity 1 */}
             <Image
@@ -173,7 +115,67 @@ export default function HowWeWorkSticky() {
             />
 
             {/* Premium overlay gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none z-20" />
+          </div>
+        </div>
+
+        {/* ---- Left Side (Scrolling Text) ---- */}
+        <div className="w-full md:w-1/2 flex flex-col pb-[10vh] md:pb-[20vh] relative z-10 -mt-[60vh] md:mt-0 pt-[15vh] md:pt-0">
+          {steps.map((step, index) => (
+            <div
+              key={index}
+              ref={(el) => { textRefs.current[index] = el; }}
+              data-index={index}
+              className="flex flex-col justify-center min-h-[70vh] md:min-h-screen md:pl-24 md:pr-16"
+            >
+              <motion.div
+                initial={{ opacity: 0.3 }}
+                animate={{ opacity: activeStep === index ? 1 : 0.3 }}
+                transition={{ duration: 0.4 }}
+                className="max-w-md w-full transition-opacity"
+              >
+                <p
+                  className="text-[10px] md:text-xs text-white/50 md:text-white/40 tracking-[0.4em] uppercase mb-6"
+                  style={{ fontFamily: "var(--font-inter), sans-serif" }}
+                >
+                  Step {step.step}
+                </p>
+                <h3
+                  className="text-[clamp(40px,10vw,72px)] text-white leading-none mb-8"
+                  style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
+                >
+                  {step.heading}
+                </h3>
+                <p
+                  className="text-sm md:text-base text-white/80 md:text-white/70 leading-[1.8] font-light"
+                  style={{ fontFamily: "var(--font-inter), sans-serif" }}
+                >
+                  {step.description}
+                </p>
+              </motion.div>
+            </div>
+          ))}
+        </div>
+
+        {/* ---- Center Divider & Diamond (Sticky to Viewport) ---- */}
+        <div className="hidden md:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[2px] bg-white/[0.1] z-20 pointer-events-none">
+          <div className="sticky top-0 h-screen w-full">
+            <div className="absolute top-1/2 left-1/2 w-16 h-16 bg-[#08090D] border border-white/20 flex items-center justify-center transition-all duration-300 ease-in-out"
+              style={{ transform: "translate(-50%, -50%) rotate(45deg)" }}>
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={activeStep}
+                  initial={{ opacity: 0, scale: 0.5, rotate: -45 }}
+                  animate={{ opacity: 1, scale: 1, rotate: -45 }}
+                  exit={{ opacity: 0, scale: 0.5, rotate: -45 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-white font-bold text-lg pointer-events-auto"
+                  style={{ fontFamily: "var(--font-inter), sans-serif", transform: "rotate(-45deg)" }}
+                >
+                  {steps[activeStep].step}
+                </motion.span>
+              </AnimatePresence>
+            </div>
           </div>
         </div>
 
