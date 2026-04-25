@@ -30,8 +30,31 @@ function ProgramVisual({ program, index }: { program: CoachingProgram; index: nu
   );
 }
 
-export default function ProgramCard({ program, index, expanded, onToggle }: { program: CoachingProgram; index: number; expanded: boolean; onToggle: () => void }) {
+export default function ProgramCard({ 
+  program, 
+  index, 
+  expanded, 
+  onToggle,
+  onApply
+}: { 
+  program: CoachingProgram; 
+  index: number; 
+  expanded: boolean; 
+  onToggle: () => void;
+  onApply: (goal: string) => void;
+}) {
   const [applied, setApplied] = useState(false);
+
+  const handleApplyClick = () => {
+    setApplied(true);
+    // Map program ID to specific form goal
+    const goalMap: Record<string, string> = {
+      "general-fitness": "General Fitness",
+      "competition-prep": "Sports Performance"
+    };
+    onApply(goalMap[program.id] || "General Fitness");
+    setTimeout(() => setApplied(false), 2000);
+  };
 
   return (
     <motion.div
@@ -173,7 +196,7 @@ export default function ProgramCard({ program, index, expanded, onToggle }: { pr
 
           <motion.button
             id={`apply-${program.id}`}
-            onClick={() => { setApplied(true); setTimeout(() => setApplied(false), 2000); }}
+            onClick={handleApplyClick}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             className="px-5 py-2.5 text-[10px] font-semibold tracking-[0.2em] uppercase bg-white text-black transition-colors duration-200 hover:bg-white/88"
@@ -189,3 +212,4 @@ export default function ProgramCard({ program, index, expanded, onToggle }: { pr
     </motion.div>
   );
 }
+

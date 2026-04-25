@@ -98,41 +98,8 @@ export default function LoadingScreen({
             />
           </motion.div>
 
-          {/* Text Logo with stylish entrance */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              width: "300px",
-              height: "60px",
-              position: "relative",
-              marginBottom: "48px",
-            }}
-          >
-            <Image
-              src="/strider-logo.png"
-              alt="Strider"
-              fill
-              sizes="300px"
-              className="object-contain"
-              priority
-            />
-            {/* Subtle glow behind logo */}
-            <motion.div
-              animate={{ opacity: [0.2, 0.5, 0.2] }}
-              transition={{ repeat: Infinity, duration: 3 }}
-              style={{
-                position: "absolute",
-                inset: "0px",
-                background: "white",
-                filter: "blur(40px)",
-                zIndex: -1,
-              }}
-            />
-          </motion.div>
-
           {/* Progress bar container */}
+
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}

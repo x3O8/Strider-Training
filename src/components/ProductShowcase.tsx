@@ -5,7 +5,8 @@ import { motion } from "framer-motion";
 import ProgramCard from "./ProductCard";
 import { coachingPrograms } from "@/data/products";
 
-export default function ProductShowcase() {
+export default function ProductShowcase({ onApply }: { onApply: (goal: string) => void }) {
+
   const [cardsExpanded, setCardsExpanded] = useState(false);
 
   return (
@@ -47,7 +48,9 @@ export default function ProductShowcase() {
                 index={index} 
                 expanded={cardsExpanded} 
                 onToggle={() => setCardsExpanded(!cardsExpanded)} 
+                onApply={onApply}
               />
+
             </div>
           ))}
         </div>

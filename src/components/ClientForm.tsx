@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 type Field = "name" | "email" | "phone" | "goal" | "level" | "message";
@@ -8,13 +8,19 @@ type Field = "name" | "email" | "phone" | "goal" | "level" | "message";
 const goalOptions = ["Weight Loss", "Muscle Gain", "Endurance", "Sports Performance", "General Fitness", "Injury Rehabilitation"];
 const levelOptions = ["Complete Beginner", "Some Experience", "Intermediate", "Advanced Athlete"];
 
-export default function ClientForm() {
+export default function ClientForm({ preselectedGoal }: { preselectedGoal: string | null }) {
   const [form, setForm] = useState<Record<Field, string>>({
     name: "", email: "", phone: "", goal: "", level: "", message: "",
   });
   const [focused, setFocused]     = useState<Field | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (preselectedGoal) {
+      setForm((v) => ({ ...v, goal: preselectedGoal }));
+    }
+  }, [preselectedGoal]);
 
   const set = (field: Field) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setForm((v) => ({ ...v, [field]: e.target.value }));
@@ -24,6 +30,7 @@ export default function ClientForm() {
     setSubmitting(true);
     setTimeout(() => { setSubmitting(false); setSubmitted(true); }, 1400);
   };
+
 
   const inputBase = (field: Field) => ({
     onFocus:  () => setFocused(field),

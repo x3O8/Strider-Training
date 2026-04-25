@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import { features, FeatureHighlight } from "@/data/products";
+import Image from "next/image";
+
 
 function OrbitalCard({ feature, align, delay }: { feature: FeatureHighlight; align: "left" | "right"; delay: number }) {
   const isLeftAlign = align === "left";
@@ -121,12 +123,17 @@ export default function FeatureSection() {
                 >
                   Powered By
                 </span>
-                <span
-                  className="block text-4xl lg:text-5xl text-white tracking-widest mt-1"
-                  style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-                >
-                  STRIDER
-                </span>
+                <div className="relative w-32 h-10 lg:w-40 lg:h-12 mx-auto mt-1">
+                  <Image
+                    src="/strider-logo.png"
+                    alt="Strider"
+                    fill
+                    sizes="(max-width: 1024px) 128px, 160px"
+                    className="object-contain"
+                  />
+
+                </div>
+
               </div>
             </div>
           </motion.div>

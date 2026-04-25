@@ -25,9 +25,19 @@ const HeroCanvasAnimation = dynamic(
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
+  const [preselectedGoal, setPreselectedGoal] = useState<string | null>(null);
 
   const handleLoadingComplete = useCallback(() => {
     setLoading(false);
+  }, []);
+
+  const handleApply = useCallback((goal: string) => {
+    setPreselectedGoal(goal);
+    // Smooth scroll to contact section
+    const contactSection = document.getElementById("contact");
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: "smooth" });
+    }
   }, []);
 
   return (
@@ -58,7 +68,7 @@ export default function Home() {
           <FeatureSection />
 
           {/* 5. Coaching programs */}
-          <ProductShowcase />
+          <ProductShowcase onApply={handleApply} />
 
           {/* 6. Client testimonials */}
           <TestimonialsSection />
@@ -70,7 +80,7 @@ export default function Home() {
           <FinalCTA />
 
           {/* 9. Client intake form */}
-          <ClientForm />
+          <ClientForm preselectedGoal={preselectedGoal} />
 
           {/* 10. Footer */}
           <Footer />
@@ -79,3 +89,4 @@ export default function Home() {
     </>
   );
 }
+
