@@ -46,6 +46,7 @@ export default function MeetTheCoachSection() {
                   src="/unsplash/ad_pfp.png"
                   alt="Ashik Divakaran"
                   fill
+                  sizes="(max-width: 768px) 128px, 192px"
                   className="object-cover"
                 />
               </div>

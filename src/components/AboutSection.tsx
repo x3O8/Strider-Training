@@ -32,14 +32,14 @@ export default function AboutSection() {
             className="text-[9px] text-white/28 tracking-[0.5em] uppercase mb-5"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Our Story
+            Our Approach
           </p>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-start lg:items-end">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-start">
             <h2
               className="text-[clamp(42px,9vw,120px)] text-white leading-none"
               style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
             >
-              We Coach<br />Champions
+              WE BUILD<br />PERFORMANCE SYSTEMS
             </h2>
             <div className="lg:pl-20">
               <div className="w-10 h-px bg-white/30 mb-5 md:mb-7" />
@@ -47,18 +47,17 @@ export default function AboutSection() {
                 className="text-sm text-white/80 leading-[1.9] mb-4 md:mb-5"
                 style={{ fontFamily: "var(--font-inter), sans-serif" }}
               >
-                Strider was founded on one belief: every person who commits to their fitness
-                deserves world-class coaching — not generic apps, not one-size-fits-all plans.
-                We pair you with an expert who becomes your training partner, accountability
-                partner, and the person who refuses to let you quit.
+                Most training fails because it ignores how the body actually works.
+                <br /><br />
+                At STS, we don’t guess.
+                We assess, correct, and build—system by system.
               </p>
               <p
                 className="text-sm text-white/70 leading-[1.9]"
                 style={{ fontFamily: "var(--font-inter), sans-serif" }}
               >
-                From first-time gym-goers to competitive athletes, our coaches have helped
-                thousands of clients break through their limits and achieve results they never
-                thought possible.
+                Strength, structure, and control are trained together,
+                so your body performs without breaking down.
               </p>
             </div>
           </div>

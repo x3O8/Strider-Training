@@ -1,7 +1,7 @@
 "use client";
 
 export default function MarqueeSection() {
-  const topStripItems = ["MOVE WELL", "TRAIN RIGHT", "BUILD CAPACITY", "STAY CONSISTENT"];
+  const topStripItems = ["PLAN", "//", "EXECUTE", "//", "ADAPT", "//", "PROGRESS", "//"];
 
   // Duplicate items enough times so that a single set exceeds the ultra-wide screen width
   const topContent = Array(8).fill(topStripItems).flat();
@@ -19,8 +19,15 @@ export default function MarqueeSection() {
         }
       `}} />
 
-      {/* Top Strip (Orange) - Scrolls Right */}
-      <div className="bg-[#ED753B] text-white py-3.5 md:py-5 w-full flex whitespace-nowrap overflow-hidden z-10 shadow-lg">
+      {/* Top Strip (Dark Grey) - Scrolls Right */}
+      <div className="bg-[#1a1a1a] text-white py-3.5 md:py-5 w-full flex whitespace-nowrap overflow-hidden z-10 shadow-lg relative">
+        {/* Slanting lines texture */}
+        <div 
+          className="absolute inset-0 opacity-10 pointer-events-none"
+          style={{
+            backgroundImage: `repeating-linear-gradient(45deg, #fff 0px, #fff 1px, transparent 1px, transparent 10px)`
+          }}
+        />
         <div className="flex shrink-0 animate-marquee-right w-max">
           {/* We render exactly 2 identical halves so moving from -50% perfectly loops */}
           {[...Array(2)].map((_, groupIdx) => (
@@ -30,9 +37,6 @@ export default function MarqueeSection() {
                   <span className="text-2xl md:text-4xl tracking-[0.06em] leading-none mt-1 hover:opacity-80 transition-opacity" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
                     {item}
                   </span>
-                  <svg className="w-5 h-5 md:w-8 md:h-8 ml-10 md:ml-20 fill-current opacity-80" viewBox="0 0 24 24">
-                    <path d="M8 19l7-7-7-7" stroke="currentColor" strokeWidth="4" strokeLinecap="square" strokeLinejoin="miter" fill="none" />
-                  </svg>
                 </div>
               ))}
             </div>

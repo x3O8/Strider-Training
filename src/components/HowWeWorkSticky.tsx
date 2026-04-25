@@ -37,7 +37,9 @@ const steps = [
 
 export default function HowWeWorkSticky() {
   const [activeStep, setActiveStep] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
   const textRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const isScrolling = useRef(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -63,8 +65,52 @@ export default function HowWeWorkSticky() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      if (isScrolling.current) return;
+
+      const rect = sectionRef.current?.getBoundingClientRect();
+      if (!rect) return;
+
+      // Only trigger if the section is in the viewport "hot zone"
+      const inZone = rect.top < window.innerHeight * 0.3 && rect.bottom > window.innerHeight * 0.3;
+      if (!inZone) return;
+
+      const lenis = (window as any).__lenis;
+      
+      const doScroll = (target: HTMLElement) => {
+        isScrolling.current = true;
+        if (lenis && typeof lenis.scrollTo === "function") {
+          lenis.scrollTo(target, {
+            offset: -window.innerHeight * 0.05,
+            duration: 1.2,
+            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            onComplete: () => {
+              setTimeout(() => { isScrolling.current = false; }, 400);
+            }
+          });
+        } else {
+          // Native fallback if lenis isn't ready or method is missing
+          target.scrollIntoView({ behavior: "smooth", block: "center" });
+          setTimeout(() => { isScrolling.current = false; }, 1000);
+        }
+      };
+
+      if (e.deltaY > 30 && activeStep < steps.length - 1) {
+        const nextTarget = textRefs.current[activeStep + 1];
+        if (nextTarget) doScroll(nextTarget);
+      } else if (e.deltaY < -30 && activeStep > 0) {
+        const prevTarget = textRefs.current[activeStep - 1];
+        if (prevTarget) doScroll(prevTarget);
+      }
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    return () => window.removeEventListener("wheel", handleWheel);
+  }, [activeStep]);
+
   return (
-    <section className="relative bg-black w-full border-t border-white/[0.07] pt-16 md:pt-28">
+    <section ref={sectionRef} className="relative bg-black w-full border-t border-white/[0.07] pt-16 md:pt-28">
 
       {/* ---- Centered Heading Before Effects ---- */}
       <div className="max-w-4xl mx-auto px-6 text-center mb-10 md:mb-16 relative z-20">
@@ -80,7 +126,7 @@ export default function HowWeWorkSticky() {
 
         {/* ---- Right Side (Sticky Media) - Placed first for mobile stacking under text ---- */}
         <div className="w-full md:w-1/2 h-[50vh] md:h-[100vh] sticky top-1/4 md:top-0 flex items-center justify-center md:pl-16 pb-8 md:pb-0 overflow-hidden z-0">
-          <div className="w-full h-full md:h-[95%] max-h-[850px] relative overflow-hidden bg-[#08090D]">
+          <div className="w-full h-full md:h-[95%] max-h-[850px] relative overflow-hidden bg-[#08090D] aspect-square md:aspect-auto">
             {/* Mobile dark overlay so text is readable over image */}
             <div className="absolute inset-0 bg-black/60 md:bg-transparent z-10 pointer-events-none" />
 
@@ -89,9 +135,11 @@ export default function HowWeWorkSticky() {
               src="/unsplash/anat0.png"
               alt="Assessment"
               fill
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover"
               style={{ opacity: 1 }}
               priority
+              fetchPriority="high"
             />
 
             {/* 2. Middle Layer: anat3. "anat3 already behind anat1" -> Structurally underneath anat1. Fades in for Step 2+ */}
@@ -99,6 +147,7 @@ export default function HowWeWorkSticky() {
               src="/unsplash/anat3.png"
               alt="Execute"
               fill
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover transition-opacity duration-[800ms] ease-in-out"
               style={{ opacity: activeStep >= 2 ? 1 : 0 }}
               priority
@@ -109,6 +158,7 @@ export default function HowWeWorkSticky() {
               src="/unsplash/anat1.png"
               alt="Blueprint"
               fill
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover transition-opacity duration-[800ms] ease-in-out"
               style={{ opacity: activeStep === 1 ? 1 : 0 }}
               priority

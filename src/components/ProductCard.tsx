@@ -8,11 +8,12 @@ import Image from "next/image";
 function ProgramVisual({ program, index }: { program: CoachingProgram; index: number }) {
   const tiers = ["01", "02", "03"];
   return (
-    <div className="relative w-full h-48 bg-[#0b0b0b] overflow-hidden flex items-center justify-center">
+    <div className="relative w-full aspect-[4/3] md:h-48 bg-[#0b0b0b] overflow-hidden flex items-center justify-center">
       <Image
         src={program.image}
         alt={program.name}
         fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         className="object-cover opacity-60 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out group-hover:opacity-80"
       />
       {/* Dark gradient overlay */}

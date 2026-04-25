@@ -95,15 +95,9 @@ export default function Footer() {
           <div className="flex flex-col gap-5">
             {/* Logo */}
             <div className="flex items-center gap-2.5">
-              <div className="relative w-8 h-8 flex-shrink-0">
-                <Image src="/stryder-logo.jpeg" alt="Strider" fill className="object-contain" />
+              <div className="relative w-48 h-12 flex-shrink-0">
+                <Image src="/strider-logo.png" alt="Strider" fill sizes="192px" className="object-contain" />
               </div>
-              <span
-                className="text-xl text-white tracking-[0.2em] uppercase"
-                style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-              >
-                Strider
-              </span>
             </div>
 
             {/* Tagline */}

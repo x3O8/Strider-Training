@@ -47,6 +47,9 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     window.addEventListener("scroll", checkZone, { passive: true });
     checkZone(); // initial check
 
+    // Attach to window for global access (like HowWeWorkSticky snap)
+    (window as any).__lenis = lenis;
+
     let rafId: number;
     const raf = (time: number) => {
       lenis.raf(time);
@@ -55,6 +58,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     rafId = requestAnimationFrame(raf);
 
     return () => {
+      (window as any).__lenis = undefined;
       lenis.destroy();
       cancelAnimationFrame(rafId);
       window.removeEventListener("scroll", checkZone);

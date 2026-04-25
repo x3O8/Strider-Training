@@ -36,7 +36,7 @@ export default function Home() {
       {!loading && <ScrollProgressBar />}
       <SmoothScroll>
         <main
-          className="bg-black min-h-screen"
+          className="relative bg-black min-h-screen"
           style={{
             overflow: loading ? "hidden" : undefined,
           }}

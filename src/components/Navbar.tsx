@@ -81,13 +81,14 @@ export default function Navbar() {
           {/* ── CENTER: Big logo only (no text) ─────────────────────── */}
           <Link href="/" className="flex-shrink-0 group absolute left-1/2 -translate-x-1/2">
             <div
-              className="relative flex-shrink-0 transition-all duration-300 ease-out rounded-sm overflow-hidden"
+              className="relative flex-shrink-0 transition-all duration-300 ease-out rounded-sm overflow-hidden will-change-[width,height]"
               style={{ width: `${logoSize}px`, height: `${logoSize}px` }}
             >
               <Image
                 src="/stryder-logo.jpeg"
                 alt="Strider Logo"
                 fill
+                sizes="72px"
                 className="object-contain group-hover:opacity-80 transition-opacity duration-200"
                 priority
               />

@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useState, useCallback, useMemo } from "react";
 import { useScroll, useTransform } from "framer-motion";
+import NextImage from "next/image";
 
 const TOTAL_FRAMES = 67;
 const FRAME_PATH = "/runframes";
@@ -271,7 +272,7 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
               className="text-[9px] text-white/25 tracking-[0.55em] uppercase mb-7"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              On Your Marks
+              Join the Stride
             </p>
             <h1
               className="text-[clamp(80px,18vw,200px)] text-white leading-none"
@@ -287,7 +288,7 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
               className="text-sm text-white/35 tracking-[0.25em] uppercase mt-6"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              Every transformation begins before the first step.
+              Stronger. Pain-free. Performance-ready.
             </p>
           </div>
         </div>
@@ -298,6 +299,12 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
           style={{ ...slide(1), zIndex: 5 }}
         >
           <div>
+            <p
+              className="text-[9px] text-white/25 tracking-[0.3em] uppercase mb-4"
+              style={{ fontFamily: "var(--font-inter), sans-serif" }}
+            >
+              FITNESS IS NOT SURFACE LEVEL
+            </p>
             <h2
               className="text-[clamp(50px,12vw,140px)] text-white leading-none"
               style={{
@@ -306,13 +313,13 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
                 textShadow: "0 0 80px rgba(255,255,255,0.07)",
               }}
             >
-              Built for<br />complete fitness.
+              SYSTEM-DRIVEN<br />PERFORMANCE
             </h2>
             <p
               className="text-sm text-white/35 tracking-[0.25em] uppercase mt-6"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              Power, endurance, balance — working as one.
+              Where muscle, structure, and the nervous system align.
             </p>
           </div>
         </div>
@@ -326,18 +333,23 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
             zIndex: 5,
           }}
         >
-          <span className="block w-10 h-px bg-white/40 mb-6" />
+          <p
+            className="text-[9px] text-white/25 tracking-[0.3em] uppercase mb-4"
+            style={{ fontFamily: "var(--font-inter), sans-serif" }}
+          >
+            The Engine
+          </p>
           <h2
             className="text-[clamp(48px,6.5vw,90px)] text-white leading-none mb-5"
             style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
           >
-            Strength<br />from within.
+            FUNCTIONAL<br />STRENGTH.
           </h2>
           <p
             className="text-[12px] text-white/45 tracking-[0.18em] uppercase leading-relaxed"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Optimize how your muscles move, not just how they look.
+            Train how your muscles move, not just how they look.
           </p>
         </div>
 
@@ -350,18 +362,23 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
             zIndex: 5,
           }}
         >
-          <span className="block w-10 h-px bg-white/40 mb-6 ml-auto" />
+          <p
+            className="text-[9px] text-white/25 tracking-[0.3em] uppercase mb-4"
+            style={{ fontFamily: "var(--font-inter), sans-serif" }}
+          >
+            Structure + control
+          </p>
           <h2
             className="text-[clamp(48px,6.5vw,90px)] text-white leading-none mb-5"
             style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
           >
-            Built<br />to last.
+            BUILT<br />TO LAST.
           </h2>
           <p
             className="text-[12px] text-white/45 tracking-[0.18em] uppercase leading-relaxed ml-auto"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Alignment. Stability. Longevity.
+            Alignment, stability, and control, so your body performs without breaking down.
           </p>
         </div>
 
@@ -423,6 +440,7 @@ export default function HeroCanvasAnimation() {
       const img = new Image();
       const num = String(i + 1).padStart(3, "0");
       img.src = `${FRAME_PATH}/run-${num}.png`;
+      if (i === 0) (img as any).fetchPriority = "high";
       img.onload = () => {
         runLoaded[i] = img;
         framesLoadedCount++;
@@ -457,7 +475,20 @@ export default function HeroCanvasAnimation() {
   if (!allLoaded) {
     return (
       <div className="relative" style={{ height: `${(MAX_CHECKPOINT + 1) * 100}vh` }}>
-         <div className="sticky top-0 h-screen w-full bg-[#08090D]" />
+         <div className="sticky top-0 h-screen w-full bg-[#08090D] flex items-center justify-center">
+           {/* Placeholder for run-001.png to prevent CLS */}
+           <div className="relative w-full h-full max-w-[1400px] mx-auto overflow-hidden">
+             <NextImage
+                src="/runframes/run-001.png"
+                alt="Loading..."
+                fill
+                priority
+                sizes="100vw"
+                className="object-contain opacity-20 scale-[0.85]"
+                style={{ filter: 'blur(10px)' }}
+             />
+           </div>
+         </div>
       </div>
     );
   }
