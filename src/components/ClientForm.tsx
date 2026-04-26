@@ -12,7 +12,7 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
   const [form, setForm] = useState<Record<Field, string>>({
     name: "", email: "", phone: "", goal: "", level: "", message: "",
   });
-  const [focused, setFocused]     = useState<Field | null>(null);
+  const [focused, setFocused] = useState<Field | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -25,20 +25,39 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
   const set = (field: Field) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setForm((v) => ({ ...v, [field]: e.target.value }));
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    setTimeout(() => { setSubmitting(false); setSubmitted(true); }, 1400);
+
+    try {
+      // Replace with your actual Google Apps Script Web App URL after deployment
+      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyH48_YOzcgta6-pR282e94v0VH0jUI2EE-u5lcBbO-SGC_TZiR_HqHizydf4hO8ZFZ/exec";
+
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify(form),
+      });
+
+
+      // Since mode is 'no-cors', we proceed to success state
+      setSubmitted(true);
+    } catch (error) {
+      console.error("Form submission error:", error);
+      alert("Something went wrong. Please try again later.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
 
+
   const inputBase = (field: Field) => ({
-    onFocus:  () => setFocused(field),
-    onBlur:   () => setFocused(null),
-    style:    { fontFamily: "var(--font-inter), sans-serif" },
-    className: `w-full bg-transparent border-b py-3 text-sm text-white placeholder-white/40 outline-none transition-colors duration-300 ${
-      focused === field ? "border-white/80" : "border-white/30"
-    }`,
+    onFocus: () => setFocused(field),
+    onBlur: () => setFocused(null),
+    style: { fontFamily: "var(--font-inter), sans-serif" },
+    className: `w-full bg-transparent border-b py-3 text-sm text-white placeholder-white/40 outline-none transition-colors duration-300 ${focused === field ? "border-white/80" : "border-white/30"
+      }`,
   });
 
   return (
@@ -227,11 +246,10 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
                           key={g}
                           type="button"
                           onClick={() => setForm((v) => ({ ...v, goal: g }))}
-                          className={`px-3 py-2 text-[9px] tracking-[0.15em] uppercase border transition-all duration-200 ${
-                            form.goal === g
+                          className={`px-3 py-2 text-[9px] tracking-[0.15em] uppercase border transition-all duration-200 ${form.goal === g
                               ? "border-white/80 text-white bg-white/10"
                               : "border-white/30 text-white/80 hover:border-white/60 hover:text-white"
-                          }`}
+                            }`}
                           style={{ fontFamily: "var(--font-inter), sans-serif" }}
                         >
                           {g}
@@ -254,11 +272,10 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
                           key={l}
                           type="button"
                           onClick={() => setForm((v) => ({ ...v, level: l }))}
-                          className={`px-3 py-2 text-[9px] tracking-[0.15em] uppercase border transition-all duration-200 ${
-                            form.level === l
+                          className={`px-3 py-2 text-[9px] tracking-[0.15em] uppercase border transition-all duration-200 ${form.level === l
                               ? "border-white/80 text-white bg-white/10"
                               : "border-white/30 text-white/80 hover:border-white/60 hover:text-white"
-                          }`}
+                            }`}
                           style={{ fontFamily: "var(--font-inter), sans-serif" }}
                         >
                           {l}

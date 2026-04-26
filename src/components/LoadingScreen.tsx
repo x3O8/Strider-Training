@@ -15,7 +15,7 @@ export default function LoadingScreen({
 
   useEffect(() => {
     // Simulate loading progress with an eased curve
-    const duration = 3200; // total loading time in ms
+    const duration = 200; // Drastically reduced from 3200ms to fix LCP blocking
     const start = Date.now();
 
     const tick = () => {

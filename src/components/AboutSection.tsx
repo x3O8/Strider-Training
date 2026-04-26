@@ -72,10 +72,12 @@ export default function AboutSection() {
           className="relative h-32 md:h-44 overflow-hidden"
         >
           <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #151515ff 0%, #5a5c5cff 100%)" }} />
-          <img
+          <Image
             src="/athlete/performance-banner.jpg"
             alt="Strider Coaching"
-            className="absolute inset-0 w-full h-full object-cover mix-blend-luminosity opacity-20"
+            fill
+            sizes="100vw"
+            className="absolute inset-0 object-cover mix-blend-luminosity opacity-20"
           />
 
           {/* Floating dots */}

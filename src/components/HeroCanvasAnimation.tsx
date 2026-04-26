@@ -56,6 +56,24 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
 
   const [activeSection, setActiveSection] = useState(0);
   const [scrollDir, setScrollDir] = useState<"down" | "up">("down");
+  const winSize = useRef({ w: 0, h: 0, dpr: 1 });
+
+  const updateWinSize = useCallback(() => {
+    if (typeof window === "undefined") return;
+    const dpr = window.devicePixelRatio || 1;
+    winSize.current = {
+      w: window.innerWidth,
+      h: window.innerHeight,
+      dpr: dpr
+    };
+  }, []);
+
+  useEffect(() => {
+    updateWinSize();
+    window.addEventListener("resize", updateWinSize);
+    return () => window.removeEventListener("resize", updateWinSize);
+  }, [updateWinSize]);
+
 
   // scrollYProgress drives all visual transitions
   const { scrollYProgress } = useScroll({
@@ -73,17 +91,19 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
-    const w = window.innerWidth * dpr;
-    const h = window.innerHeight * dpr;
+    const { w, h, dpr } = winSize.current;
+    if (w === 0) return;
     
-    if (canvas.width !== w || canvas.height !== h) {
-      canvas.width = w;
-      canvas.height = h;
+    const canvasW = w * dpr;
+    const canvasH = h * dpr;
+    
+    if (canvas.width !== canvasW || canvas.height !== canvasH) {
+      canvas.width = canvasW;
+      canvas.height = canvasH;
       ctx.scale(dpr, dpr);
     }
 
-    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    ctx.clearRect(0, 0, w, h);
 
     const sp = scrollYProgress.get();
     const fi = Math.round(frameIndex.get());
@@ -96,20 +116,23 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
     // Helper: draw image centered at 85% scale
     const drawImg = (img: HTMLImageElement, alpha: number) => {
       if (alpha < 0.005) return;
+      const { w, h } = winSize.current;
       const ia = img.width / img.height;
-      const ca = window.innerWidth / window.innerHeight;
+      const ca = w / h;
       let dw: number, dh: number;
-      if (ca > ia) { dh = window.innerHeight; dw = dh * ia; }
-      else { dw = window.innerWidth; dh = dw / ia; }
+      if (ca > ia) { dh = h; dw = dh * ia; }
+      else { dw = w; dh = dw / ia; }
       dw *= 0.85; dh *= 0.85;
-      const dx = (window.innerWidth - dw) / 2;
-      const dy = (window.innerHeight - dh) / 2;
+      const dx = (w - dw) / 2;
+      const dy = (h - dh) / 2;
       ctx.globalAlpha = alpha;
       ctx.drawImage(img, dx, dy, dw, dh);
     };
 
     // Draw in back-to-front order: run → muscle → skel
-    const runImg = images[Math.max(0, Math.min(fi, images.length - 1))];
+    // Ensure we don't access out of bounds if images are still loading
+    const clampedFi = Math.max(0, Math.min(fi, images.length - 1));
+    const runImg = images[clampedFi];
     if (runImg) drawImg(runImg, runAlpha);
     if (muscleImg) drawImg(muscleImg, muscleAlpha);
     if (skelImg) drawImg(skelImg, skelAlpha);
@@ -415,64 +438,58 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
   );
 }
 
-// ─── Main export — pre-loads ALL images before mounting HeroPlayer ─────────────
-export default function HeroCanvasAnimation() {
-  const [runImages, setRunImages] = useState<HTMLImageElement[]>([]);
-  const [muscleImg, setMuscleImg] = useState<HTMLImageElement | null>(null);
-  const [skelImg, setSkelImg] = useState<HTMLImageElement | null>(null);
-  const [allLoaded, setAllLoaded] = useState(false);
+  export default function HeroCanvasAnimation() {
+    const [runImages, setRunImages] = useState<HTMLImageElement[]>([]);
+    const [muscleImg, setMuscleImg] = useState<HTMLImageElement | null>(null);
+    const [skelImg, setSkelImg] = useState<HTMLImageElement | null>(null);
+    const [firstFrameLoaded, setFirstFrameLoaded] = useState(false);
+  
+    useEffect(() => {
+      // ── Load run frames ──────────────────────────────────────────────────────
+      const runLoaded: HTMLImageElement[] = new Array(TOTAL_FRAMES);
+      let framesLoadedCount = 0;
+  
+      Array.from({ length: TOTAL_FRAMES }, (_, i) => {
+        const img = new Image();
+        const num = String(i + 1).padStart(3, "0");
+        img.src = `${FRAME_PATH}/run-${num}.png`;
+        if (i === 0) (img as any).fetchPriority = "high";
+        
+        const handleLoadOrError = () => {
+          framesLoadedCount++;
+          if (i === 0) {
+            setFirstFrameLoaded(true);
+            setRunImages([...runLoaded]); // Set initially
+          }
+          if (i > 0 && !runLoaded[i] && runLoaded[i - 1]) {
+             runLoaded[i] = runLoaded[i - 1]; // Fallback to previous frame on error
+          }
+          if (framesLoadedCount === TOTAL_FRAMES) {
+            setRunImages([...runLoaded]);
+          }
+        };
 
-  useEffect(() => {
-    // Total assets: 67 run frames + 2 static images
-    const TOTAL = TOTAL_FRAMES + 2;
-    let loaded = 0;
-
-    const onProgress = () => {
-      loaded++;
-      if (loaded >= TOTAL) setAllLoaded(true);
-    };
-
-    // ── Load run frames ──────────────────────────────────────────────────────
-    const runLoaded: HTMLImageElement[] = new Array(TOTAL_FRAMES);
-    let framesLoadedCount = 0;
-
-    Array.from({ length: TOTAL_FRAMES }, (_, i) => {
-      const img = new Image();
-      const num = String(i + 1).padStart(3, "0");
-      img.src = `${FRAME_PATH}/run-${num}.png`;
-      if (i === 0) (img as any).fetchPriority = "high";
-      img.onload = () => {
-        runLoaded[i] = img;
-        framesLoadedCount++;
-        onProgress();
-        if (framesLoadedCount === TOTAL_FRAMES) {
-          setRunImages([...runLoaded]);
-        }
-      };
-      img.onerror = () => {
-        framesLoadedCount++;
-        onProgress();
-        if (i > 0 && runLoaded[i - 1]) runLoaded[i] = runLoaded[i - 1];
-        if (framesLoadedCount === TOTAL_FRAMES) {
-          setRunImages([...runLoaded]);
-        }
-      };
-    });
+        img.onload = () => {
+          runLoaded[i] = img;
+          handleLoadOrError();
+        };
+        img.onerror = () => {
+          handleLoadOrError();
+        };
+      });
 
     // ── Load muscle.png ──────────────────────────────────────────────────────
     const muscle = new Image();
     muscle.src = `${FRAME_PATH}/muscle.png`;
-    muscle.onload = () => { setMuscleImg(muscle); onProgress(); };
-    muscle.onerror = () => { onProgress(); };
-
+    muscle.onload = () => { setMuscleImg(muscle); };
+  
     // ── Load skel.png ────────────────────────────────────────────────────────
     const skel = new Image();
     skel.src = `${FRAME_PATH}/skel.png`;
-    skel.onload = () => { setSkelImg(skel); onProgress(); };
-    skel.onerror = () => { onProgress(); };
+    skel.onload = () => { setSkelImg(skel); };
   }, []);
-
-  if (!allLoaded) {
+  
+  if (!firstFrameLoaded) {
     return (
       <div className="relative" style={{ height: `${(MAX_CHECKPOINT + 1) * 100}vh` }}>
          <div className="sticky top-0 h-screen w-full bg-[#08090D] flex items-center justify-center">
@@ -483,6 +500,7 @@ export default function HeroCanvasAnimation() {
                 alt="Loading..."
                 fill
                 priority
+                fetchPriority="high"
                 sizes="100vw"
                 className="object-contain opacity-20 scale-[0.85]"
                 style={{ filter: 'blur(10px)' }}

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { blogPosts } from "@/data/blog";
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -25,10 +26,12 @@ function BlogCard({ post, large = false, index = 0 }: { post: typeof blogPosts[0
       >
         {/* Top graphic area / Image */}
         <div className={`relative ${large ? "h-52" : "h-40"} bg-[#0c0c0c] overflow-hidden`}>
-          <img 
+          <Image 
             src={post.image} 
             alt={post.title}
-            className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" 
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+            className="object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" 
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent" />
           

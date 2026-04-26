@@ -3,25 +3,52 @@
 import { useState, useCallback } from "react";
 import dynamic from "next/dynamic";
 import SmoothScroll from "@/components/SmoothScroll";
-import ProductShowcase from "@/components/ProductShowcase";
-import FeatureSection from "@/components/FeatureSection";
-import FinalCTA from "@/components/FinalCTA";
 import Navbar from "@/components/Navbar";
-import AboutSection from "@/components/AboutSection";
-import HowWeWorkSticky from "@/components/HowWeWorkSticky";
-import MeetTheCoachSection from "@/components/MeetTheCoachSection";
-import ClientForm from "@/components/ClientForm";
-import Footer from "@/components/Footer";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import BlogSection from "@/components/BlogSection";
 import LoadingScreen from "@/components/LoadingScreen";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
-import MarqueeSection from "@/components/MarqueeSection";
+const AboutSection = dynamic(() => import("@/components/AboutSection"), {
+  loading: () => <div className="h-[800px] bg-black" />
+});
+const HowWeWorkSticky = dynamic(() => import("@/components/HowWeWorkSticky"), {
+  loading: () => <div className="h-[400vh] bg-black" />
+});
+const MeetTheCoachSection = dynamic(() => import("@/components/MeetTheCoachSection"), {
+  loading: () => <div className="h-[600px] bg-black" />
+});
+const FeatureSection = dynamic(() => import("@/components/FeatureSection"), {
+  loading: () => <div className="h-[1000px] bg-black" />
+});
+const ProductShowcase = dynamic(() => import("@/components/ProductShowcase"), {
+  loading: () => <div className="h-[800px] bg-black" />
+});
+const TestimonialsSection = dynamic(() => import("@/components/TestimonialsSection"), {
+  loading: () => <div className="h-[700px] bg-black" />
+});
+const BlogSection = dynamic(() => import("@/components/BlogSection"), {
+  loading: () => <div className="h-[800px] bg-black" />
+});
+const FinalCTA = dynamic(() => import("@/components/FinalCTA"), {
+  loading: () => <div className="h-[400px] bg-black" />
+});
+const ClientForm = dynamic(() => import("@/components/ClientForm"), {
+  loading: () => <div className="h-[800px] bg-black" />
+});
+const Footer = dynamic(() => import("@/components/Footer"), {
+  loading: () => <div className="h-[400px] bg-black" />
+});
+const MarqueeSection = dynamic(() => import("@/components/MarqueeSection"), {
+  loading: () => <div className="h-20 bg-black" />
+});
+
 
 const HeroCanvasAnimation = dynamic(
   () => import("@/components/HeroCanvasAnimation"),
-  { ssr: false }
+  { 
+    ssr: false,
+    loading: () => <div className="h-[400vh] bg-black" />
+  }
 );
+
 
 export default function Home() {
   const [loading, setLoading] = useState(true);

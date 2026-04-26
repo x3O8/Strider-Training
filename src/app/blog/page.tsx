@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -94,10 +95,12 @@ export default function BlogArchivePage() {
                 >
                   <Link href={`/blog/${post.slug}`} className="group block h-full">
                     <div className="relative aspect-[4/5] overflow-hidden mb-8 border border-white/10 bg-white/[0.02]">
-                      <img 
+                      <Image 
                         src={post.image} 
                         alt={post.title} 
-                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/60 via-transparent to-transparent" />
                       
