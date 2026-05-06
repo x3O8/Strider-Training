@@ -15,7 +15,7 @@ export default function LoadingScreen({
 
   useEffect(() => {
     // Simulate loading progress with an eased curve
-    const duration = 200; // Drastically reduced from 3200ms to fix LCP blocking
+    const duration = 2800; // Increased to ensure landing page animations initialize properly
     const start = Date.now();
 
     const tick = () => {

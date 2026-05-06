@@ -73,7 +73,7 @@ export default function AboutSection() {
         >
           <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #151515ff 0%, #5a5c5cff 100%)" }} />
           <Image
-            src="/athlete/performance-banner.jpg"
+            src="/athlete/performancebann.jpg"
             alt="Strider Coaching"
             fill
             sizes="100vw"
