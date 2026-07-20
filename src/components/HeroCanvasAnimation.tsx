@@ -75,7 +75,8 @@ function HeroPlayer({
 
   const updateWinSize = useCallback(() => {
     if (typeof window === "undefined") return;
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const dprLimit = window.innerWidth < 640 ? 2 : 1.5;
+    const dpr = Math.min(window.devicePixelRatio || 1, dprLimit);
     winSize.current = {
       w: window.innerWidth,
       h: window.innerHeight,
@@ -138,7 +139,7 @@ function HeroPlayer({
       muscleAlpha = 0;
     }
 
-    // Helper: draw image centered at 85% scale
+    // Keep the approved desktop framing while letting the athlete fill more of a phone screen.
     const drawImg = (img: HTMLImageElement, alpha: number) => {
       if (alpha < 0.005) return;
       const { w, h } = winSize.current;
@@ -147,7 +148,8 @@ function HeroPlayer({
       let dw: number, dh: number;
       if (ca > ia) { dh = h; dw = dh * ia; }
       else { dw = w; dh = dw / ia; }
-      dw *= 0.85; dh *= 0.85;
+      const imageScale = w < 640 ? 1 : 0.85;
+      dw *= imageScale; dh *= imageScale;
       const dx = (w - dw) / 2;
       const dy = (h - dh) / 2;
       ctx.globalAlpha = alpha;
@@ -501,7 +503,7 @@ function HeroPlayer({
             unoptimized
             onLoad={onFirstFramePaint}
             onError={onFirstFramePaint}
-            className="object-contain scale-[0.85]"
+            className="object-contain scale-100 sm:scale-[0.85]"
           />
         </div>
 
@@ -534,7 +536,7 @@ function HeroPlayer({
               Join the Stride
             </p>
             <h1
-              className="text-[clamp(80px,18vw,200px)] text-white leading-none"
+              className="text-[clamp(96px,26vw,120px)] text-white leading-none sm:text-[clamp(80px,18vw,200px)]"
               style={{
                 fontFamily: "'Bebas Neue', sans-serif",
                 letterSpacing: "0.04em",

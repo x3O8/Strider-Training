@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { clientStories } from "@/data/testimonials";
+import MobileSwipeHint from "./MobileSwipeHint";
 
 // ── Tiny sparkline chart (preview only, 60px tall) ────────────────────────────
 function Sparkline({ data, invert }: { data: number[]; invert: boolean }) {
@@ -92,7 +93,8 @@ export default function TestimonialsSection() {
         </motion.div>
 
         {/* Story cards */}
-        <div className="-mx-6 grid touch-pan-x snap-x snap-mandatory grid-flow-col auto-cols-[90%] gap-4 overflow-x-auto bg-white/[0.06] px-6 min-[360px]:auto-cols-[86%] sm:mx-0 sm:grid-flow-row sm:auto-cols-auto sm:grid-cols-1 sm:overflow-visible sm:px-0 sm:snap-none sm:gap-px md:grid-cols-3">
+        <MobileSwipeHint />
+        <div className="-mx-6 grid touch-auto snap-x snap-mandatory grid-flow-col auto-cols-[90%] gap-4 overflow-x-auto bg-white/[0.06] px-6 min-[360px]:auto-cols-[86%] sm:mx-0 sm:grid-flow-row sm:auto-cols-auto sm:grid-cols-1 sm:overflow-visible sm:px-0 sm:snap-none sm:gap-px sm:touch-pan-x md:grid-cols-3">
           {clientStories.map((story, i) => (
             <motion.div
               key={story.id}
@@ -210,7 +212,7 @@ export default function TestimonialsSection() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
-          className="text-center mt-10 md:mt-12"
+          className="hidden text-center mt-10 sm:block md:mt-12"
         >
           <Link
             href="/client-stories"

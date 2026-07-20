@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { blogPosts } from "@/data/blog";
+import MobileSwipeHint from "./MobileSwipeHint";
 
 const CATEGORY_COLORS: Record<string, string> = {
   Training:  "rgba(255,255,255,0.28)",
@@ -139,7 +140,8 @@ export default function BlogSection() {
         </motion.div>
 
         {/* Balanced desktop grid, horizontal card rail on phones */}
-        <div className="-mx-6 grid touch-pan-x snap-x snap-mandatory grid-flow-col auto-cols-[90%] gap-4 overflow-x-auto bg-white/[0.06] px-6 min-[360px]:auto-cols-[86%] sm:contents">
+        <MobileSwipeHint />
+        <div className="-mx-6 grid touch-auto snap-x snap-mandatory grid-flow-col auto-cols-[90%] gap-4 overflow-x-auto bg-white/[0.06] px-6 min-[360px]:auto-cols-[86%] sm:contents sm:touch-pan-x">
           <div className="contents sm:mb-px sm:block sm:bg-white/[0.06]">
             <BlogCard post={featured} large index={0} />
           </div>

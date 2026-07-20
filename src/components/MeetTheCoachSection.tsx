@@ -27,7 +27,7 @@ export default function MeetTheCoachSection() {
             Meet Your Coach
           </motion.h3>
 
-          <div className="relative bg-[#080808] border border-white/[0.1] p-5 min-[360px]:p-8 md:p-12 overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+          <div className="relative bg-[#080808] border border-white/[0.1] p-5 min-[360px]:p-6 sm:p-8 md:p-12 overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
             {/* Layered technical texture */}
             <div
               className="absolute inset-0 pointer-events-none z-0"
@@ -45,7 +45,7 @@ export default function MeetTheCoachSection() {
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
             <div className="absolute right-0 top-0 h-28 w-28 border-r border-t border-white/[0.08]" />
 
-            <div className="relative z-10 grid grid-cols-[5rem_minmax(0,1fr)] items-start gap-x-4 gap-y-6 text-left sm:flex sm:flex-col sm:gap-10 md:flex-row">
+            <div className="relative z-10 grid grid-cols-[5rem_minmax(0,1fr)] items-start gap-x-4 gap-y-6 text-left min-[360px]:grid-cols-[6rem_minmax(0,1fr)] sm:flex sm:flex-col sm:gap-10 md:flex-row">
               {/* Avatar image */}
               <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-full border-2 border-white/10 bg-[#08090D] shadow-2xl min-[360px]:h-24 min-[360px]:w-24 sm:h-32 sm:w-32 md:h-48 md:w-48">
                 <Image
