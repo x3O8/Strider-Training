@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState, useCallback } from "react";
-import { useScroll, useTransform } from "framer-motion";
+import { useScroll } from "framer-motion";
 import NextImage from "next/image";
 
 const TOTAL_FRAMES = 67;
@@ -13,12 +13,14 @@ const FRAME_PATH = "/runframes";
 //   CP2 (scrollY = 2vh)  → muscle.png fully faded in   +  "Anatomy of Strength" text
 //   CP3 (scrollY = 3vh)  → skel.png fully faded in     +  "Structural Integrity" text
 const MAX_CHECKPOINT = 3;
+const TOTAL_SCROLL_STEPS = 3;
 
 // Transition timing (normalised scrollYProgress fractions):
-// CP1 = 1/3, CP2 = 2/3, CP3 = 1
-const T1 = 1 / MAX_CHECKPOINT;   // ≈ 0.333
-const T2 = 2 / MAX_CHECKPOINT;   // ≈ 0.667
-const T3 = 3 / MAX_CHECKPOINT;   // = 1.0
+// CP1 = 1/3, CP2 = 2/3, CP3 = 1. The skeleton checkpoint now coincides
+// with the sticky release edge, so the next scroll moves it immediately.
+const T1 = 1 / TOTAL_SCROLL_STEPS;
+const T2 = 2 / TOTAL_SCROLL_STEPS;
+const T3 = 3 / TOTAL_SCROLL_STEPS;
 
 // Cross-fade zone: occupies the scroll from CPn → CP(n+1).
 // We start fading slightly before the halfway mark and finish at the next CP.
@@ -29,7 +31,8 @@ const FADE_END_2 = T3;         // skel fully in at CP3
 
 // How long each snapping animation takes (ms).
 // Longer = cross-fade fully resolves before user can trigger next scroll.
-const SNAP_DURATION = 1200;
+const SNAP_DURATION = 850;
+const FIRST_TRANSITION_DURATION = 1050;
 
 const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
@@ -41,26 +44,38 @@ function lerp01(v: number, a: number, b: number): number {
 
 // ─── HeroPlayer ───────────────────────────────────────────────────────────────
 interface HeroPlayerProps {
-  images: HTMLImageElement[];
+  images: Array<HTMLImageElement | undefined>;
   muscleImg: HTMLImageElement | null;
   skelImg: HTMLImageElement | null;
+  onFirstFramePaint: () => void;
 }
 
-function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
+function HeroPlayer({
+  images,
+  muscleImg,
+  skelImg,
+  onFirstFramePaint,
+}: HeroPlayerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>(0);
 
   const targetCPRef = useRef(0);
   const downLockRef = useRef(false);
+  const transitionDirectionRef = useRef<"down" | "up" | null>(null);
+  const exitingHeroRef = useRef(false);
+  const transitionIdRef = useRef(0);
 
   const [activeSection, setActiveSection] = useState(0);
   const [scrollDir, setScrollDir] = useState<"down" | "up">("down");
+  const [canvasHasFrame, setCanvasHasFrame] = useState(false);
+  const canvasHasFrameRef = useRef(false);
+  const lastRunImageRef = useRef<HTMLImageElement | null>(null);
   const winSize = useRef({ w: 0, h: 0, dpr: 1 });
 
   const updateWinSize = useCallback(() => {
     if (typeof window === "undefined") return;
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     winSize.current = {
       w: window.innerWidth,
       h: window.innerHeight,
@@ -80,9 +95,6 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
     target: containerRef,
     offset: ["start start", "end end"],
   });
-
-  // frameIndex: runs 0→66 while scrolling CP0→CP1, then freezes
-  const frameIndex = useTransform(scrollYProgress, [0, T1], [0, TOTAL_FRAMES - 1], { clamp: true });
 
   // ── Canvas render — draw everything via ctx.globalAlpha ────────────────────
   const renderFrame = useCallback(() => {
@@ -104,14 +116,27 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
     }
 
     ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = "#08090D";
+    ctx.fillRect(0, 0, w, h);
 
     const sp = scrollYProgress.get();
-    const fi = Math.round(frameIndex.get());
+    const fi = Math.round(lerp01(sp, 0, T1) * (TOTAL_FRAMES - 1));
 
     // Opacity values derived from scroll position
-    const runAlpha = 1 - lerp01(sp, FADE_START_1, FADE_END_1);
-    const muscleAlpha = lerp01(sp, FADE_START_1, FADE_END_1) * (1 - lerp01(sp, FADE_START_2, FADE_END_2));
-    const skelAlpha = lerp01(sp, FADE_START_2, FADE_END_2);
+    let runAlpha = 1 - lerp01(sp, FADE_START_1, FADE_END_1);
+    let muscleAlpha = lerp01(sp, FADE_START_1, FADE_END_1) * (1 - lerp01(sp, FADE_START_2, FADE_END_2));
+    let skelAlpha = lerp01(sp, FADE_START_2, FADE_END_2);
+
+    // Never clear to black while a later checkpoint image is still decoding.
+    // Its opacity is temporarily carried by the most recent available image.
+    if (!skelImg) {
+      muscleAlpha += skelAlpha;
+      skelAlpha = 0;
+    }
+    if (!muscleImg) {
+      runAlpha += muscleAlpha;
+      muscleAlpha = 0;
+    }
 
     // Helper: draw image centered at 85% scale
     const drawImg = (img: HTMLImageElement, alpha: number) => {
@@ -130,36 +155,52 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
     };
 
     // Draw in back-to-front order: run → muscle → skel
-    // Ensure we don't access out of bounds if images are still loading
-    const clampedFi = Math.max(0, Math.min(fi, images.length - 1));
-    const runImg = images[clampedFi];
-    if (runImg) drawImg(runImg, runAlpha);
+    // Prefer an earlier decoded frame so progressive loading never jumps ahead.
+    const requestedFrame = Math.max(0, Math.min(fi, TOTAL_FRAMES - 1));
+    let runImg = images[requestedFrame];
+    for (let index = requestedFrame - 1; !runImg && index >= 0; index -= 1) {
+      runImg = images[index];
+    }
+    for (let index = requestedFrame + 1; !runImg && index < TOTAL_FRAMES; index += 1) {
+      runImg = images[index];
+    }
+    runImg ??= lastRunImageRef.current ?? undefined;
+    if (runImg) {
+      lastRunImageRef.current = runImg;
+      drawImg(runImg, runAlpha);
+      if (!canvasHasFrameRef.current) {
+        canvasHasFrameRef.current = true;
+        setCanvasHasFrame(true);
+      }
+    }
     if (muscleImg) drawImg(muscleImg, muscleAlpha);
     if (skelImg) drawImg(skelImg, skelAlpha);
 
     ctx.globalAlpha = 1; // Reset for safety
-  }, [scrollYProgress, frameIndex, images, muscleImg, skelImg]);
+  }, [scrollYProgress, images, muscleImg, skelImg]);
 
   // Subscribe to all scroll changes so canvas updates continuously during snaps
   useEffect(() => {
-    const unsub1 = scrollYProgress.on("change", renderFrame);
-    const unsub2 = frameIndex.on("change", renderFrame);
+    const unsubscribe = scrollYProgress.on("change", renderFrame);
     renderFrame();
     window.addEventListener("resize", renderFrame);
     return () => {
-      unsub1();
-      unsub2();
+      unsubscribe();
       window.removeEventListener("resize", renderFrame);
     };
-  }, [scrollYProgress, frameIndex, renderFrame]);
+  }, [scrollYProgress, renderFrame]);
 
   // ── Snap-scroll engine ──────────────────────────────────────────────────────
-  const animateToY = useCallback((targetY: number, onDone?: () => void) => {
+  const animateToY = useCallback((
+    targetY: number,
+    onDone?: () => void,
+    duration = SNAP_DURATION
+  ) => {
     cancelAnimationFrame(rafRef.current);
     const startY = window.scrollY;
     const diff = targetY - startY;
 
-    if (Math.abs(diff) < 1) {
+    if (Math.abs(diff) < 1 || duration <= 0) {
       window.scrollTo(0, targetY);
       onDone?.();
       return;
@@ -167,7 +208,7 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
 
     const t0 = performance.now();
     const tick = (now: number) => {
-      const t = Math.min((now - t0) / SNAP_DURATION, 1);
+      const t = Math.min((now - t0) / duration, 1);
       window.scrollTo(0, startY + diff * easeOutCubic(t));
       if (t < 1) { rafRef.current = requestAnimationFrame(tick); }
       else { onDone?.(); }
@@ -176,45 +217,211 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
   }, []);
 
   useEffect(() => {
-    const initCP = Math.round(window.scrollY / window.innerHeight);
+    const getHeroBounds = () => {
+      const hero = containerRef.current;
+      const heroTop = hero
+        ? window.scrollY + hero.getBoundingClientRect().top
+        : 0;
+      const heroHeight = hero?.offsetHeight ?? (TOTAL_SCROLL_STEPS + 1) * window.innerHeight;
+
+      return {
+        heroTop,
+        checkpointEndY: heroTop + MAX_CHECKPOINT * window.innerHeight,
+        stickyEndY: heroTop + heroHeight - window.innerHeight,
+        exitY: heroTop + heroHeight,
+      };
+    };
+
+    const initialBounds = getHeroBounds();
+    const initCP = Math.round((window.scrollY - initialBounds.heroTop) / window.innerHeight);
     targetCPRef.current = Math.max(0, Math.min(MAX_CHECKPOINT, initCP));
     setActiveSection(targetCPRef.current);
 
+    const haltLenisAtCurrentPosition = () => {
+      const lenis = window.__lenis;
+      if (!lenis) return;
+      lenis.scrollTo(window.scrollY, { immediate: true, force: true });
+      lenis.stop();
+    };
+
+    const completeTransition = (transitionId: number, onComplete?: () => void) => {
+      if (transitionId !== transitionIdRef.current) return;
+      downLockRef.current = false;
+      transitionDirectionRef.current = null;
+      exitingHeroRef.current = false;
+      onComplete?.();
+    };
+
+    const snapToCheckpoint = (
+      checkpoint: number,
+      direction: "down" | "up",
+      heroTop: number,
+      duration = SNAP_DURATION
+    ) => {
+      const clampedCheckpoint = Math.max(0, Math.min(MAX_CHECKPOINT, checkpoint));
+      const transitionId = ++transitionIdRef.current;
+
+      exitingHeroRef.current = false;
+      targetCPRef.current = clampedCheckpoint;
+      setScrollDir(direction);
+      setActiveSection(clampedCheckpoint);
+      downLockRef.current = true;
+      transitionDirectionRef.current = direction;
+
+      const targetY = heroTop + clampedCheckpoint * window.innerHeight;
+      const stickyBoundaryY = heroTop + MAX_CHECKPOINT * window.innerHeight;
+      const lenis = window.__lenis;
+
+      // When reversing the hero's exit, stay on Lenis until the sticky
+      // boundary is reached. Switching to window.scrollTo above that boundary
+      // would briefly give two scrollers ownership again.
+      if (
+        lenis &&
+        direction === "up" &&
+        clampedCheckpoint === MAX_CHECKPOINT &&
+        window.scrollY >= stickyBoundaryY - 1
+      ) {
+        cancelAnimationFrame(rafRef.current);
+        lenis.start();
+        lenis.scrollTo(targetY, {
+          duration: duration / 1000,
+          easing: easeOutCubic,
+          lock: true,
+          force: true,
+          onComplete: () => completeTransition(transitionId),
+        });
+        return;
+      }
+
+      haltLenisAtCurrentPosition();
+
+      animateToY(targetY, () => {
+        completeTransition(transitionId);
+      }, duration);
+    };
+
+    const interruptTransition = (
+      delta: number,
+      heroTop: number
+    ) => {
+      const requestedDirection = delta > 0 ? "down" : "up";
+      const activeDirection = transitionDirectionRef.current;
+
+      // Inertial wheel events in the same direction stay absorbed. A genuine
+      // reversal cancels the active animation and targets the adjacent card.
+      if (!activeDirection || requestedDirection === activeDirection) return true;
+
+      cancelAnimationFrame(rafRef.current);
+      haltLenisAtCurrentPosition();
+
+      const destination = exitingHeroRef.current
+        ? MAX_CHECKPOINT
+        : requestedDirection === "up"
+          ? targetCPRef.current - 1
+          : targetCPRef.current + 1;
+
+      snapToCheckpoint(destination, requestedDirection, heroTop, 460);
+      return true;
+    };
+
     const go = (delta: number): boolean => {
-      const maxY = MAX_CHECKPOINT * window.innerHeight;
+      const { heroTop, checkpointEndY, stickyEndY, exitY } = getHeroBounds();
+      const scrollY = window.scrollY;
+
+      // While a checkpoint or exit transition is running, this controller owns
+      // the wheel input. Letting Lenis react here is what caused the black flash
+      // and the jump back to the skeleton checkpoint.
+      if (downLockRef.current) {
+        return scrollY < exitY - 1
+          ? interruptTransition(delta, heroTop)
+          : false;
+      }
+
+      // Lenis owns the short reveal between the end of the sticky canvas and
+      // the following section. The hero owns every position above that edge.
+      if (scrollY > stickyEndY + 1) return false;
 
       if (delta > 0) {
-        if (window.scrollY >= maxY) return false;
-        if (downLockRef.current) return true; // block but preventDefault
-        if (targetCPRef.current >= MAX_CHECKPOINT) return false;
+        if (scrollY >= exitY - 1) return false;
 
-        const next = targetCPRef.current + 1;
-        targetCPRef.current = next;
-        setScrollDir("down");
-        setActiveSection(next);
-        downLockRef.current = true;
-        // Release lock ONLY after snap fully completes
-        animateToY(next * window.innerHeight, () => { downLockRef.current = false; });
+        if (scrollY >= checkpointEndY - 2 || targetCPRef.current >= MAX_CHECKPOINT) {
+          const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          const transitionId = ++transitionIdRef.current;
+          const finish = () => {
+            completeTransition(transitionId, () => {
+              targetCPRef.current = MAX_CHECKPOINT;
+            });
+          };
+
+          downLockRef.current = true;
+          transitionDirectionRef.current = "down";
+          exitingHeroRef.current = true;
+          targetCPRef.current = MAX_CHECKPOINT;
+          setScrollDir("down");
+          setActiveSection(MAX_CHECKPOINT);
+          haltLenisAtCurrentPosition();
+
+          // At the settled skeleton checkpoint stickyEndY equals scrollY, so
+          // this completes immediately and Lenis starts the visual exit on the
+          // same input. Only one scroller writes scrollY at a time.
+          animateToY(stickyEndY, () => {
+            if (transitionId !== transitionIdRef.current) return;
+            const lenis = window.__lenis;
+            if (!lenis) {
+              animateToY(exitY, finish, reducedMotion ? 0 : 620);
+              return;
+            }
+
+            lenis.start();
+            lenis.scrollTo(exitY, {
+              duration: reducedMotion ? 0 : 0.62,
+              easing: easeOutCubic,
+              lock: true,
+              force: true,
+              onComplete: finish,
+            });
+          }, reducedMotion ? 0 : 220);
+          return true;
+        }
+
+        const nextCheckpoint = targetCPRef.current + 1;
+        snapToCheckpoint(
+          nextCheckpoint,
+          "down",
+          heroTop,
+          targetCPRef.current === 0 ? FIRST_TRANSITION_DURATION : SNAP_DURATION,
+        );
         return true;
       } else {
-        if (window.scrollY <= 0) return false;
-        if (window.scrollY > MAX_CHECKPOINT * window.innerHeight + 200) return false;
+        if (scrollY <= heroTop + 1) return false;
+
+        // Re-enter the pinned canvas at its final checkpoint before moving to
+        // earlier phases. This keeps reverse scrolling visually continuous.
+        if (scrollY > checkpointEndY + 2) {
+          snapToCheckpoint(MAX_CHECKPOINT, "up", heroTop, 460);
+          return true;
+        }
+
         if (targetCPRef.current <= 0) return false;
 
-        cancelAnimationFrame(rafRef.current);
-        downLockRef.current = true;
-        const prev = targetCPRef.current - 1;
-        targetCPRef.current = prev;
-        setScrollDir("up");
-        setActiveSection(prev);
-        animateToY(prev * window.innerHeight, () => { downLockRef.current = false; });
+        const previousCheckpoint = targetCPRef.current - 1;
+        snapToCheckpoint(
+          previousCheckpoint,
+          "up",
+          heroTop,
+          previousCheckpoint === 0 ? FIRST_TRANSITION_DURATION : SNAP_DURATION,
+        );
         return true;
       }
     };
 
     const handleScrollSync = () => {
       if (!downLockRef.current) {
-        const cp = Math.max(0, Math.min(MAX_CHECKPOINT, Math.round(window.scrollY / window.innerHeight)));
+        const { heroTop } = getHeroBounds();
+        const cp = Math.max(
+          0,
+          Math.min(MAX_CHECKPOINT, Math.round((window.scrollY - heroTop) / window.innerHeight))
+        );
         if (cp !== targetCPRef.current) {
           targetCPRef.current = cp;
           setActiveSection(cp);
@@ -222,7 +429,11 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
       }
     };
 
-    const handleWheel = (e: WheelEvent) => { if (go(e.deltaY)) e.preventDefault(); };
+    const handleWheel = (e: WheelEvent) => {
+      if (!go(e.deltaY)) return;
+      (e as WheelEvent & { lenisStopPropagation?: boolean }).lenisStopPropagation = true;
+      e.preventDefault();
+    };
     let touchY = 0;
     const onTouchStart = (e: TouchEvent) => { touchY = e.touches[0].clientY; };
     const onTouchEnd = (e: TouchEvent) => {
@@ -234,18 +445,20 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
       if (e.key === "ArrowUp" || e.key === "PageUp") { if (go(-100)) e.preventDefault(); }
     };
 
-    window.addEventListener("wheel", handleWheel, { passive: false });
+    window.addEventListener("wheel", handleWheel, { passive: false, capture: true });
     window.addEventListener("touchstart", onTouchStart, { passive: true });
     window.addEventListener("touchend", onTouchEnd, { passive: true });
     window.addEventListener("keydown", handleKey);
     window.addEventListener("scroll", handleScrollSync, { passive: true });
 
     return () => {
-      window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("wheel", handleWheel, { capture: true });
       window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("keydown", handleKey);
       window.removeEventListener("scroll", handleScrollSync);
+      transitionIdRef.current += 1;
+      cancelAnimationFrame(rafRef.current);
     };
   }, [animateToY]);
 
@@ -266,8 +479,31 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
   };
 
   return (
-    <div id="hero-main-container" ref={containerRef} className="relative" style={{ height: `${(MAX_CHECKPOINT + 1) * 100}vh` }}>
+    <div id="hero-main-container" ref={containerRef} className="relative" style={{ height: `${(TOTAL_SCROLL_STEPS + 1) * 100}vh` }}>
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#08090D]">
+
+        {/* Server-rendered LCP candidate. The canvas takes over as frames decode. */}
+        <div
+          className="absolute inset-0"
+          style={{
+            zIndex: 0,
+            opacity: canvasHasFrame ? 0 : 1,
+            transition: "opacity 120ms ease-out",
+          }}
+        >
+          <NextImage
+            src="/runframes/run-001.webp"
+            alt="Athlete preparing to sprint"
+            fill
+            priority
+            fetchPriority="high"
+            sizes="100vw"
+            unoptimized
+            onLoad={onFirstFramePaint}
+            onError={onFirstFramePaint}
+            className="object-contain scale-[0.85]"
+          />
+        </div>
 
         {/* ── Single canvas — all images rendered here ───────────────────────── */}
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" style={{ zIndex: 1 }} />
@@ -439,112 +675,131 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
 }
 
 interface HeroCanvasAnimationProps {
-  onLoadProgress?: (progress: number) => void;
   onReady?: () => void;
 }
 
-  export default function HeroCanvasAnimation({
-    onLoadProgress,
-    onReady,
-  }: HeroCanvasAnimationProps) {
-    const [runImages, setRunImages] = useState<HTMLImageElement[]>([]);
+export default function HeroCanvasAnimation({ onReady }: HeroCanvasAnimationProps) {
+    const [runImages, setRunImages] = useState<Array<HTMLImageElement | undefined>>([]);
     const [muscleImg, setMuscleImg] = useState<HTMLImageElement | null>(null);
     const [skelImg, setSkelImg] = useState<HTMLImageElement | null>(null);
-    const [heroImagesReady, setHeroImagesReady] = useState(false);
+    const readySignalledRef = useRef(false);
+
+    const signalReady = useCallback(() => {
+      if (readySignalledRef.current) return;
+      readySignalledRef.current = true;
+      onReady?.();
+    }, [onReady]);
   
     useEffect(() => {
       let cancelled = false;
-      const totalAssets = TOTAL_FRAMES + 2;
-      let assetsSettled = 0;
-
-      const markAssetSettled = () => {
-        assetsSettled += 1;
-        if (cancelled) return;
-
-        onLoadProgress?.((assetsSettled / totalAssets) * 100);
-        if (assetsSettled === totalAssets) {
-          setHeroImagesReady(true);
-          onReady?.();
-        }
-      };
-
-      onLoadProgress?.(0);
       // ── Load run frames ──────────────────────────────────────────────────────
-      const runLoaded: HTMLImageElement[] = new Array(TOTAL_FRAMES);
+      const runLoaded: Array<HTMLImageElement | undefined> = new Array(TOTAL_FRAMES);
       let framesLoadedCount = 0;
   
-      Array.from({ length: TOTAL_FRAMES }, (_, i) => {
+      let backgroundTimer = 0;
+
+      const loadFrame = (i: number, onSettled?: () => void) => {
         const img = new Image();
         const num = String(i + 1).padStart(3, "0");
-        if (i === 0) (img as any).fetchPriority = "high";
+        img.decoding = "async";
+        img.fetchPriority = i === 0 ? "high" : "auto";
         
         const handleLoadOrError = () => {
+          if (cancelled) return;
           framesLoadedCount++;
-          markAssetSettled();
           if (i === 0) {
-            setRunImages([...runLoaded]); // Set initially
+            setRunImages([...runLoaded]);
+            signalReady();
           }
           if (i > 0 && !runLoaded[i] && runLoaded[i - 1]) {
-             runLoaded[i] = runLoaded[i - 1]; // Fallback to previous frame on error
+             runLoaded[i] = runLoaded[i - 1];
           }
-          if (framesLoadedCount === TOTAL_FRAMES) {
+          if (framesLoadedCount % 4 === 0 || framesLoadedCount === TOTAL_FRAMES) {
             setRunImages([...runLoaded]);
           }
+          onSettled?.();
         };
 
-        img.onload = () => {
+        img.onload = async () => {
+          try {
+            await img.decode();
+          } catch {
+            // The load event still makes the image drawable in most browsers.
+          }
+          if (cancelled) return;
           runLoaded[i] = img;
           handleLoadOrError();
         };
         img.onerror = () => {
           handleLoadOrError();
         };
-        img.src = `${FRAME_PATH}/run-${num}.png`;
+        img.src = `${FRAME_PATH}/run-${num}.webp`;
+      };
+
+      const loadRemainingFrames = () => {
+        let nextFrame = 1;
+        let activeLoads = 0;
+
+        const pump = () => {
+          if (cancelled) return;
+          while (activeLoads < 6 && nextFrame < TOTAL_FRAMES) {
+            const frame = nextFrame;
+            nextFrame += 1;
+            activeLoads += 1;
+            loadFrame(frame, () => {
+              activeLoads -= 1;
+              pump();
+            });
+          }
+        };
+
+        pump();
+      };
+
+      loadFrame(0, () => {
+        backgroundTimer = window.setTimeout(loadRemainingFrames, 0);
       });
 
-    // ── Load muscle.png ──────────────────────────────────────────────────────
+    // Load the two later checkpoint images early, after the LCP request has
+    // already been issued at high priority.
     const muscle = new Image();
-    muscle.onload = () => {
-      setMuscleImg(muscle);
-      markAssetSettled();
+    muscle.onload = async () => {
+      try {
+        await muscle.decode();
+      } catch {
+        // Keep the loaded image as a valid fallback if decode() rejects.
+      }
+      if (!cancelled) setMuscleImg(muscle);
     };
-    muscle.onerror = markAssetSettled;
-    muscle.src = `${FRAME_PATH}/muscle.png`;
+    muscle.decoding = "async";
+    muscle.fetchPriority = "auto";
+    muscle.src = `${FRAME_PATH}/muscle.webp`;
   
-    // ── Load skel.png ────────────────────────────────────────────────────────
     const skel = new Image();
-    skel.onload = () => {
-      setSkelImg(skel);
-      markAssetSettled();
+    skel.onload = async () => {
+      try {
+        await skel.decode();
+      } catch {
+        // Keep the loaded image as a valid fallback if decode() rejects.
+      }
+      if (!cancelled) setSkelImg(skel);
     };
-    skel.onerror = markAssetSettled;
-    skel.src = `${FRAME_PATH}/skel.png`;
+    skel.decoding = "async";
+    skel.fetchPriority = "auto";
+    skel.src = `${FRAME_PATH}/skel.webp`;
 
     return () => {
       cancelled = true;
+      window.clearTimeout(backgroundTimer);
     };
-  }, [onLoadProgress, onReady]);
+  }, [signalReady]);
   
-  if (!heroImagesReady) {
-    return (
-      <div className="relative" style={{ height: `${(MAX_CHECKPOINT + 1) * 100}vh` }}>
-         <div className="sticky top-0 h-screen w-full bg-[#08090D] flex items-center justify-center">
-           {/* Placeholder for run-001.png to prevent CLS */}
-           <div className="relative w-full h-full max-w-[1400px] mx-auto overflow-hidden">
-             <NextImage
-                src="/runframes/run-001.png"
-                alt="Loading..."
-                fill
-                priority
-                fetchPriority="high"
-                sizes="100vw"
-                className="object-contain opacity-20 scale-[0.85]"
-                style={{ filter: 'blur(10px)' }}
-             />
-           </div>
-         </div>
-      </div>
-    );
-  }
-  return <HeroPlayer images={runImages} muscleImg={muscleImg} skelImg={skelImg} />;
+  return (
+    <HeroPlayer
+      images={runImages}
+      muscleImg={muscleImg}
+      skelImg={skelImg}
+      onFirstFramePaint={signalReady}
+    />
+  );
 }

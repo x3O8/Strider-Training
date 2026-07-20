@@ -1,162 +1,108 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface LoadingScreenProps {
-  progress: number;
   ready: boolean;
   onComplete: () => void;
 }
 
-const MINIMUM_LOADING_TIME = 1200;
-const EXIT_DURATION = 600;
+const EXIT_DURATION = 320;
+const COMPLETION_HOLD = 180;
+const SAFETY_TIMEOUT = 10000;
 
-export default function LoadingScreen({
-  progress,
-  ready,
-  onComplete,
-}: LoadingScreenProps) {
+export default function LoadingScreen({ ready, onComplete }: LoadingScreenProps) {
   const [isExiting, setIsExiting] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const completedRef = useRef(false);
-  const mountedAtRef = useRef(Date.now());
+  const [progress, setProgress] = useState(4);
+  const exitStartedRef = useRef(false);
+  const completionTimerRef = useRef<number | undefined>(undefined);
+  const readyTimerRef = useRef<number | undefined>(undefined);
+
+  const exit = useCallback(() => {
+    if (exitStartedRef.current) return;
+    exitStartedRef.current = true;
+    setIsExiting(true);
+    completionTimerRef.current = window.setTimeout(onComplete, EXIT_DURATION);
+  }, [onComplete]);
 
   useEffect(() => {
-    if (!ready || completedRef.current) return;
-    completedRef.current = true;
+    if (ready) {
+      readyTimerRef.current = window.setTimeout(exit, COMPLETION_HOLD);
+      return () => {
+        if (readyTimerRef.current !== undefined) {
+          window.clearTimeout(readyTimerRef.current);
+        }
+      };
+    }
 
-    const elapsed = Date.now() - mountedAtRef.current;
-    const remainingMinimum = Math.max(0, MINIMUM_LOADING_TIME - elapsed);
-    let completeTimer: number | undefined;
+    const startedAt = performance.now();
+    const progressTimer = window.setInterval(() => {
+      const elapsed = performance.now() - startedAt;
+      // Move quickly through the first half, then ease toward 92% while the
+      // hero and the preloaded Protocol scene finish in the background.
+      const nextProgress = Math.min(
+        92,
+        Math.round(4 + 88 * (1 - Math.exp(-elapsed / 1300))),
+      );
+      setProgress(nextProgress);
+    }, 80);
 
-    const exitTimer = window.setTimeout(() => {
-      setIsExiting(true);
-      completeTimer = window.setTimeout(onComplete, EXIT_DURATION);
-    }, remainingMinimum);
+    return () => window.clearInterval(progressTimer);
+  }, [ready, exit]);
 
+  useEffect(() => {
+    const safetyTimer = window.setTimeout(exit, SAFETY_TIMEOUT);
     return () => {
-      window.clearTimeout(exitTimer);
-      if (completeTimer !== undefined) window.clearTimeout(completeTimer);
+      window.clearTimeout(safetyTimer);
+      if (completionTimerRef.current !== undefined) {
+        window.clearTimeout(completionTimerRef.current);
+      }
+      if (readyTimerRef.current !== undefined) {
+        window.clearTimeout(readyTimerRef.current);
+      }
     };
-  }, [ready, onComplete]);
+  }, [exit]);
 
-  useEffect(() => {
-    videoRef.current?.play().catch(() => {});
-  }, []);
-
-  const displayedProgress = Math.max(0, Math.min(100, Math.round(progress)));
+  const displayedProgress = ready ? 100 : progress;
 
   return (
     <AnimatePresence>
       {!isExiting && (
         <motion.div
+          aria-hidden="true"
           key="loading-screen"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, scale: 1.05 }}
-          transition={{ duration: EXIT_DURATION / 1000, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 9999,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "#000000",
-          }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: EXIT_DURATION / 1000, ease: "easeOut" }}
+          className="pointer-events-none fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-black"
         >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              width: "180px",
-              height: "180px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              marginBottom: "10px",
-              position: "relative",
-            }}
-          >
+          <div className="flex -translate-y-[2vh] flex-col items-center">
             <video
-              ref={videoRef}
-              src="/stryder-gif.mp4"
-              muted
-              loop
-              playsInline
               autoPlay
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "contain",
-                mixBlendMode: "screen",
-              }}
+              loop
+              muted
+              playsInline
+              preload="auto"
+              src="/stryder-gif.mp4"
+              className="h-auto w-[clamp(11rem,18vw,15rem)] object-contain"
             />
-          </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            style={{
-              width: "200px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: "12px",
-            }}
-          >
-            <div
-              style={{
-                width: "100%",
-                height: "2px",
-                background: "rgba(255, 255, 255, 0.08)",
-                borderRadius: "4px",
-                overflow: "hidden",
-                position: "relative",
-              }}
-            >
-              <motion.div
-                style={{
-                  height: "100%",
-                  borderRadius: "4px",
-                  background:
-                    "linear-gradient(90deg, rgba(255,255,255,0.4), rgba(255,255,255,0.9))",
-                  width: `${displayedProgress}%`,
-                  boxShadow: "0 0 12px rgba(255,255,255,0.3)",
-                }}
-                transition={{ duration: 0.1 }}
-              />
-              <motion.div
-                animate={{ x: ["-100%", "300%"] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "30%",
-                  height: "100%",
-                  background:
-                    "linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)",
-                  borderRadius: "4px",
-                }}
-              />
+            <div className="mt-8 w-[clamp(10rem,17vw,15.5rem)]">
+              <div className="h-px overflow-hidden bg-white/25">
+                <div
+                  className="h-full origin-left bg-white transition-transform duration-150 ease-out"
+                  style={{ transform: `scaleX(${displayedProgress / 100})` }}
+                />
+              </div>
+              <p
+                className="mt-4 text-center text-[9px] tracking-[0.22em] text-white/35 tabular-nums"
+                style={{ fontFamily: "var(--font-inter), sans-serif" }}
+              >
+                {displayedProgress}%
+              </p>
             </div>
-
-            <span
-              style={{
-                fontFamily: "var(--font-inter), 'Inter', sans-serif",
-                fontSize: "10px",
-                letterSpacing: "0.25em",
-                color: "rgba(255, 255, 255, 0.3)",
-                textTransform: "uppercase",
-              }}
-            >
-              {displayedProgress}%
-            </span>
-          </motion.div>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

@@ -1,9 +1,22 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useRef } from "react";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import type { MotionValue } from "framer-motion";
-import ProtocolModel3D from "@/components/ProtocolModel3D";
+
+const loadProtocolModel = () => import("@/components/ProtocolModel3D");
+const ProtocolModel3D = dynamic(loadProtocolModel, {
+  ssr: false,
+  loading: () => (
+    <div className="absolute inset-0 flex items-center justify-center">
+      <div className="flex items-center gap-3 text-[9px] uppercase tracking-[0.35em] text-white/35">
+        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white/70" />
+        Loading model
+      </div>
+    </div>
+  ),
+});
 
 const steps = [
   {
@@ -96,7 +109,7 @@ function PhaseOverlay({
   );
 }
 
-export default function HowWeWorkSticky() {
+export default function HowWeWorkSticky({ preloadModel = false }: { preloadModel?: boolean }) {
   const sectionRef = useRef<HTMLElement>(null);
   const snapLockRef = useRef(false);
   const { scrollYProgress } = useScroll({
@@ -109,7 +122,7 @@ export default function HowWeWorkSticky() {
     mass: 0.42,
     restDelta: 0.0001,
   });
-  const modelOpacity = useTransform(cinematicProgress, [0, 0.035], [0.5, 0.64]);
+  const modelOpacity = useTransform(cinematicProgress, [0, 0.035], [0.62, 0.72]);
   const modelScale = useTransform(cinematicProgress, [0, 0.06], [1.055, 1]);
 
   useEffect(() => {
@@ -136,6 +149,8 @@ export default function HowWeWorkSticky() {
             options?: {
               duration?: number;
               easing?: (value: number) => number;
+              lock?: boolean;
+              force?: boolean;
               onComplete?: () => void;
             }
           ) => void;
@@ -145,15 +160,17 @@ export default function HowWeWorkSticky() {
       snapLockRef.current = true;
       if (lenis?.scrollTo) {
         lenis.scrollTo(targetY, {
-          duration: 0.72,
+          duration: 0.58,
           easing: (value) => 1 - Math.pow(1 - value, 4),
+          lock: true,
+          force: true,
           onComplete: releaseSnap,
         });
       } else {
         window.scrollTo({ top: targetY, behavior: "smooth" });
       }
 
-      unlockTimer = setTimeout(releaseSnap, 900);
+      unlockTimer = setTimeout(releaseSnap, 720);
     };
 
     const handleWheel = (event: WheelEvent) => {
@@ -164,6 +181,7 @@ export default function HowWeWorkSticky() {
       if (!sectionIsPinned) return;
 
       if (snapLockRef.current) {
+        (event as WheelEvent & { lenisStopPropagation?: boolean }).lenisStopPropagation = true;
         event.preventDefault();
         return;
       }
@@ -188,19 +206,20 @@ export default function HowWeWorkSticky() {
       }
 
       if (targetIndex === null) return;
+      (event as WheelEvent & { lenisStopPropagation?: boolean }).lenisStopPropagation = true;
       event.preventDefault();
       snapToPhase(targetIndex);
     };
 
-    window.addEventListener("wheel", handleWheel, { passive: false });
+    window.addEventListener("wheel", handleWheel, { passive: false, capture: true });
     return () => {
-      window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("wheel", handleWheel, { capture: true });
       if (unlockTimer) clearTimeout(unlockTimer);
     };
   }, [scrollYProgress]);
 
   return (
-    <section ref={sectionRef} className="relative h-[500svh] w-full border-t border-white/[0.07] bg-black">
+    <section id="protocol" ref={sectionRef} className="relative h-[500svh] w-full border-t border-white/[0.07] bg-black">
       <div className="sticky top-20 h-[calc(100svh-5rem)] w-full overflow-hidden bg-[#020304]">
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.035]"
@@ -213,7 +232,9 @@ export default function HowWeWorkSticky() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(107,124,155,0.08),transparent_36%),linear-gradient(to_bottom,rgba(0,0,0,0.2),transparent_24%,transparent_70%,rgba(0,0,0,0.82))]" />
 
         <motion.div className="absolute inset-0 origin-center" style={{ opacity: modelOpacity, scale: modelScale }}>
-          <ProtocolModel3D scrollProgress={cinematicProgress} cinematic />
+          {preloadModel && (
+            <ProtocolModel3D scrollProgress={cinematicProgress} cinematic />
+          )}
         </motion.div>
 
         <header className="pointer-events-none absolute left-6 top-7 z-30 md:left-[7vw] md:top-10">

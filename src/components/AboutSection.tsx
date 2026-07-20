@@ -18,9 +18,10 @@ export default function AboutSection() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 pb-10 pt-14 md:px-10 md:pb-14 md:pt-20">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.12 }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           className="mb-10 md:mb-14"
         >
           <p
@@ -59,10 +60,10 @@ export default function AboutSection() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, scaleX: 0.97 }}
-          whileInView={{ opacity: 1, scaleX: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.18 }}
+          transition={{ duration: 0.58, ease: [0.22, 1, 0.36, 1] }}
           className="relative h-32 overflow-hidden md:h-44"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-[#151515] to-[#5a5c5c]" />
@@ -70,17 +71,21 @@ export default function AboutSection() {
             src="/athlete/performancebann.jpg"
             alt="Strider Coaching"
             fill
-            sizes="100vw"
-            className="absolute inset-0 object-cover opacity-20 mix-blend-luminosity"
+            quality={72}
+            sizes="(max-width: 1280px) 100vw, 1280px"
+            className="absolute inset-0 object-cover opacity-20"
           />
 
           {Array.from({ length: 6 }).map((_, index) => (
-            <motion.div
+            <span
               key={index}
-              animate={{ y: [0, -14, 0], opacity: [0.12, 0.35, 0.12] }}
-              transition={{ repeat: Infinity, duration: 2.5 + index * 0.4, delay: index * 0.35 }}
-              className="absolute h-1 w-1 rounded-full bg-white"
-              style={{ left: `${12 + index * 16}%`, top: `${25 + (index % 3) * 18}%` }}
+              className="about-particle absolute h-1 w-1 rounded-full bg-white"
+              style={{
+                left: `${12 + index * 16}%`,
+                top: `${25 + (index % 3) * 18}%`,
+                animationDuration: `${2.5 + index * 0.4}s`,
+                animationDelay: `${index * 0.35}s`,
+              }}
             />
           ))}
 

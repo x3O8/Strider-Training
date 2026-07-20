@@ -6,11 +6,11 @@ import SmoothScroll from "@/components/SmoothScroll";
 import Navbar from "@/components/Navbar";
 import LoadingScreen from "@/components/LoadingScreen";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
-const AboutSection = dynamic(() => import("@/components/AboutSection"), {
-  loading: () => <div className="h-[800px] bg-black" />
-});
+import HeroCanvasAnimation from "@/components/HeroCanvasAnimation";
+import MarqueeSection from "@/components/MarqueeSection";
+import AboutSection from "@/components/AboutSection";
 const HowWeWorkSticky = dynamic(() => import("@/components/HowWeWorkSticky"), {
-  loading: () => <div className="h-[400vh] bg-black" />
+  loading: () => <div className="h-[500svh] bg-black" />
 });
 const MeetTheCoachSection = dynamic(() => import("@/components/MeetTheCoachSection"), {
   loading: () => <div className="h-[600px] bg-black" />
@@ -36,24 +36,10 @@ const ClientForm = dynamic(() => import("@/components/ClientForm"), {
 const Footer = dynamic(() => import("@/components/Footer"), {
   loading: () => <div className="h-[400px] bg-black" />
 });
-const MarqueeSection = dynamic(() => import("@/components/MarqueeSection"), {
-  loading: () => <div className="h-20 bg-black" />
-});
-
-
-const HeroCanvasAnimation = dynamic(
-  () => import("@/components/HeroCanvasAnimation"),
-  { 
-    ssr: false,
-    loading: () => <div className="h-[400vh] bg-black" />
-  }
-);
-
-
 export default function Home() {
   const [loading, setLoading] = useState(true);
   const [heroReady, setHeroReady] = useState(false);
-  const [heroLoadProgress, setHeroLoadProgress] = useState(0);
+  const [protocolReady, setProtocolReady] = useState(false);
   const [preselectedGoal, setPreselectedGoal] = useState<string | null>(null);
 
   const handleLoadingComplete = useCallback(() => {
@@ -61,18 +47,43 @@ export default function Home() {
   }, []);
 
   const handleHeroReady = useCallback(() => {
-    setHeroLoadProgress(100);
     setHeroReady(true);
   }, []);
 
   useEffect(() => {
-    if (!loading) return;
+    if (!heroReady) return;
+    let cancelled = false;
 
-    const previousOverflow = document.body.style.overflow;
+    // Once the LCP frame is painted, use the remaining loading-screen time to
+    // download, Draco-decode, initialize WebGL, compile shaders, and upload the
+    // Protocol model. The same scene and renderer stay mounted for the section.
+    import("@/components/ProtocolModel3D")
+      .then((modelModule) =>
+        Promise.all([
+          modelModule.preloadProtocolScene(),
+          modelModule.waitForProtocolRenderReady(),
+        ])
+      )
+      .catch(() => undefined)
+      .finally(() => {
+        if (!cancelled) setProtocolReady(true);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [heroReady]);
+
+  useEffect(() => {
+    if (!loading) return;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    const previousBodyOverflow = document.body.style.overflow;
+    document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
 
     return () => {
-      document.body.style.overflow = previousOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
+      document.body.style.overflow = previousBodyOverflow;
     };
   }, [loading]);
 
@@ -89,33 +100,24 @@ export default function Home() {
     <>
       {loading && (
         <LoadingScreen
-          progress={heroLoadProgress}
-          ready={heroReady}
+          ready={heroReady && protocolReady}
           onComplete={handleLoadingComplete}
         />
       )}
       {!loading && <ScrollProgressBar />}
       <SmoothScroll>
-        <main
-          className="relative bg-black min-h-screen"
-          style={{
-            overflow: loading ? "hidden" : undefined,
-          }}
-        >
+        <main className="relative bg-black min-h-screen">
           <Navbar />
 
           {/* 1. Scroll-animated hero (run frames → muscle → skel) */}
-          <HeroCanvasAnimation
-            onLoadProgress={setHeroLoadProgress}
-            onReady={handleHeroReady}
-          />
+          <HeroCanvasAnimation onReady={handleHeroReady} />
 
           {/* Scrolling Tickers */}
           <MarqueeSection />
 
           {/* 2. About Strider — story, method, coaches */}
           <AboutSection />
-          <HowWeWorkSticky />
+          <HowWeWorkSticky preloadModel={heroReady} />
           <MeetTheCoachSection />
 
           {/* 4. Results You Can Measure — features */}

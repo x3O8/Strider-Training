@@ -3,65 +3,88 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
 
+type SmoothScrollTarget = number | string | HTMLElement;
+
+interface SmoothScrollToOptions {
+  duration?: number;
+  easing?: (value: number) => number;
+  immediate?: boolean;
+  lock?: boolean;
+  force?: boolean;
+  onComplete?: () => void;
+}
+
+interface SmoothScrollBridge {
+  start: () => void;
+  stop: () => void;
+  scrollTo: (target: SmoothScrollTarget, options?: SmoothScrollToOptions) => void;
+}
+
+declare global {
+  interface Window {
+    __lenis?: SmoothScrollBridge;
+  }
+}
+
 /**
- * Initializes Lenis smooth scroll for all sections BELOW the hero.
- * Lenis is paused while we're in the hero scroll-hijack zone (scrollY < 4*vh),
- * and becomes active once the user is past it.
+ * Runs Lenis below the hero while giving the hero exclusive ownership of its
+ * pinned checkpoints. The public bridge keeps programmatic transitions in
+ * sync with the same Lenis instance and its internal stopped state.
  */
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const lenis = new Lenis({
-      lerp: 0.1,
+      lerp: reducedMotion ? 1 : 0.12,
       orientation: "vertical",
-      smoothWheel: true,
+      smoothWheel: !reducedMotion,
+      overscroll: false,
+      autoRaf: true,
     });
 
     let isStopped = false;
 
-    // Pause Lenis when inside hero zone so our custom scroll hijack works
-    const checkZone = () => {
+    const bridge: SmoothScrollBridge = {
+      start: () => {
+        if (!isStopped) return;
+        lenis.start();
+        isStopped = false;
+      },
+      stop: () => {
+        if (isStopped) return;
+        lenis.stop();
+        isStopped = true;
+      },
+      scrollTo: (target, options) => {
+        lenis.scrollTo(target, options);
+      },
+    };
+
+    const syncScrollOwner = () => {
       const hero = document.getElementById("hero-main-container");
       if (!hero) {
-        if (isStopped) {
-          lenis.start();
-          isStopped = false;
-        }
+        bridge.start();
         return;
       }
 
-      // 3 snap checkpoints = 3 * 100vh.
-      const heroEnd = 3 * window.innerHeight - 10;
-      if (window.scrollY < heroEnd) {
-        if (!isStopped) {
-          lenis.stop();
-          isStopped = true;
-        }
-      } else {
-        if (isStopped) {
-          lenis.start();
-          isStopped = false;
-        }
-      }
+      const stickyEndY =
+        hero.offsetTop + Math.max(0, hero.offsetHeight - window.innerHeight);
+      const heroOwnsScroll = window.scrollY < stickyEndY - 0.5;
+
+      if (heroOwnsScroll) bridge.stop();
+      else bridge.start();
     };
 
-    window.addEventListener("scroll", checkZone, { passive: true });
-    checkZone(); // initial check
-
-    // Attach to window for global access (like HowWeWorkSticky snap)
-    (window as any).__lenis = lenis;
-
-    let rafId: number;
-    const raf = (time: number) => {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    };
-    rafId = requestAnimationFrame(raf);
+    window.__lenis = bridge;
+    window.addEventListener("scroll", syncScrollOwner, { passive: true });
+    window.addEventListener("resize", syncScrollOwner, { passive: true });
+    syncScrollOwner();
 
     return () => {
-      (window as any).__lenis = undefined;
+      if (window.__lenis === bridge) delete window.__lenis;
+      window.removeEventListener("scroll", syncScrollOwner);
+      window.removeEventListener("resize", syncScrollOwner);
       lenis.destroy();
-      cancelAnimationFrame(rafId);
-      window.removeEventListener("scroll", checkZone);
     };
   }, []);
 

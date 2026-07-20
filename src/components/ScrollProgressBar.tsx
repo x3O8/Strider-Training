@@ -1,23 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function ScrollProgressBar() {
-  const [progress, setProgress] = useState(0);
+  const labelRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll();
+  const thumbY = useTransform(scrollYProgress, [0, 1], [0, 180]);
 
   useEffect(() => {
-    let rafId: number;
-    const update = () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      setProgress(Math.min(100, Math.max(0, pct)));
-      rafId = requestAnimationFrame(update);
-    };
-    
-    rafId = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(rafId);
-  }, []);
+    let lastValue = -1;
+    return scrollYProgress.on("change", (value) => {
+      const nextValue = Math.round(value * 100);
+      if (nextValue === lastValue || !labelRef.current) return;
+      lastValue = nextValue;
+      labelRef.current.textContent = `${nextValue}%`;
+    });
+  }, [scrollYProgress]);
 
   return (
     <>
@@ -37,38 +36,47 @@ export default function ScrollProgressBar() {
         }}
       >
         {/* Fill */}
-        <div
+        <motion.div
           style={{
             position: "absolute",
             top: 0,
             left: 0,
             width: "100%",
-            height: `${progress}%`,
+            height: "100%",
+            scaleY: scrollYProgress,
+            transformOrigin: "top",
             background: "linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(255,255,255,0.7))",
             borderRadius: "2px",
-            transition: "none",
             boxShadow: "0 0 6px rgba(255,255,255,0.15)",
+            willChange: "transform",
           }}
         />
         {/* Thumb dot */}
-        <div
+        <motion.div
           style={{
             position: "absolute",
             left: "50%",
-            top: `${progress}%`,
-            transform: "translate(-50%, -50%)",
-            width: "6px",
-            height: "6px",
-            borderRadius: "50%",
-            background: "rgba(255,255,255,0.85)",
-            boxShadow: "0 0 8px rgba(255,255,255,0.4)",
-            transition: "none",
+            top: 0,
+            y: thumbY,
+            willChange: "transform",
           }}
-        />
+        >
+          <div
+            style={{
+              transform: "translate(-50%, -50%)",
+              width: "6px",
+              height: "6px",
+              borderRadius: "50%",
+              background: "rgba(255,255,255,0.85)",
+              boxShadow: "0 0 8px rgba(255,255,255,0.4)",
+            }}
+          />
+        </motion.div>
       </div>
 
       {/* % label, rotated for vertical reading */}
       <div
+        ref={labelRef}
         style={{
           position: "fixed",
           left: "3px",
@@ -83,7 +91,7 @@ export default function ScrollProgressBar() {
           userSelect: "none",
         }}
       >
-        {Math.round(progress)}%
+        0%
       </div>
     </>
   );

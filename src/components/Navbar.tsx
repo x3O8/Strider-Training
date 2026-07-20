@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 const navLinksLeft = [
   { label: "Knowledge Hub", href: "/blog" },
@@ -17,23 +16,19 @@ const allNavLinks = [...navLinksLeft];
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const pathname = usePathname();
 
   useEffect(() => {
+    let lastScrolled: boolean | undefined;
     const onScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 10);
-      setScrollProgress(Math.min(y / 200, 1));
+      const nextScrolled = window.scrollY > 10;
+      if (nextScrolled === lastScrolled) return;
+      lastScrolled = nextScrolled;
+      setScrolled(nextScrolled);
     };
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  // Close mobile menu on route change
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname]);
 
   const diagonalPattern = {
     backgroundImage: `
@@ -54,7 +49,6 @@ export default function Navbar() {
         className="fixed top-0 left-0 right-0 z-[100]"
         style={{
           background: "rgba(0,0,0,0.96)",
-          backdropFilter: "blur(18px)",
           borderBottom: scrolled
             ? "1px solid rgba(255,255,255,0.08)"
             : "1px solid rgba(255,255,255,0.04)",
@@ -79,9 +73,13 @@ export default function Navbar() {
           </div>
 
           {/* ── CENTER: Big logo only (no text) ─────────────────────── */}
-          <Link href="/" className="flex-shrink-0 group absolute left-1/2 -translate-x-1/2">
+          <Link
+            href="/"
+            onClick={() => setMenuOpen(false)}
+            className="flex-shrink-0 group absolute left-1/2 -translate-x-1/2"
+          >
             <div
-              className="relative flex-shrink-0 transition-all duration-300 ease-out rounded-sm overflow-hidden will-change-[width,height]"
+              className="relative flex-shrink-0 rounded-sm overflow-hidden"
               style={{ width: `${logoSize}px`, height: `${logoSize}px` }}
             >
               <Image
