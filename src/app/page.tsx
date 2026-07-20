@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import dynamic from "next/dynamic";
 import SmoothScroll from "@/components/SmoothScroll";
 import Navbar from "@/components/Navbar";
@@ -52,11 +52,29 @@ const HeroCanvasAnimation = dynamic(
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
+  const [heroReady, setHeroReady] = useState(false);
+  const [heroLoadProgress, setHeroLoadProgress] = useState(0);
   const [preselectedGoal, setPreselectedGoal] = useState<string | null>(null);
 
   const handleLoadingComplete = useCallback(() => {
     setLoading(false);
   }, []);
+
+  const handleHeroReady = useCallback(() => {
+    setHeroLoadProgress(100);
+    setHeroReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!loading) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [loading]);
 
   const handleApply = useCallback((goal: string) => {
     setPreselectedGoal(goal);
@@ -69,7 +87,13 @@ export default function Home() {
 
   return (
     <>
-      {loading && <LoadingScreen onComplete={handleLoadingComplete} />}
+      {loading && (
+        <LoadingScreen
+          progress={heroLoadProgress}
+          ready={heroReady}
+          onComplete={handleLoadingComplete}
+        />
+      )}
       {!loading && <ScrollProgressBar />}
       <SmoothScroll>
         <main
@@ -81,7 +105,10 @@ export default function Home() {
           <Navbar />
 
           {/* 1. Scroll-animated hero (run frames → muscle → skel) */}
-          <HeroCanvasAnimation />
+          <HeroCanvasAnimation
+            onLoadProgress={setHeroLoadProgress}
+            onReady={handleHeroReady}
+          />
 
           {/* Scrolling Tickers */}
           <MarqueeSection />

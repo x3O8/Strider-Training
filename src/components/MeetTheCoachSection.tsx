@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function MeetTheCoachSection() {
   return (
-    <section className="bg-black py-16 md:py-28 relative border-t border-white/[0.07] overflow-hidden">
+    <section className="bg-black py-14 md:py-20 relative border-t border-white/[0.07] overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10">
         <div>
           <motion.p
@@ -21,23 +21,29 @@ export default function MeetTheCoachSection() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-[clamp(40px,6vw,80px)] text-white leading-none mb-16"
+            className="text-[clamp(40px,6vw,80px)] text-white leading-none mb-10 md:mb-12"
             style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
           >
             Meet Your Coach
           </motion.h3>
 
-          <div className="relative bg-white/[0.03] border border-white/[0.07] p-8 md:p-12 overflow-hidden">
-            {/* Cross Texture for Coach Section */}
+          <div className="relative bg-[#080808] border border-white/[0.1] p-8 md:p-12 overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+            {/* Layered technical texture */}
             <div
-              className="absolute inset-0 pointer-events-none opacity-30 mix-blend-screen z-0"
+              className="absolute inset-0 pointer-events-none z-0"
               style={{
                 backgroundImage: `
-                  repeating-linear-gradient(-55deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 34px),
-                  repeating-linear-gradient( 55deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 34px)
+                  radial-gradient(circle at 18% 12%, rgba(255,255,255,0.065) 0, transparent 34%),
+                  radial-gradient(circle, rgba(255,255,255,0.12) 0.7px, transparent 0.8px),
+                  repeating-linear-gradient(-55deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 28px),
+                  repeating-linear-gradient(0deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 4px)
                 `,
+                backgroundSize: "auto, 7px 7px, auto, auto",
+                opacity: 0.48,
               }}
             />
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+            <div className="absolute right-0 top-0 h-28 w-28 border-r border-t border-white/[0.08]" />
 
             <div className="relative z-10 flex flex-col md:flex-row gap-10 items-start md:items-start text-left md:text-left">
               {/* Avatar image */}

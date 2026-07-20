@@ -74,7 +74,7 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
         }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-10 py-16 md:py-28 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 py-14 md:py-20 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 items-start">
 
           {/* ── Left: Copy ─────────────────────────────────────────────── */}
@@ -127,11 +127,8 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.3 + i * 0.1 }}
-                  className="flex items-start gap-3"
+                  className="flex items-start"
                 >
-                  <span className="mt-1 w-5 h-5 flex-shrink-0 rounded-full border border-white/20 flex items-center justify-center">
-                    <span className="text-[10px] text-white/60">✓</span>
-                  </span>
                   <span
                     className="text-sm text-white leading-relaxed"
                     style={{ fontFamily: "var(--font-inter), sans-serif" }}

@@ -92,13 +92,13 @@ export default function ProgramCard({
             {program.name}
           </h3>
           <p
-            className="text-[9px] text-white/35 tracking-[0.22em] uppercase mb-4"
+            className="text-[10px] text-white/55 tracking-[0.22em] uppercase mb-4"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
             {program.tagline}
           </p>
           <p
-            className="text-xs text-white/40 leading-relaxed"
+            className="text-sm md:text-[15px] text-white/70 leading-[1.75] border-l border-white/20 pl-4"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
             {program.description}

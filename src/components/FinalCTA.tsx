@@ -18,7 +18,7 @@ export default function FinalCTA() {
         }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-10 py-32 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 py-20 md:py-24 relative z-10">
 
         {/* CTA */}
         <div className="text-center">
@@ -37,7 +37,7 @@ export default function FinalCTA() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="text-[clamp(58px,12vw,155px)] text-white leading-none mb-12"
+            className="text-[clamp(58px,12vw,155px)] text-white leading-none mb-8 md:mb-10"
             style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
           >
             Train Smarter.<br />Live Better.
@@ -48,7 +48,7 @@ export default function FinalCTA() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-sm text-white/32 mb-14 max-w-md mx-auto leading-relaxed"
+            className="text-sm text-white/45 mb-10 max-w-md mx-auto leading-relaxed"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
             Book your free 30-minute consultation and discover what a dedicated coach can do for your goals.

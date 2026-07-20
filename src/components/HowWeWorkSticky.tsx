@@ -1,234 +1,255 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
+import { useEffect, useRef } from "react";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import type { MotionValue } from "framer-motion";
+import ProtocolModel3D from "@/components/ProtocolModel3D";
 
 const steps = [
   {
     step: "01",
     heading: "Assessment",
+    eyebrow: "Read the system",
     description:
-      "Every Strider journey begins with a deep understanding of the individual. The assessment phase evaluates movement quality, structural limitations, current performance levels, and overall readiness to train. This may include posture analysis, mobility screening, training history, and, where relevant, internal health markers. The goal is to identify what’s holding you back and what needs to be built, ensuring that training starts from a position of clarity rather than guesswork.",
-    image: "/unsplash/anat0.png",
+      "Every Strider journey begins with a deep understanding of the individual. We evaluate movement quality, structural limitations, current performance, training history, and readiness. The result is clarity on what is holding you back and what needs to be built.",
   },
   {
     step: "02",
     heading: "Blueprint",
+    eyebrow: "Build the path",
     description:
-      "Based on the assessment, a personalized blueprint is created. This is not just a workout plan, but a structured progression strategy tailored to your goals, capacity, and current condition. It defines how your training will evolve over time — including exercise selection, intensity, volume, and recovery. Every element is intentional, forming a clear roadmap that guides your development step by step.",
-    image: "/unsplash/anat1.png",
+      "Your assessment becomes a personalized progression strategy—not a generic workout plan. Exercise selection, intensity, volume, and recovery are organized into a clear roadmap built around your goals, capacity, and current condition.",
   },
   {
     step: "03",
     heading: "Execute",
+    eyebrow: "Train with intent",
     description:
-      "Execution is where the plan comes to life. Training is carried out with a focus on precision, consistency, and quality of movement rather than just intensity. Each session has a purpose within the larger system, ensuring that effort translates into measurable progress. This phase emphasizes discipline, proper technique, and adherence to the structure laid out in the blueprint.",
-    image: "/unsplash/anat3.png",
+      "The plan comes to life through precise, consistent work. Every session has a purpose inside the larger system, with technique and quality of movement turning effort into measurable progress.",
   },
   {
     step: "04",
     heading: "Evolve",
+    eyebrow: "Adapt through data",
     description:
-      "Strider is not static — it adapts as you do. The evolve phase ensures that your training continuously improves based on real data, performance feedback, and your body’s response to training. Adjustments are made to keep progress moving forward while managing fatigue and preventing plateaus. This ongoing refinement is what allows Strider to deliver sustainable, long-term results rather than short-term gains.",
-    image: "/unsplash/anat3.png",
+      "Strider evolves as you do. Performance feedback and your response to training guide each adjustment, keeping progress moving while fatigue is managed and plateaus are avoided. The system becomes more specific as you become more capable.",
   },
 ];
 
+const phaseTargets = [0, 0.27, 0.52, 0.77];
+const phasePositions = [
+  "left-6 bottom-[13vh] items-start text-left md:left-[18vw] md:bottom-[15vh]",
+  "right-6 top-[27vh] items-end text-right md:right-[7vw]",
+  "left-6 top-[36vh] items-start text-left md:left-[7vw]",
+  "right-6 bottom-[7vh] items-end text-right md:right-[7vw]",
+];
+
+function PhaseOverlay({
+  phase,
+  index,
+  progress,
+}: {
+  phase: (typeof steps)[number];
+  index: number;
+  progress: MotionValue<number>;
+}) {
+  const isFirst = index === 0;
+  const isLast = index === steps.length - 1;
+  const entry = index * 0.25;
+  const exit = (index + 1) * 0.25;
+  const input = isFirst
+    ? [0, exit - 0.07, exit + 0.02]
+    : isLast
+      ? [entry - 0.05, entry + 0.02, 1]
+      : [entry - 0.05, entry + 0.02, exit - 0.07, exit + 0.02];
+  const opacityOutput = isFirst ? [1, 1, 0] : isLast ? [0, 1, 1] : [0, 1, 1, 0];
+  const opacity = useTransform(progress, input, opacityOutput);
+  const rightAligned = index % 2 === 1;
+
+  return (
+    <motion.div
+      className={`pointer-events-none absolute z-30 flex w-[calc(100%-3rem)] max-w-[480px] flex-col ${phasePositions[index]}`}
+      style={{ opacity }}
+    >
+        <div className={`mb-5 flex items-center gap-4 ${rightAligned ? "flex-row-reverse" : ""}`}>
+          <span className="h-px w-10 bg-white/50" />
+          <p
+            className="text-[9px] uppercase tracking-[0.46em] text-white/55"
+            style={{ fontFamily: "var(--font-inter), sans-serif" }}
+          >
+            Phase {phase.step} · {phase.eyebrow}
+          </p>
+        </div>
+        <h3
+          className="text-[clamp(52px,7vw,96px)] leading-[0.82] text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.8)]"
+          style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.025em" }}
+        >
+          {phase.heading}
+        </h3>
+        <p
+          className="mt-5 max-w-md text-[13px] font-light leading-[1.8] text-white/65 drop-shadow-[0_4px_14px_rgba(0,0,0,0.9)] md:text-sm"
+          style={{ fontFamily: "var(--font-inter), sans-serif" }}
+        >
+          {phase.description}
+        </p>
+    </motion.div>
+  );
+}
+
 export default function HowWeWorkSticky() {
-  const [activeStep, setActiveStep] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
-  const textRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const isScrolling = useRef(false);
+  const snapLockRef = useRef(false);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"],
+  });
+  const cinematicProgress = useSpring(scrollYProgress, {
+    stiffness: 74,
+    damping: 26,
+    mass: 0.42,
+    restDelta: 0.0001,
+  });
+  const modelOpacity = useTransform(cinematicProgress, [0, 0.035], [0.5, 0.64]);
+  const modelScale = useTransform(cinematicProgress, [0, 0.06], [1.055, 1]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = Number(entry.target.getAttribute("data-index"));
-            setActiveStep(index);
-          }
-        });
-      },
-      {
-        root: null,
-        rootMargin: "-45% 0px -45% 0px", // Trigger when text is right in the middle
-        threshold: 0,
-      }
-    );
+    const section = sectionRef.current;
+    if (!section) return;
 
-    textRefs.current.forEach((ref) => {
-      if (ref) observer.observe(ref);
-    });
+    let unlockTimer: ReturnType<typeof setTimeout> | undefined;
 
-    return () => observer.disconnect();
-  }, []);
+    const releaseSnap = () => {
+      snapLockRef.current = false;
+      if (unlockTimer) clearTimeout(unlockTimer);
+      unlockTimer = undefined;
+    };
 
-  useEffect(() => {
-    const handleWheel = (e: WheelEvent) => {
-      if (isScrolling.current) return;
-
-      const rect = sectionRef.current?.getBoundingClientRect();
-      if (!rect) return;
-
-      // Only trigger if the section is in the viewport "hot zone"
-      const inZone = rect.top < window.innerHeight * 0.3 && rect.bottom > window.innerHeight * 0.3;
-      if (!inZone) return;
-
-      const lenis = (window as any).__lenis;
-      
-      const doScroll = (target: HTMLElement) => {
-        isScrolling.current = true;
-        if (lenis && typeof lenis.scrollTo === "function") {
-          lenis.scrollTo(target, {
-            offset: -window.innerHeight * 0.05,
-            duration: 1.2,
-            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            onComplete: () => {
-              setTimeout(() => { isScrolling.current = false; }, 400);
+    const snapToPhase = (phaseIndex: number) => {
+      const sectionTop = window.scrollY + section.getBoundingClientRect().top;
+      const stickyHeight = Math.max(1, window.innerHeight - 80);
+      const scrollableDistance = Math.max(1, section.offsetHeight - stickyHeight);
+      const targetY = sectionTop + phaseTargets[phaseIndex] * scrollableDistance;
+      const lenis = (window as Window & {
+        __lenis?: {
+          scrollTo: (
+            target: number,
+            options?: {
+              duration?: number;
+              easing?: (value: number) => number;
+              onComplete?: () => void;
             }
-          });
-        } else {
-          // Native fallback if lenis isn't ready or method is missing
-          target.scrollIntoView({ behavior: "smooth", block: "center" });
-          setTimeout(() => { isScrolling.current = false; }, 1000);
-        }
-      };
+          ) => void;
+        };
+      }).__lenis;
 
-      if (e.deltaY > 30 && activeStep < steps.length - 1) {
-        const nextTarget = textRefs.current[activeStep + 1];
-        if (nextTarget) doScroll(nextTarget);
-      } else if (e.deltaY < -30 && activeStep > 0) {
-        const prevTarget = textRefs.current[activeStep - 1];
-        if (prevTarget) doScroll(prevTarget);
+      snapLockRef.current = true;
+      if (lenis?.scrollTo) {
+        lenis.scrollTo(targetY, {
+          duration: 0.72,
+          easing: (value) => 1 - Math.pow(1 - value, 4),
+          onComplete: releaseSnap,
+        });
+      } else {
+        window.scrollTo({ top: targetY, behavior: "smooth" });
       }
+
+      unlockTimer = setTimeout(releaseSnap, 900);
+    };
+
+    const handleWheel = (event: WheelEvent) => {
+      if (event.ctrlKey || Math.abs(event.deltaY) < 8) return;
+
+      const rect = section.getBoundingClientRect();
+      const sectionIsPinned = rect.top <= 82 && rect.bottom > window.innerHeight - 2;
+      if (!sectionIsPinned) return;
+
+      if (snapLockRef.current) {
+        event.preventDefault();
+        return;
+      }
+
+      const progress = scrollYProgress.get();
+      const nearestIndex = phaseTargets.reduce(
+        (nearest, target, targetIndex) =>
+          Math.abs(target - progress) < Math.abs(phaseTargets[nearest] - progress)
+            ? targetIndex
+            : nearest,
+        0
+      );
+      const direction = Math.sign(event.deltaY);
+      let targetIndex: number | null = null;
+
+      if (direction > 0 && nearestIndex < phaseTargets.length - 1) {
+        targetIndex = nearestIndex + 1;
+      } else if (direction < 0 && progress > phaseTargets[phaseTargets.length - 1] + 0.06) {
+        targetIndex = phaseTargets.length - 1;
+      } else if (direction < 0 && nearestIndex > 0) {
+        targetIndex = nearestIndex - 1;
+      }
+
+      if (targetIndex === null) return;
+      event.preventDefault();
+      snapToPhase(targetIndex);
     };
 
     window.addEventListener("wheel", handleWheel, { passive: false });
-    return () => window.removeEventListener("wheel", handleWheel);
-  }, [activeStep]);
+    return () => {
+      window.removeEventListener("wheel", handleWheel);
+      if (unlockTimer) clearTimeout(unlockTimer);
+    };
+  }, [scrollYProgress]);
 
   return (
-    <section ref={sectionRef} className="relative bg-black w-full border-t border-white/[0.07] pt-16 md:pt-28">
+    <section ref={sectionRef} className="relative h-[500svh] w-full border-t border-white/[0.07] bg-black">
+      <div className="sticky top-20 h-[calc(100svh-5rem)] w-full overflow-hidden bg-[#020304]">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.035]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.55) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.55) 1px, transparent 1px)",
+            backgroundSize: "76px 76px",
+          }}
+        />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(107,124,155,0.08),transparent_36%),linear-gradient(to_bottom,rgba(0,0,0,0.2),transparent_24%,transparent_70%,rgba(0,0,0,0.82))]" />
 
-      {/* ---- Centered Heading Before Effects ---- */}
-      <div className="max-w-4xl mx-auto px-6 text-center mb-10 md:mb-16 relative z-20">
-        <h2
-          className="text-[clamp(50px,8vw,100px)] text-white leading-none"
-          style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
-        >
-          THE STRIDER PROTOCOL
-        </h2>
-      </div>
+        <motion.div className="absolute inset-0 origin-center" style={{ opacity: modelOpacity, scale: modelScale }}>
+          <ProtocolModel3D scrollProgress={cinematicProgress} cinematic />
+        </motion.div>
 
-      <div className="max-w-[1400px] w-full mx-auto px-6 block md:flex relative">
+        <header className="pointer-events-none absolute left-6 top-7 z-30 md:left-[7vw] md:top-10">
+          <p
+            className="mb-3 text-[8px] uppercase tracking-[0.5em] text-white/40"
+            style={{ fontFamily: "var(--font-inter), sans-serif" }}
+          >
+            Four phases · One adaptive system
+          </p>
+          <h2
+            className="text-[clamp(34px,4.2vw,58px)] leading-[0.88] text-white"
+            style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.035em" }}
+          >
+            THE STRIDER PROTOCOL
+          </h2>
+        </header>
 
-        {/* ---- Right Side (Sticky Media) - Placed first for mobile stacking under text ---- */}
-        <div className="w-full md:w-1/2 h-[50vh] md:h-[100vh] sticky top-1/4 md:top-0 flex items-center justify-center md:pl-16 pb-8 md:pb-0 overflow-hidden z-0">
-          <div className="w-full h-full md:h-[95%] max-h-[850px] relative overflow-hidden bg-[#08090D] aspect-square md:aspect-auto">
-            {/* Mobile dark overlay so text is readable over image */}
-            <div className="absolute inset-0 bg-black/60 md:bg-transparent z-10 pointer-events-none" />
-
-            {/* 1. Base Layer: anat0. "anat0 stays in position" -> Always opacity 1 */}
-            <Image
-              src="/unsplash/anat0.png"
-              alt="Assessment"
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover"
-              style={{ opacity: 1 }}
-              priority
-              fetchPriority="high"
-            />
-
-            {/* 2. Middle Layer: anat3. "anat3 already behind anat1" -> Structurally underneath anat1. Fades in for Step 2+ */}
-            <Image
-              src="/unsplash/anat3.png"
-              alt="Execute"
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover transition-opacity duration-[800ms] ease-in-out"
-              style={{ opacity: activeStep >= 2 ? 1 : 0 }}
-              priority
-            />
-
-            {/* 3. Top Layer: anat1. "anat1 fades in... after that fades out". Fades in ONLY for Step 1 */}
-            <Image
-              src="/unsplash/anat1.png"
-              alt="Blueprint"
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover transition-opacity duration-[800ms] ease-in-out"
-              style={{ opacity: activeStep === 1 ? 1 : 0 }}
-              priority
-            />
-
-            {/* Premium overlay gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none z-20" />
-          </div>
+        <div className="pointer-events-none absolute right-6 top-8 z-30 hidden items-center gap-3 md:flex md:right-[7vw] md:top-12">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white/35" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-white/70" />
+          </span>
+          <span
+            className="text-[8px] uppercase tracking-[0.4em] text-white/35"
+            style={{ fontFamily: "var(--font-inter), sans-serif" }}
+          >
+            Scroll to advance
+          </span>
         </div>
 
-        {/* ---- Left Side (Scrolling Text) ---- */}
-        <div className="w-full md:w-1/2 flex flex-col pb-[10vh] md:pb-[20vh] relative z-10 -mt-[60vh] md:mt-0 pt-[15vh] md:pt-0">
-          {steps.map((step, index) => (
-            <div
-              key={index}
-              ref={(el) => { textRefs.current[index] = el; }}
-              data-index={index}
-              className="flex flex-col justify-center min-h-[70vh] md:min-h-screen md:pl-24 md:pr-16"
-            >
-              <motion.div
-                initial={{ opacity: 0.3 }}
-                animate={{ opacity: activeStep === index ? 1 : 0.3 }}
-                transition={{ duration: 0.4 }}
-                className="max-w-md w-full transition-opacity"
-              >
-                <p
-                  className="text-[10px] md:text-xs text-white/50 md:text-white/40 tracking-[0.4em] uppercase mb-6"
-                  style={{ fontFamily: "var(--font-inter), sans-serif" }}
-                >
-                  Step {step.step}
-                </p>
-                <h3
-                  className="text-[clamp(40px,10vw,72px)] text-white leading-none mb-8"
-                  style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
-                >
-                  {step.heading}
-                </h3>
-                <p
-                  className="text-sm md:text-base text-white/80 md:text-white/70 leading-[1.8] font-light"
-                  style={{ fontFamily: "var(--font-inter), sans-serif" }}
-                >
-                  {step.description}
-                </p>
-              </motion.div>
-            </div>
-          ))}
-        </div>
+        {steps.map((phase, index) => (
+          <PhaseOverlay key={phase.step} phase={phase} index={index} progress={cinematicProgress} />
+        ))}
 
-        {/* ---- Center Divider & Diamond (Sticky to Viewport) ---- */}
-        <div className="hidden md:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[2px] bg-white/[0.1] z-20 pointer-events-none">
-          <div className="sticky top-0 h-screen w-full">
-            <div className="absolute top-1/2 left-1/2 w-16 h-16 bg-[#08090D] border border-white/20 flex items-center justify-center transition-all duration-300 ease-in-out"
-              style={{ transform: "translate(-50%, -50%) rotate(45deg)" }}>
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={activeStep}
-                  initial={{ opacity: 0, scale: 0.5, rotate: -45 }}
-                  animate={{ opacity: 1, scale: 1, rotate: -45 }}
-                  exit={{ opacity: 0, scale: 0.5, rotate: -45 }}
-                  transition={{ duration: 0.2 }}
-                  className="text-white font-bold text-lg pointer-events-auto"
-                  style={{ fontFamily: "var(--font-inter), sans-serif", transform: "rotate(-45deg)" }}
-                >
-                  {steps[activeStep].step}
-                </motion.span>
-              </AnimatePresence>
-            </div>
-          </div>
-        </div>
-
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-20 h-24 bg-gradient-to-b from-black/55 to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-48 bg-gradient-to-t from-black/75 to-transparent" />
       </div>
     </section>
   );

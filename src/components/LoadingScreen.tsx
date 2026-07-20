@@ -2,51 +2,50 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
+
+interface LoadingScreenProps {
+  progress: number;
+  ready: boolean;
+  onComplete: () => void;
+}
+
+const MINIMUM_LOADING_TIME = 1200;
+const EXIT_DURATION = 600;
 
 export default function LoadingScreen({
+  progress,
+  ready,
   onComplete,
-}: {
-  onComplete: () => void;
-}) {
-  const [progress, setProgress] = useState(0);
+}: LoadingScreenProps) {
   const [isExiting, setIsExiting] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const completedRef = useRef(false);
+  const mountedAtRef = useRef(Date.now());
 
   useEffect(() => {
-    // Simulate loading progress with an eased curve
-    const duration = 2800; // Increased to ensure landing page animations initialize properly
-    const start = Date.now();
+    if (!ready || completedRef.current) return;
+    completedRef.current = true;
 
-    const tick = () => {
-      const elapsed = Date.now() - start;
-      const raw = Math.min(elapsed / duration, 1);
-      // Ease-out cubic for smooth deceleration
-      const eased = 1 - Math.pow(1 - raw, 3);
-      setProgress(Math.round(eased * 100));
+    const elapsed = Date.now() - mountedAtRef.current;
+    const remainingMinimum = Math.max(0, MINIMUM_LOADING_TIME - elapsed);
+    let completeTimer: number | undefined;
 
-      if (raw < 1) {
-        requestAnimationFrame(tick);
-      } else {
-        // Loading complete — start exit animation
-        setTimeout(() => {
-          setIsExiting(true);
-          setTimeout(() => {
-            onComplete();
-          }, 800); // Wait for exit animation to finish
-        }, 300);
-      }
+    const exitTimer = window.setTimeout(() => {
+      setIsExiting(true);
+      completeTimer = window.setTimeout(onComplete, EXIT_DURATION);
+    }, remainingMinimum);
+
+    return () => {
+      window.clearTimeout(exitTimer);
+      if (completeTimer !== undefined) window.clearTimeout(completeTimer);
     };
+  }, [ready, onComplete]);
 
-    requestAnimationFrame(tick);
-  }, [onComplete]);
-
-  // Play video on mount
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {});
-    }
+    videoRef.current?.play().catch(() => {});
   }, []);
+
+  const displayedProgress = Math.max(0, Math.min(100, Math.round(progress)));
 
   return (
     <AnimatePresence>
@@ -55,7 +54,7 @@ export default function LoadingScreen({
           key="loading-screen"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.05 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: EXIT_DURATION / 1000, ease: [0.22, 1, 0.36, 1] }}
           style={{
             position: "fixed",
             inset: 0,
@@ -64,10 +63,9 @@ export default function LoadingScreen({
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            background: "#000000",
+            backgroundColor: "#000000",
           }}
         >
-          {/* Video logo animation */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -98,8 +96,6 @@ export default function LoadingScreen({
             />
           </motion.div>
 
-          {/* Progress bar container */}
-
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -112,7 +108,6 @@ export default function LoadingScreen({
               gap: "12px",
             }}
           >
-            {/* Progress bar track */}
             <div
               style={{
                 width: "100%",
@@ -123,28 +118,20 @@ export default function LoadingScreen({
                 position: "relative",
               }}
             >
-              {/* Progress bar fill */}
               <motion.div
                 style={{
                   height: "100%",
                   borderRadius: "4px",
                   background:
                     "linear-gradient(90deg, rgba(255,255,255,0.4), rgba(255,255,255,0.9))",
-                  width: `${progress}%`,
+                  width: `${displayedProgress}%`,
                   boxShadow: "0 0 12px rgba(255,255,255,0.3)",
                 }}
                 transition={{ duration: 0.1 }}
               />
-              {/* Shimmer effect */}
               <motion.div
-                animate={{
-                  x: ["-100%", "300%"],
-                }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
+                animate={{ x: ["-100%", "300%"] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
                 style={{
                   position: "absolute",
                   top: 0,
@@ -158,7 +145,6 @@ export default function LoadingScreen({
               />
             </div>
 
-            {/* Progress percentage */}
             <span
               style={{
                 fontFamily: "var(--font-inter), 'Inter', sans-serif",
@@ -168,7 +154,7 @@ export default function LoadingScreen({
                 textTransform: "uppercase",
               }}
             >
-              {progress}%
+              {displayedProgress}%
             </span>
           </motion.div>
         </motion.div>

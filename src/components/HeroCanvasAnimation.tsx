@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback, useMemo } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { useScroll, useTransform } from "framer-motion";
 import NextImage from "next/image";
 
@@ -438,13 +438,37 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
   );
 }
 
-  export default function HeroCanvasAnimation() {
+interface HeroCanvasAnimationProps {
+  onLoadProgress?: (progress: number) => void;
+  onReady?: () => void;
+}
+
+  export default function HeroCanvasAnimation({
+    onLoadProgress,
+    onReady,
+  }: HeroCanvasAnimationProps) {
     const [runImages, setRunImages] = useState<HTMLImageElement[]>([]);
     const [muscleImg, setMuscleImg] = useState<HTMLImageElement | null>(null);
     const [skelImg, setSkelImg] = useState<HTMLImageElement | null>(null);
-    const [firstFrameLoaded, setFirstFrameLoaded] = useState(false);
+    const [heroImagesReady, setHeroImagesReady] = useState(false);
   
     useEffect(() => {
+      let cancelled = false;
+      const totalAssets = TOTAL_FRAMES + 2;
+      let assetsSettled = 0;
+
+      const markAssetSettled = () => {
+        assetsSettled += 1;
+        if (cancelled) return;
+
+        onLoadProgress?.((assetsSettled / totalAssets) * 100);
+        if (assetsSettled === totalAssets) {
+          setHeroImagesReady(true);
+          onReady?.();
+        }
+      };
+
+      onLoadProgress?.(0);
       // ── Load run frames ──────────────────────────────────────────────────────
       const runLoaded: HTMLImageElement[] = new Array(TOTAL_FRAMES);
       let framesLoadedCount = 0;
@@ -452,13 +476,12 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
       Array.from({ length: TOTAL_FRAMES }, (_, i) => {
         const img = new Image();
         const num = String(i + 1).padStart(3, "0");
-        img.src = `${FRAME_PATH}/run-${num}.png`;
         if (i === 0) (img as any).fetchPriority = "high";
         
         const handleLoadOrError = () => {
           framesLoadedCount++;
+          markAssetSettled();
           if (i === 0) {
-            setFirstFrameLoaded(true);
             setRunImages([...runLoaded]); // Set initially
           }
           if (i > 0 && !runLoaded[i] && runLoaded[i - 1]) {
@@ -476,20 +499,33 @@ function HeroPlayer({ images, muscleImg, skelImg }: HeroPlayerProps) {
         img.onerror = () => {
           handleLoadOrError();
         };
+        img.src = `${FRAME_PATH}/run-${num}.png`;
       });
 
     // ── Load muscle.png ──────────────────────────────────────────────────────
     const muscle = new Image();
+    muscle.onload = () => {
+      setMuscleImg(muscle);
+      markAssetSettled();
+    };
+    muscle.onerror = markAssetSettled;
     muscle.src = `${FRAME_PATH}/muscle.png`;
-    muscle.onload = () => { setMuscleImg(muscle); };
   
     // ── Load skel.png ────────────────────────────────────────────────────────
     const skel = new Image();
+    skel.onload = () => {
+      setSkelImg(skel);
+      markAssetSettled();
+    };
+    skel.onerror = markAssetSettled;
     skel.src = `${FRAME_PATH}/skel.png`;
-    skel.onload = () => { setSkelImg(skel); };
-  }, []);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [onLoadProgress, onReady]);
   
-  if (!firstFrameLoaded) {
+  if (!heroImagesReady) {
     return (
       <div className="relative" style={{ height: `${(MAX_CHECKPOINT + 1) * 100}vh` }}>
          <div className="sticky top-0 h-screen w-full bg-[#08090D] flex items-center justify-center">

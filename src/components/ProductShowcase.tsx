@@ -13,7 +13,7 @@ export default function ProductShowcase({ onApply }: { onApply: (goal: string) =
     <section id="programs" className="relative bg-black">
 
       {/* Header */}
-      <div className="max-w-7xl mx-auto px-6 md:px-10 pt-28 pb-16">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 pt-16 md:pt-20 pb-10 md:pb-12">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -39,7 +39,7 @@ export default function ProductShowcase({ onApply }: { onApply: (goal: string) =
 
 
       {/* Program Grid */}
-      <div className="max-w-7xl mx-auto px-6 md:px-10 pb-28">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 pb-16 md:pb-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-px bg-white/[0.06]">
           {coachingPrograms.map((program, index) => (
             <div key={program.id} className="bg-black">
@@ -60,7 +60,7 @@ export default function ProductShowcase({ onApply }: { onApply: (goal: string) =
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
-          className="text-center mt-16"
+          className="text-center mt-10 md:mt-12"
         >
           <a
             href="/#contact"

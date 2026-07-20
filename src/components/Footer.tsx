@@ -49,8 +49,6 @@ const socials = [
 ];
 
 
-const badges = ["HIPAA Compliant", "SSL Encrypted", "ISO 27001"];
-
 export default function Footer() {
   return (
     <footer className="relative bg-[#080808] border-t border-white/[0.07] overflow-hidden">
@@ -66,10 +64,10 @@ export default function Footer() {
         }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-10 pt-16 pb-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 pt-12 pb-7 relative z-10">
 
         {/* ── Top row: logo + description + link columns ──────────────── */}
-        <div className="grid grid-cols-1 md:grid-cols-[1.8fr_1fr_1fr_1fr] gap-12 pb-14 border-b border-white/[0.07]">
+        <div className="grid grid-cols-1 md:grid-cols-[1.8fr_1fr_1fr_1fr] gap-10 pb-10 border-b border-white/[0.07]">
 
           {/* Brand column */}
           <div className="flex flex-col gap-5">
@@ -142,24 +140,6 @@ export default function Footer() {
           >
             © Strider Fitness 2025. All rights reserved.
           </p>
-
-          {/* Trust badges */}
-          <div className="flex items-center gap-5">
-            {badges.map((b) => (
-              <div key={b} className="flex items-center gap-1.5">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.28)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                  <polyline points="9 12 11 14 15 10" />
-                </svg>
-                <span
-                  className="text-[8px] text-white/22 tracking-[0.25em] uppercase"
-                  style={{ fontFamily: "var(--font-inter), sans-serif" }}
-                >
-                  {b}
-                </span>
-              </div>
-            ))}
-          </div>
 
           {/* Social icons */}
           <div className="flex items-center gap-2.5">

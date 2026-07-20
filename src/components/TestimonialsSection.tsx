@@ -59,14 +59,14 @@ export default function TestimonialsSection() {
         }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-10 py-28 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 py-16 md:py-20 relative z-10">
 
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16"
+          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 md:mb-12"
         >
           <div>
             <p
@@ -210,7 +210,7 @@ export default function TestimonialsSection() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
-          className="text-center mt-14"
+          className="text-center mt-10 md:mt-12"
         >
           <Link
             href="/client-stories"

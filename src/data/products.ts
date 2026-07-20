@@ -73,7 +73,7 @@ export const coachingPrograms: CoachingProgram[] = [
 export interface FeatureHighlight {
   title: string;
   description: string;
-  icon: string;
+  icon: "credential" | "plan" | "analytics" | "support";
   position: "left" | "right";
 }
 
@@ -82,28 +82,28 @@ export const features: FeatureHighlight[] = [
     title: "Certified Coaches",
     description:
       "Our coaching philosophy is built on experience, empathy, and evidence. We prioritize your long-term health and empower you with the knowledge to sustain your peak physical condition.",
-    icon: "🎓",
+    icon: "credential",
     position: "left",
   },
   {
     title: "Personalised Plans",
     description:
       "No two clients are the same. Training, nutrition, and recovery protocols are built specifically around your goals, lifestyle, and current fitness level.",
-    icon: "📋",
+    icon: "plan",
     position: "right",
   },
   {
     title: "Data-Driven Progress",
     description:
       "Weekly check-in analytics, body composition tracking, and performance benchmarks mean your results are always measurable and continuously improving.",
-    icon: "📊",
+    icon: "analytics",
     position: "left",
   },
   {
     title: "Always-On Support",
     description:
       "Direct messaging with your coach every day. Whether you have a question about form or need a plan adjustment, your team is always within reach.",
-    icon: "💬",
+    icon: "support",
     position: "right",
   },
 ];

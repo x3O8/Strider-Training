@@ -14,13 +14,12 @@ export default function MarqueeSection() {
           100% { transform: translateX(0); }
         }
         .animate-marquee-right {
-          /* Much slower animation: 90s */
-          animation: marquee-right 90s linear infinite;
+          animation: marquee-right 140s linear infinite;
         }
       `}} />
 
       {/* Top Strip (Dark Grey) - Scrolls Right */}
-      <div className="bg-[#1a1a1a] text-white py-3.5 md:py-5 w-full flex whitespace-nowrap overflow-hidden z-10 shadow-lg relative">
+      <div className="bg-[#1a1a1a] text-white py-2 md:py-3 w-full flex whitespace-nowrap overflow-hidden z-10 shadow-lg relative">
         {/* Slanting lines texture */}
         <div 
           className="absolute inset-0 opacity-10 pointer-events-none"
@@ -33,8 +32,8 @@ export default function MarqueeSection() {
           {[...Array(2)].map((_, groupIdx) => (
             <div key={groupIdx} className="flex items-center shrink-0">
               {topContent.map((item, i) => (
-                <div key={i} className="flex items-center mx-5 md:mx-10 group cursor-default">
-                  <span className="text-2xl md:text-4xl tracking-[0.06em] leading-none mt-1 hover:opacity-80 transition-opacity" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
+                <div key={i} className="flex items-center mx-4 md:mx-7 group cursor-default">
+                  <span className="text-lg md:text-2xl tracking-[0.08em] leading-none mt-0.5 hover:opacity-80 transition-opacity" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
                     {item}
                   </span>
                 </div>
