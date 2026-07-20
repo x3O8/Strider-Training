@@ -177,7 +177,7 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
                 <motion.form
                   key="form"
                   onSubmit={handleSubmit}
-                  className="border border-white/[0.09] bg-white/[0.015] p-8 md:p-10 space-y-8"
+                  className="border border-white/[0.09] bg-white/[0.015] p-5 min-[360px]:p-8 md:p-10 space-y-8"
                 >
                   {/* Row 1: Name + Email */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
@@ -243,7 +243,7 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
                           key={g}
                           type="button"
                           onClick={() => setForm((v) => ({ ...v, goal: g }))}
-                          className={`px-3 py-2 text-[9px] tracking-[0.15em] uppercase border transition-all duration-200 ${form.goal === g
+                          className={`min-h-11 px-3 py-2 text-[9px] tracking-[0.15em] uppercase border transition-all duration-200 sm:min-h-0 ${form.goal === g
                               ? "border-white/80 text-white bg-white/10"
                               : "border-white/30 text-white/80 hover:border-white/60 hover:text-white"
                             }`}
@@ -269,7 +269,7 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
                           key={l}
                           type="button"
                           onClick={() => setForm((v) => ({ ...v, level: l }))}
-                          className={`px-3 py-2 text-[9px] tracking-[0.15em] uppercase border transition-all duration-200 ${form.level === l
+                          className={`min-h-11 px-3 py-2 text-[9px] tracking-[0.15em] uppercase border transition-all duration-200 sm:min-h-0 ${form.level === l
                               ? "border-white/80 text-white bg-white/10"
                               : "border-white/30 text-white/80 hover:border-white/60 hover:text-white"
                             }`}

@@ -40,9 +40,9 @@ export default function ProductShowcase({ onApply }: { onApply: (goal: string) =
 
       {/* Program Grid */}
       <div className="max-w-7xl mx-auto px-6 md:px-10 pb-16 md:pb-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-px bg-white/[0.06]">
+        <div className="-mx-6 grid touch-pan-x snap-x snap-mandatory grid-flow-col auto-cols-[90%] gap-4 overflow-x-auto bg-white/[0.06] px-6 min-[360px]:auto-cols-[86%] sm:mx-0 sm:grid-flow-row sm:auto-cols-auto sm:grid-cols-1 sm:overflow-visible sm:px-0 sm:snap-none md:grid-cols-2 md:gap-px">
           {coachingPrograms.map((program, index) => (
-            <div key={program.id} className="bg-black">
+            <div key={program.id} className="snap-start bg-black">
               <ProgramCard 
                 program={program} 
                 index={index} 

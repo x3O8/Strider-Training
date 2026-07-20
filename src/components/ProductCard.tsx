@@ -63,7 +63,7 @@ export default function ProgramCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.6, delay: index * 0.12, ease: "easeOut" }}
-      className="group relative flex flex-col border border-white/[0.07] bg-[#0a0a0a] overflow-hidden h-full"
+      className="group relative flex h-full snap-start flex-col overflow-hidden border border-white/[0.07] bg-[#0a0a0a]"
     >
       {/* Badge */}
       {program.badge && (
@@ -81,12 +81,12 @@ export default function ProgramCard({
       <ProgramVisual program={program} index={index} />
 
       {/* Content */}
-      <div className="flex flex-col flex-1 p-7 gap-5">
+      <div className="flex flex-1 flex-col gap-4 p-5 min-[360px]:p-6 sm:gap-5 sm:p-7">
 
         {/* Title + tagline */}
         <div>
           <h3
-            className="text-3xl text-white leading-none mb-1.5"
+            className="text-2xl text-white leading-none mb-1.5 sm:text-3xl"
             style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.04em" }}
           >
             {program.name}
@@ -122,7 +122,7 @@ export default function ProgramCard({
         <div>
           <button
             onClick={onToggle}
-            className="flex items-center gap-2 text-[9px] text-white/35 tracking-[0.2em] uppercase hover:text-white/60 transition-colors duration-200 mb-3"
+            className="flex min-h-11 sm:min-h-0 items-center gap-2 text-[9px] text-white/35 tracking-[0.2em] uppercase hover:text-white/60 transition-colors duration-200 mb-3"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
             <motion.span
@@ -199,7 +199,7 @@ export default function ProgramCard({
             onClick={handleApplyClick}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
-            className="px-5 py-2.5 text-[10px] font-semibold tracking-[0.2em] uppercase bg-white text-black transition-colors duration-200 hover:bg-white/88"
+            className="min-h-11 px-5 py-2.5 text-[10px] font-semibold tracking-[0.2em] uppercase bg-white text-black transition-colors duration-200 hover:bg-white/88 sm:min-h-0"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
             {applied ? "✓ Applied" : "Apply Now"}

@@ -150,7 +150,7 @@ export default function Footer() {
                 aria-label={s.label}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-8 h-8 rounded-full border border-white/12 flex items-center justify-center text-white/30 hover:border-white/30 hover:text-white/70 transition-all duration-200"
+                className="w-11 h-11 sm:w-8 sm:h-8 rounded-full border border-white/12 flex items-center justify-center text-white/30 hover:border-white/30 hover:text-white/70 transition-all duration-200"
               >
                 {s.icon}
               </motion.a>

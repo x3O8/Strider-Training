@@ -174,7 +174,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0, backdropFilter: "blur(24px)" }}
             exit={{ opacity: 0, y: -10, backdropFilter: "blur(0px)" }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed top-20 left-0 right-0 z-[99] md:hidden"
+            className="fixed top-20 left-0 right-0 z-[99] max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain md:hidden"
             style={{
               background: "rgba(0,0,0,0.92)",
               borderBottom: "1px solid rgba(255,255,255,0.08)",
@@ -209,7 +209,7 @@ export default function Navbar() {
                 <Link
                   href="/#contact"
                   onClick={() => setMenuOpen(false)}
-                  className="flex items-center justify-center py-3.5 bg-white text-black rounded-full text-[10px] font-semibold tracking-[0.18em] uppercase hover:bg-[#e8e8e8] transition-colors"
+                  className="flex min-h-11 items-center justify-center py-3.5 bg-white text-black rounded-full text-[10px] font-semibold tracking-[0.18em] uppercase hover:bg-[#e8e8e8] transition-colors"
                   style={{ fontFamily: "var(--font-inter), sans-serif" }}
                 >
                   Get Started

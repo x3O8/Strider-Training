@@ -16,7 +16,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 
 function BlogCard({ post, large = false, index = 0 }: { post: typeof blogPosts[0]; large?: boolean; index?: number }) {
   return (
-    <Link href={`/blog/${post.slug}`} className="block h-full group">
+    <Link href={`/blog/${post.slug}`} className="group block h-full snap-start">
       <motion.article
         initial={{ opacity: 0, y: 28 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -131,22 +131,24 @@ export default function BlogSection() {
           </div>
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-[10px] text-white/35 tracking-[0.25em] uppercase border border-white/14 px-6 py-3 hover:border-white/40 hover:text-white/70 transition-all duration-300 self-start md:self-auto"
+            className="inline-flex min-h-11 sm:min-h-0 items-center gap-2 text-[10px] text-white/35 tracking-[0.25em] uppercase border border-white/14 px-6 py-3 hover:border-white/40 hover:text-white/70 transition-all duration-300 self-start md:self-auto"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
             All articles →
           </Link>
         </motion.div>
 
-        {/* Balanced grid: 1 Featured (Top) + 4 Grid (Bottom) */}
-        <div className="mb-px bg-white/[0.06]">
-          <BlogCard post={featured} large index={0} />
-        </div>
+        {/* Balanced desktop grid, horizontal card rail on phones */}
+        <div className="-mx-6 grid touch-pan-x snap-x snap-mandatory grid-flow-col auto-cols-[90%] gap-4 overflow-x-auto bg-white/[0.06] px-6 min-[360px]:auto-cols-[86%] sm:contents">
+          <div className="contents sm:mb-px sm:block sm:bg-white/[0.06]">
+            <BlogCard post={featured} large index={0} />
+          </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/[0.06]">
-          {rest.map((post, i) => (
-            <BlogCard key={post.id} post={post} index={i + 1} />
-          ))}
+          <div className="contents sm:grid sm:grid-cols-2 sm:gap-px sm:bg-white/[0.06] lg:grid-cols-4">
+            {rest.map((post, i) => (
+              <BlogCard key={post.id} post={post} index={i + 1} />
+            ))}
+          </div>
         </div>
 
       </div>

@@ -84,7 +84,7 @@ export default function TestimonialsSection() {
           </div>
           <Link
             href="/client-stories"
-            className="inline-flex items-center gap-2 text-[10px] text-white/35 tracking-[0.25em] uppercase border border-white/14 px-6 py-3 hover:border-white/40 hover:text-white/70 transition-all duration-300 self-start md:self-auto"
+            className="inline-flex min-h-11 sm:min-h-0 items-center gap-2 text-[10px] text-white/35 tracking-[0.25em] uppercase border border-white/14 px-6 py-3 hover:border-white/40 hover:text-white/70 transition-all duration-300 self-start md:self-auto"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
             View all stories ↗
@@ -92,7 +92,7 @@ export default function TestimonialsSection() {
         </motion.div>
 
         {/* Story cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/[0.06]">
+        <div className="-mx-6 grid touch-pan-x snap-x snap-mandatory grid-flow-col auto-cols-[90%] gap-4 overflow-x-auto bg-white/[0.06] px-6 min-[360px]:auto-cols-[86%] sm:mx-0 sm:grid-flow-row sm:auto-cols-auto sm:grid-cols-1 sm:overflow-visible sm:px-0 sm:snap-none sm:gap-px md:grid-cols-3">
           {clientStories.map((story, i) => (
             <motion.div
               key={story.id}
@@ -100,12 +100,12 @@ export default function TestimonialsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.12 }}
-              className="group bg-black hover:bg-white/[0.015] transition-colors duration-300"
+              className="group snap-start bg-black hover:bg-white/[0.015] transition-colors duration-300"
             >
-              <div className="p-8 flex flex-col gap-6 h-full">
+              <div className="flex h-full flex-col gap-5 p-6 sm:gap-6 sm:p-8">
 
                 {/* Client + Category */}
-                <div className="flex items-start justify-between">
+                <div className="flex flex-col gap-3 min-[360px]:flex-row min-[360px]:items-start min-[360px]:justify-between">
                   <div className="flex items-center gap-3">
                     <div
                       className="w-10 h-10 rounded-full flex items-center justify-center border border-white/15 flex-shrink-0"
@@ -134,7 +134,7 @@ export default function TestimonialsSection() {
                     </div>
                   </div>
                   <span
-                    className="text-[9px] text-white/30 tracking-[0.18em] uppercase border border-white/10 px-2 py-1 flex-shrink-0"
+                    className="self-start text-[9px] text-white/30 tracking-[0.18em] uppercase border border-white/10 px-2 py-1 flex-shrink-0"
                     style={{ fontFamily: "var(--font-inter), sans-serif" }}
                   >
                     {CATEGORY_LABELS[story.category]}
@@ -193,7 +193,7 @@ export default function TestimonialsSection() {
                   </span>
                   <Link
                     href={`/client-stories#${story.id}`}
-                    className="text-[10px] text-white/40 tracking-[0.22em] uppercase hover:text-white/75 transition-colors duration-200"
+                    className="inline-flex min-h-11 items-center text-[10px] text-white/40 tracking-[0.22em] uppercase hover:text-white/75 transition-colors duration-200 sm:min-h-0"
                     style={{ fontFamily: "var(--font-inter), sans-serif" }}
                   >
                     Full story →

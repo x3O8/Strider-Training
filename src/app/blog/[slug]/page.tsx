@@ -46,7 +46,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             {/* Breadcrumbs / Back */}
             <Link 
               href="/blog" 
-              className="inline-flex items-center gap-2 text-[10px] text-white/40 tracking-[0.25em] uppercase hover:text-white/80 transition-colors duration-300 mb-12"
+              className="inline-flex min-h-11 sm:min-h-0 items-center gap-2 text-[10px] text-white/40 tracking-[0.25em] uppercase hover:text-white/80 transition-colors duration-300 mb-12"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
               ← Back to Archive
@@ -78,19 +78,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               </h1>
 
               <div 
-                className="text-xs text-white/40 flex items-center gap-4 border-t border-white/10 pt-6"
+                className="text-xs text-white/40 flex flex-wrap items-center gap-x-4 gap-y-3 border-t border-white/10 pt-6 sm:flex-nowrap"
                 style={{ fontFamily: "var(--font-inter), sans-serif" }}
               >
                 <span>{post.date}</span>
-                <span className="w-px h-3 bg-white/20" />
+                <span className="hidden h-3 w-px bg-white/20 min-[360px]:block" />
                 <span className="text-white">By Ashik Divakaran</span>
-                <span className="w-px h-3 bg-white/20" />
+                <span className="hidden h-3 w-px bg-white/20 min-[360px]:block" />
                 <span>Strider Coaching</span>
               </div>
             </header>
 
             {/* Hero Image (COLORED) */}
-            <div className="relative w-full h-[400px] md:h-[500px] mb-16 overflow-hidden border border-white/10 rounded-sm">
+            <div className="relative w-full h-[300px] min-[360px]:h-[400px] md:h-[500px] mb-16 overflow-hidden border border-white/10 rounded-sm">
               <Image 
                 src={post.image} 
                 alt={post.title} 

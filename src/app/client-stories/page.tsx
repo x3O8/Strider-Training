@@ -58,11 +58,11 @@ function LineChart({ story }: { story: ClientStory }) {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex flex-col items-start gap-2 mb-3 min-[360px]:flex-row min-[360px]:items-center min-[360px]:justify-between min-[360px]:gap-0">
         <p className="text-[9px] text-white/28 tracking-[0.3em] uppercase" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
           {chartLabel} {chartUnit && `(${chartUnit})`} over {duration}
         </p>
-        <div className="flex items-center gap-4">
+        <div className="flex w-full items-center justify-between gap-3 min-[360px]:w-auto min-[360px]:justify-start min-[360px]:gap-4">
           <span className="text-[9px] text-white/25" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
             Start: <strong className="text-white/50">{data[0]}{chartUnit ? ` ${chartUnit}` : ""}</strong>
           </span>
@@ -138,7 +138,7 @@ function StatBar({ label, before, after, unit, invert = false }: {
 
   return (
     <div className="flex flex-col gap-1.5">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col items-start gap-1 min-[360px]:flex-row min-[360px]:items-center min-[360px]:justify-between min-[360px]:gap-0">
         <span className="text-[9px] text-white/28 tracking-[0.2em] uppercase" style={{ fontFamily: "var(--font-inter), sans-serif" }}>{label}</span>
         <span className="text-[9px] text-white/40" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
           {before}{unit} → <strong className="text-white/70">{after}{unit}</strong>
@@ -171,7 +171,7 @@ function StoryCard({ story }: { story: ClientStory }) {
       className="border border-white/[0.08] bg-[#080808] overflow-hidden"
     >
       {/* Top: client identity + program */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 px-8 py-7 border-b border-white/[0.07]">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 px-5 py-6 min-[360px]:px-8 min-[360px]:py-7 border-b border-white/[0.07]">
         <div className="flex items-center gap-4">
           <div
             className="w-14 h-14 rounded-full flex items-center justify-center border border-white/15 flex-shrink-0"
@@ -209,7 +209,7 @@ function StoryCard({ story }: { story: ClientStory }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-white/[0.07]">
 
         {/* Left: Stats + Chart */}
-        <div className="bg-[#080808] p-8 space-y-8">
+        <div className="bg-[#080808] p-5 min-[360px]:p-8 space-y-8">
           {/* Before → After stats */}
           <div>
             <p className="text-[9px] text-white/25 tracking-[0.4em] uppercase mb-5" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
@@ -234,7 +234,7 @@ function StoryCard({ story }: { story: ClientStory }) {
         </div>
 
         {/* Right: Quotes + Coach note */}
-        <div className="bg-[#080808] p-8 flex flex-col gap-8">
+        <div className="bg-[#080808] p-5 min-[360px]:p-8 flex flex-col gap-8">
 
           {/* Full quote */}
           <div>
@@ -312,7 +312,7 @@ export default function ClientStoriesPage() {
             Proof. Not Promises.
           </p>
           <h1
-            className="text-[clamp(60px,12vw,160px)] text-white leading-none mb-8"
+            className="text-[37px] text-white leading-none mb-8 min-[320px]:text-[43px] min-[360px]:text-[54px] min-[430px]:text-[clamp(60px,12vw,160px)]"
             style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
           >
             Client<br />Transformations
@@ -326,7 +326,7 @@ export default function ClientStoriesPage() {
               { val: "avg 12", lbl: "Weeks to Results" },
               { val: "4.9★",   lbl: "Client Rating"  },
             ].map((s, i) => (
-              <div key={i} className="px-7 py-8 border-r border-b border-white/[0.08] last:border-r-0 md:[&:nth-child(n+3)]:border-b-0 text-center">
+              <div key={i} className="px-3 py-8 min-[360px]:px-7 border-r border-b border-white/[0.08] last:border-r-0 md:[&:nth-child(n+3)]:border-b-0 text-center">
                 <p className="text-[clamp(28px,3.5vw,48px)] text-white leading-none mb-1.5" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.04em" }}>
                   {s.val}
                 </p>
@@ -350,7 +350,7 @@ export default function ClientStoriesPage() {
               onClick={() => setActive(f)}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
-              className={`px-5 py-2 text-[9px] tracking-[0.22em] uppercase border transition-all duration-200 ${
+              className={`min-h-11 px-5 py-2 text-[9px] tracking-[0.22em] uppercase border transition-all duration-200 sm:min-h-0 ${
                 active === f
                   ? "bg-white text-black border-white"
                   : "border-white/14 text-white/35 hover:border-white/30 hover:text-white/60"

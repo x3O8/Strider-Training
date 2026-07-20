@@ -35,13 +35,13 @@ export default function BlogArchivePage() {
       <div className="bg-[#050505] min-h-screen text-white relative">
         <Navbar />
 
-        <main className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 pt-44 pb-32">
+        <main className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 pt-32 sm:pt-44 pb-20 sm:pb-32">
           
           {/* Top Actions */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-20">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-14 sm:mb-20">
             <Link 
               href="/" 
-              className="inline-flex items-center gap-3 text-[10px] text-white/50 tracking-[0.3em] uppercase group hover:text-white transition-colors"
+              className="inline-flex min-h-11 sm:min-h-0 items-center gap-3 text-[10px] text-white/50 tracking-[0.3em] uppercase group hover:text-white transition-colors"
             >
               <div className="w-8 h-8 flex items-center justify-center border border-white/10 group-hover:bg-white group-hover:text-black transition-all">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -51,14 +51,14 @@ export default function BlogArchivePage() {
               Back to Main Page
             </Link>
 
-            <div className="flex items-center gap-6">
+            <div className="flex w-full flex-col items-start gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-6">
               <span className="text-[10px] text-white/30 tracking-[0.3em] uppercase">Sort by:</span>
-              <div className="flex gap-2 p-1 bg-white/[0.03] border border-white/10 rounded-full">
+              <div className="grid w-full grid-cols-3 gap-1 p-1 bg-white/[0.03] border border-white/10 rounded-full min-[360px]:gap-2 sm:flex sm:w-auto">
                 {(["latest", "alphabetical", "length"] as SortType[]).map((type) => (
                   <button
                     key={type}
                     onClick={() => setSortBy(type)}
-                    className={`px-4 py-1.5 text-[9px] tracking-[0.2em] uppercase transition-all rounded-full ${
+                    className={`min-h-11 px-2 py-1.5 text-[8px] tracking-[0.12em] uppercase transition-all rounded-full min-[360px]:px-4 min-[360px]:text-[9px] min-[360px]:tracking-[0.2em] sm:min-h-0 ${
                       sortBy === type 
                         ? "bg-white text-black font-bold" 
                         : "text-white/40 hover:text-white/70"
@@ -72,7 +72,7 @@ export default function BlogArchivePage() {
           </div>
 
           {/* Page Header */}
-          <div className="mb-24">
+          <div className="mb-16 sm:mb-24">
             <p className="text-[10px] text-white/30 tracking-[0.5em] uppercase mb-4" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
               Archive
             </p>
