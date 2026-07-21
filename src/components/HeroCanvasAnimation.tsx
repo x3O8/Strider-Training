@@ -63,7 +63,6 @@ function HeroPlayer({
   const targetCPRef = useRef(0);
   const downLockRef = useRef(false);
   const transitionDirectionRef = useRef<"down" | "up" | null>(null);
-  const exitingHeroRef = useRef(false);
   const transitionIdRef = useRef(0);
 
   const [activeSection, setActiveSection] = useState(0);
@@ -230,7 +229,6 @@ function HeroPlayer({
         heroTop,
         checkpointEndY: heroTop + MAX_CHECKPOINT * window.innerHeight,
         stickyEndY: heroTop + heroHeight - window.innerHeight,
-        exitY: heroTop + heroHeight,
       };
     };
 
@@ -250,7 +248,6 @@ function HeroPlayer({
       if (transitionId !== transitionIdRef.current) return;
       downLockRef.current = false;
       transitionDirectionRef.current = null;
-      exitingHeroRef.current = false;
       onComplete?.();
     };
 
@@ -263,7 +260,6 @@ function HeroPlayer({
       const clampedCheckpoint = Math.max(0, Math.min(MAX_CHECKPOINT, checkpoint));
       const transitionId = ++transitionIdRef.current;
 
-      exitingHeroRef.current = false;
       targetCPRef.current = clampedCheckpoint;
       setScrollDir(direction);
       setActiveSection(clampedCheckpoint);
@@ -316,27 +312,23 @@ function HeroPlayer({
       cancelAnimationFrame(rafRef.current);
       haltLenisAtCurrentPosition();
 
-      const destination = exitingHeroRef.current
-        ? MAX_CHECKPOINT
-        : requestedDirection === "up"
-          ? targetCPRef.current - 1
-          : targetCPRef.current + 1;
+      const destination = requestedDirection === "up"
+        ? targetCPRef.current - 1
+        : targetCPRef.current + 1;
 
       snapToCheckpoint(destination, requestedDirection, heroTop, 460);
       return true;
     };
 
     const go = (delta: number): boolean => {
-      const { heroTop, checkpointEndY, stickyEndY, exitY } = getHeroBounds();
+      const { heroTop, checkpointEndY, stickyEndY } = getHeroBounds();
       const scrollY = window.scrollY;
 
-      // While a checkpoint or exit transition is running, this controller owns
+      // While a checkpoint transition is running, this controller owns
       // the wheel input. Letting Lenis react here is what caused the black flash
       // and the jump back to the skeleton checkpoint.
       if (downLockRef.current) {
-        return scrollY < exitY - 1
-          ? interruptTransition(delta, heroTop)
-          : false;
+        return interruptTransition(delta, heroTop);
       }
 
       // Lenis owns the short reveal between the end of the sticky canvas and
@@ -344,46 +336,12 @@ function HeroPlayer({
       if (scrollY > stickyEndY + 1) return false;
 
       if (delta > 0) {
-        if (scrollY >= exitY - 1) return false;
-
         if (scrollY >= checkpointEndY - 2 || targetCPRef.current >= MAX_CHECKPOINT) {
-          const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-          const transitionId = ++transitionIdRef.current;
-          const finish = () => {
-            completeTransition(transitionId, () => {
-              targetCPRef.current = MAX_CHECKPOINT;
-            });
-          };
-
-          downLockRef.current = true;
-          transitionDirectionRef.current = "down";
-          exitingHeroRef.current = true;
           targetCPRef.current = MAX_CHECKPOINT;
           setScrollDir("down");
           setActiveSection(MAX_CHECKPOINT);
-          haltLenisAtCurrentPosition();
-
-          // At the settled skeleton checkpoint stickyEndY equals scrollY, so
-          // this completes immediately and Lenis starts the visual exit on the
-          // same input. Only one scroller writes scrollY at a time.
-          animateToY(stickyEndY, () => {
-            if (transitionId !== transitionIdRef.current) return;
-            const lenis = window.__lenis;
-            if (!lenis) {
-              animateToY(exitY, finish, reducedMotion ? 0 : 620);
-              return;
-            }
-
-            lenis.start();
-            lenis.scrollTo(exitY, {
-              duration: reducedMotion ? 0 : 0.62,
-              easing: easeOutCubic,
-              lock: true,
-              force: true,
-              onComplete: finish,
-            });
-          }, reducedMotion ? 0 : 220);
-          return true;
+          window.__lenis?.start();
+          return false;
         }
 
         const nextCheckpoint = targetCPRef.current + 1;

@@ -159,8 +159,9 @@ export default function HowWeWorkSticky({ preloadModel = false }: { preloadModel
 
       snapLockRef.current = true;
       if (lenis?.scrollTo) {
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         lenis.scrollTo(targetY, {
-          duration: 0.58,
+          duration: reducedMotion ? 0 : 0.58,
           easing: (value) => 1 - Math.pow(1 - value, 4),
           lock: true,
           force: true,
@@ -173,17 +174,13 @@ export default function HowWeWorkSticky({ preloadModel = false }: { preloadModel
       unlockTimer = setTimeout(releaseSnap, 720);
     };
 
-    const handleWheel = (event: WheelEvent) => {
-      if (event.ctrlKey || Math.abs(event.deltaY) < 8) return;
-
+    const requestPhase = (direction: -1 | 1) => {
       const rect = section.getBoundingClientRect();
       const sectionIsPinned = rect.top <= 82 && rect.bottom > window.innerHeight - 2;
-      if (!sectionIsPinned) return;
+      if (!sectionIsPinned) return false;
 
       if (snapLockRef.current) {
-        (event as WheelEvent & { lenisStopPropagation?: boolean }).lenisStopPropagation = true;
-        event.preventDefault();
-        return;
+        return true;
       }
 
       const progress = scrollYProgress.get();
@@ -194,7 +191,6 @@ export default function HowWeWorkSticky({ preloadModel = false }: { preloadModel
             : nearest,
         0
       );
-      const direction = Math.sign(event.deltaY);
       let targetIndex: number | null = null;
 
       if (direction > 0 && nearestIndex < phaseTargets.length - 1) {
@@ -205,16 +201,77 @@ export default function HowWeWorkSticky({ preloadModel = false }: { preloadModel
         targetIndex = nearestIndex - 1;
       }
 
-      if (targetIndex === null) return;
+      if (targetIndex === null) return false;
+      snapToPhase(targetIndex);
+      return true;
+    };
+
+    const claimGesture = (event: Event & { lenisStopPropagation?: boolean }) => {
+      event.lenisStopPropagation = true;
+      if (event.cancelable) event.preventDefault();
+    };
+
+    let accumulatedWheelDelta = 0;
+    let wheelResetTimer: ReturnType<typeof setTimeout> | undefined;
+    const handleWheel = (event: WheelEvent) => {
+      if (event.ctrlKey || event.deltaY === 0) return;
+      if (Math.sign(accumulatedWheelDelta) !== Math.sign(event.deltaY)) {
+        accumulatedWheelDelta = 0;
+      }
+      accumulatedWheelDelta += event.deltaY;
+      if (wheelResetTimer) clearTimeout(wheelResetTimer);
+      wheelResetTimer = setTimeout(() => {
+        accumulatedWheelDelta = 0;
+      }, 120);
+      if (Math.abs(accumulatedWheelDelta) < 18) return;
+
+      const direction = accumulatedWheelDelta > 0 ? 1 : -1;
+      accumulatedWheelDelta = 0;
+      if (!requestPhase(direction)) return;
       (event as WheelEvent & { lenisStopPropagation?: boolean }).lenisStopPropagation = true;
       event.preventDefault();
-      snapToPhase(targetIndex);
+    };
+
+    let touchStartY = 0;
+    let touchHandled = false;
+    const handleTouchStart = (event: TouchEvent) => {
+      touchStartY = event.touches[0]?.clientY ?? 0;
+      touchHandled = false;
+    };
+    const handleTouchMove = (event: TouchEvent) => {
+      if (touchHandled || !event.touches[0]) return;
+      const deltaY = touchStartY - event.touches[0].clientY;
+      if (Math.abs(deltaY) < 28) return;
+      if (!requestPhase(deltaY > 0 ? 1 : -1)) return;
+      touchHandled = true;
+      claimGesture(event as TouchEvent & { lenisStopPropagation?: boolean });
+    };
+    const handleTouchEnd = () => {
+      touchHandled = false;
+    };
+    const handleKey = (event: KeyboardEvent) => {
+      const direction = event.key === "ArrowDown" || event.key === "PageDown"
+        ? 1
+        : event.key === "ArrowUp" || event.key === "PageUp"
+          ? -1
+          : 0;
+      if (direction === 0 || !requestPhase(direction)) return;
+      event.preventDefault();
     };
 
     window.addEventListener("wheel", handleWheel, { passive: false, capture: true });
+    window.addEventListener("touchstart", handleTouchStart, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: false, capture: true });
+    window.addEventListener("touchend", handleTouchEnd, { passive: true });
+    window.addEventListener("keydown", handleKey);
     return () => {
       window.removeEventListener("wheel", handleWheel, { capture: true });
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove, { capture: true });
+      window.removeEventListener("touchend", handleTouchEnd);
+      window.removeEventListener("keydown", handleKey);
       if (unlockTimer) clearTimeout(unlockTimer);
+      if (wheelResetTimer) clearTimeout(wheelResetTimer);
     };
   }, [scrollYProgress]);
 
