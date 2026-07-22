@@ -558,7 +558,7 @@ function HeroPlayer({
               FITNESS IS NOT SURFACE LEVEL
             </p>
             <h2
-              className="text-[clamp(50px,12vw,140px)] text-white leading-none"
+              className="text-[clamp(56px,14vw,64px)] text-white leading-none sm:text-[clamp(50px,12vw,140px)]"
               style={{
                 fontFamily: "'Bebas Neue', sans-serif",
                 letterSpacing: "0.04em",
@@ -592,7 +592,7 @@ function HeroPlayer({
             The Engine
           </p>
           <h2
-            className="text-[clamp(48px,6.5vw,90px)] text-white leading-none mb-5"
+            className="text-[clamp(54px,14vw,62px)] text-white leading-none mb-5 sm:text-[clamp(48px,6.5vw,90px)]"
             style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
           >
             FUNCTIONAL<br />STRENGTH.
@@ -621,7 +621,7 @@ function HeroPlayer({
             Structure + control
           </p>
           <h2
-            className="text-[clamp(48px,6.5vw,90px)] text-white leading-none mb-5"
+            className="text-[clamp(54px,14vw,62px)] text-white leading-none mb-5 sm:text-[clamp(48px,6.5vw,90px)]"
             style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
           >
             BUILT<br />TO LAST.

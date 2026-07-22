@@ -85,7 +85,7 @@ export default function LoadingScreen({ ready, onComplete }: LoadingScreenProps)
               playsInline
               preload="auto"
               src="/stryder-gif.mp4"
-              className="h-auto w-60 object-contain sm:w-[clamp(11rem,18vw,15rem)]"
+              className="h-auto w-[310px] max-w-[calc(100vw-10px)] object-contain sm:w-[clamp(11rem,18vw,15rem)] sm:max-w-none"
             />
 
             <div className="mt-8 w-[clamp(10rem,17vw,15.5rem)]">
