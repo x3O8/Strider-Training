@@ -395,10 +395,39 @@ function HeroPlayer({
       e.preventDefault();
     };
     let touchY = 0;
-    const onTouchStart = (e: TouchEvent) => { touchY = e.touches[0].clientY; };
+    let touchHandled = false;
+    const onTouchStart = (e: TouchEvent) => {
+      touchY = e.touches[0]?.clientY ?? 0;
+      touchHandled = false;
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (window.innerWidth >= 640 || !e.touches[0]) return;
+      if (touchHandled) {
+        (e as TouchEvent & { lenisStopPropagation?: boolean }).lenisStopPropagation = true;
+        if (e.cancelable) e.preventDefault();
+        return;
+      }
+      const dy = touchY - e.touches[0].clientY;
+      if (Math.abs(dy) < 30) return;
+
+      // Resolve mobile gestures while the finger is still moving. At the last
+      // checkpoint go() starts Lenis and returns false, allowing this same
+      // swipe to continue naturally into the following section.
+      if (!go(dy)) return;
+      touchHandled = true;
+      (e as TouchEvent & { lenisStopPropagation?: boolean }).lenisStopPropagation = true;
+      if (e.cancelable) e.preventDefault();
+    };
     const onTouchEnd = (e: TouchEvent) => {
+      if (touchHandled) {
+        touchHandled = false;
+        return;
+      }
       const dy = touchY - e.changedTouches[0].clientY;
       if (Math.abs(dy) >= 30) go(dy);
+    };
+    const onTouchCancel = () => {
+      touchHandled = false;
     };
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowDown" || e.key === "PageDown") { if (go(100)) e.preventDefault(); }
@@ -407,14 +436,18 @@ function HeroPlayer({
 
     window.addEventListener("wheel", handleWheel, { passive: false, capture: true });
     window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false, capture: true });
     window.addEventListener("touchend", onTouchEnd, { passive: true });
+    window.addEventListener("touchcancel", onTouchCancel, { passive: true });
     window.addEventListener("keydown", handleKey);
     window.addEventListener("scroll", handleScrollSync, { passive: true });
 
     return () => {
       window.removeEventListener("wheel", handleWheel, { capture: true });
       window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove, { capture: true });
       window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("touchcancel", onTouchCancel);
       window.removeEventListener("keydown", handleKey);
       window.removeEventListener("scroll", handleScrollSync);
       transitionIdRef.current += 1;
