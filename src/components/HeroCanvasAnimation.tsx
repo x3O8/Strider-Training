@@ -57,6 +57,7 @@ function HeroPlayer({
   onFirstFramePaint,
 }: HeroPlayerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>(0);
 
@@ -224,16 +225,22 @@ function HeroPlayer({
         ? window.scrollY + hero.getBoundingClientRect().top
         : 0;
       const heroHeight = hero?.offsetHeight ?? (TOTAL_SCROLL_STEPS + 1) * window.innerHeight;
+      const stickyHeight = stickyRef.current?.offsetHeight ?? window.innerHeight;
+      const scrollSpan = Math.max(0, heroHeight - stickyHeight);
+      const checkpointStep = scrollSpan / MAX_CHECKPOINT;
 
       return {
         heroTop,
-        checkpointEndY: heroTop + MAX_CHECKPOINT * window.innerHeight,
-        stickyEndY: heroTop + heroHeight - window.innerHeight,
+        checkpointStep,
+        checkpointEndY: heroTop + scrollSpan,
+        stickyEndY: heroTop + scrollSpan,
       };
     };
 
     const initialBounds = getHeroBounds();
-    const initCP = Math.round((window.scrollY - initialBounds.heroTop) / window.innerHeight);
+    const initCP = initialBounds.checkpointStep > 0
+      ? Math.round((window.scrollY - initialBounds.heroTop) / initialBounds.checkpointStep)
+      : 0;
     targetCPRef.current = Math.max(0, Math.min(MAX_CHECKPOINT, initCP));
     setActiveSection(targetCPRef.current);
 
@@ -266,8 +273,9 @@ function HeroPlayer({
       downLockRef.current = true;
       transitionDirectionRef.current = direction;
 
-      const targetY = heroTop + clampedCheckpoint * window.innerHeight;
-      const stickyBoundaryY = heroTop + MAX_CHECKPOINT * window.innerHeight;
+      const { checkpointStep } = getHeroBounds();
+      const targetY = heroTop + clampedCheckpoint * checkpointStep;
+      const stickyBoundaryY = heroTop + MAX_CHECKPOINT * checkpointStep;
       const lenis = window.__lenis;
 
       // When reversing the hero's exit, stay on Lenis until the sticky
@@ -383,10 +391,15 @@ function HeroPlayer({
 
     const handleScrollSync = () => {
       if (!downLockRef.current) {
-        const { heroTop } = getHeroBounds();
+        const { heroTop, checkpointStep } = getHeroBounds();
         const cp = Math.max(
           0,
-          Math.min(MAX_CHECKPOINT, Math.round((window.scrollY - heroTop) / window.innerHeight))
+          Math.min(
+            MAX_CHECKPOINT,
+            checkpointStep > 0
+              ? Math.round((window.scrollY - heroTop) / checkpointStep)
+              : 0,
+          )
         );
         if (cp !== targetCPRef.current) {
           targetCPRef.current = cp;
@@ -478,8 +491,8 @@ function HeroPlayer({
   };
 
   return (
-    <div id="hero-main-container" ref={containerRef} className="relative h-[400dvh] sm:h-[400vh]">
-      <div className="sticky top-0 h-dvh w-full overflow-hidden bg-[#08090D] sm:h-screen">
+    <div id="hero-main-container" ref={containerRef} className="relative h-[400svh] sm:h-[400vh]">
+      <div ref={stickyRef} className="sticky top-0 h-dvh w-full overflow-hidden bg-[#08090D] sm:h-screen">
 
         {/* Server-rendered LCP candidate. The canvas takes over as frames decode. */}
         <div
