@@ -294,7 +294,13 @@ function HeroPlayer({
       haltLenisAtCurrentPosition();
 
       animateToY(targetY, () => {
-        completeTransition(transitionId);
+        completeTransition(transitionId, () => {
+          // Mobile viewport chrome changes can leave Lenis stopped exactly at
+          // the sticky release edge. Hand control back without moving the page.
+          if (window.innerWidth < 640 && clampedCheckpoint === MAX_CHECKPOINT) {
+            window.__lenis?.start();
+          }
+        });
       }, duration);
     };
 
@@ -472,8 +478,8 @@ function HeroPlayer({
   };
 
   return (
-    <div id="hero-main-container" ref={containerRef} className="relative" style={{ height: `${(TOTAL_SCROLL_STEPS + 1) * 100}vh` }}>
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#08090D]">
+    <div id="hero-main-container" ref={containerRef} className="relative h-[400dvh] sm:h-[400vh]">
+      <div className="sticky top-0 h-dvh w-full overflow-hidden bg-[#08090D] sm:h-screen">
 
         {/* Server-rendered LCP candidate. The canvas takes over as frames decode. */}
         <div

@@ -42,7 +42,7 @@ export default function ProductShowcase({ onApply }: { onApply: (goal: string) =
       {/* Program Grid */}
       <div className="max-w-7xl mx-auto px-6 md:px-10 pb-16 md:pb-20">
         <MobileSwipeHint />
-        <div className="-mx-6 grid touch-auto snap-x snap-mandatory grid-flow-col auto-cols-[90%] gap-4 overflow-x-auto bg-white/[0.06] px-6 min-[360px]:auto-cols-[86%] sm:mx-0 sm:grid-flow-row sm:auto-cols-auto sm:grid-cols-1 sm:overflow-visible sm:px-0 sm:snap-none sm:touch-pan-x md:grid-cols-2 md:gap-px">
+        <div className="-mx-6 grid touch-auto snap-x snap-mandatory grid-flow-col auto-cols-[90%] gap-4 overflow-x-auto overflow-y-hidden bg-white/[0.06] px-6 min-[360px]:auto-cols-[86%] sm:mx-0 sm:grid-flow-row sm:auto-cols-auto sm:grid-cols-1 sm:overflow-visible sm:px-0 sm:snap-none sm:touch-pan-x md:grid-cols-2 md:gap-px">
           {coachingPrograms.map((program, index) => (
             <div key={program.id} className="snap-start bg-black">
               <ProgramCard 

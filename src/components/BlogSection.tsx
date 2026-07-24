@@ -17,7 +17,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 
 function BlogCard({ post, large = false, index = 0 }: { post: typeof blogPosts[0]; large?: boolean; index?: number }) {
   return (
-    <Link href={`/blog/${post.slug}`} className="group block h-full snap-start">
+    <Link href={`/blog/${post.slug}`} className="group block h-[420px] snap-start sm:h-full">
       <motion.article
         initial={{ opacity: 0, y: 28 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -26,7 +26,7 @@ function BlogCard({ post, large = false, index = 0 }: { post: typeof blogPosts[0
         className={`border border-white/[0.07] bg-[#0a0a0a] group-hover:bg-white/[0.04] transition-colors duration-300 flex flex-col overflow-hidden h-full`}
       >
         {/* Top graphic area / Image */}
-        <div className={`relative ${large ? "h-52" : "h-40"} bg-[#0c0c0c] overflow-hidden`}>
+        <div className={`relative h-44 ${large ? "sm:h-52" : "sm:h-40"} bg-[#0c0c0c] overflow-hidden`}>
           <Image 
             src={post.image} 
             alt={post.title}
@@ -48,21 +48,21 @@ function BlogCard({ post, large = false, index = 0 }: { post: typeof blogPosts[0
         </div>
 
         {/* Content */}
-        <div className={`flex flex-col flex-1 px-6 ${large ? "py-7" : "py-5"} gap-3`}>
+        <div className={`flex flex-col flex-1 px-6 py-5 ${large ? "sm:py-7" : ""} gap-3`}>
           <h3
-            className={`text-white leading-snug group-hover:text-white/85 transition-colors duration-200 ${large ? "text-2xl" : "text-lg"}`}
+            className={`text-lg text-white leading-snug group-hover:text-white/85 transition-colors duration-200 ${large ? "sm:text-2xl" : ""}`}
             style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
           >
             {post.title}
           </h3>
-          {large && (
+          <div className={`max-h-14 overflow-hidden [mask-image:linear-gradient(to_bottom,black_55%,transparent_100%)] sm:max-h-none sm:[mask-image:none] ${large ? "" : "sm:hidden"}`}>
             <p
               className="text-xs text-white/35 leading-relaxed"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
               {post.excerpt}
             </p>
-          )}
+          </div>
 
           {/* Meta */}
           <div className="flex items-center gap-3 mt-auto pt-3 border-t border-white/[0.06]">
@@ -141,7 +141,7 @@ export default function BlogSection() {
 
         {/* Balanced desktop grid, horizontal card rail on phones */}
         <MobileSwipeHint />
-        <div className="-mx-6 grid touch-auto snap-x snap-mandatory grid-flow-col auto-cols-[90%] gap-4 overflow-x-auto bg-white/[0.06] px-6 min-[360px]:auto-cols-[86%] sm:contents sm:touch-pan-x">
+        <div className="-mx-6 grid touch-auto snap-x snap-mandatory grid-flow-col auto-cols-[90%] gap-4 overflow-x-auto overflow-y-hidden bg-white/[0.06] px-6 min-[360px]:auto-cols-[86%] sm:contents sm:touch-pan-x">
           <div className="contents sm:mb-px sm:block sm:bg-white/[0.06]">
             <BlogCard post={featured} large index={0} />
           </div>

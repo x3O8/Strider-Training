@@ -94,7 +94,7 @@ export default function TestimonialsSection() {
 
         {/* Story cards */}
         <MobileSwipeHint />
-        <div className="-mx-6 grid touch-auto snap-x snap-mandatory grid-flow-col auto-cols-[90%] gap-4 overflow-x-auto bg-white/[0.06] px-6 min-[360px]:auto-cols-[86%] sm:mx-0 sm:grid-flow-row sm:auto-cols-auto sm:grid-cols-1 sm:overflow-visible sm:px-0 sm:snap-none sm:gap-px sm:touch-pan-x md:grid-cols-3">
+        <div className="-mx-6 grid touch-auto snap-x snap-mandatory grid-flow-col auto-cols-[90%] gap-4 overflow-x-auto overflow-y-hidden bg-white/[0.06] px-6 min-[360px]:auto-cols-[86%] sm:mx-0 sm:grid-flow-row sm:auto-cols-auto sm:grid-cols-1 sm:overflow-visible sm:px-0 sm:snap-none sm:gap-px sm:touch-pan-x md:grid-cols-3">
           {clientStories.map((story, i) => (
             <motion.div
               key={story.id}

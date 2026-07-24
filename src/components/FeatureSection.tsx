@@ -223,9 +223,9 @@ export default function FeatureSection() {
           </motion.div>
 
           <motion.div
-            animate={{ opacity: activeFeature ? 0 : [0.32, 0.58, 0.32] }}
-            transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
-            className="flex items-center gap-3 text-[8px] uppercase tracking-[0.34em] text-white/45 lg:absolute lg:bottom-5"
+            animate={{ opacity: activeFeature ? 0 : 1 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="flex items-center gap-3 text-[8px] uppercase tracking-[0.34em] text-white lg:absolute lg:bottom-5"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
             <span className="h-px w-8 bg-gradient-to-r from-transparent to-white/35" />
