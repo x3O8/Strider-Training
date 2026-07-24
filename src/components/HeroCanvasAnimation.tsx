@@ -5,7 +5,7 @@ import { useScroll } from "framer-motion";
 import NextImage from "next/image";
 
 const TOTAL_FRAMES = 67;
-const FRAME_PATH = "/runframes";
+const FRAME_PATH = "/runframes/outputs";
 
 // 3 snap checkpoints (0–3):
 //   CP0 (scrollY = 0)    → Landing "Transform. Perform." — run frame 001
@@ -504,7 +504,7 @@ function HeroPlayer({
           }}
         >
           <NextImage
-            src="/runframes/run-001.webp"
+            src={`${FRAME_PATH}/2x-run-001.webp`}
             alt="Athlete preparing to sprint"
             fill
             priority
@@ -745,7 +745,7 @@ export default function HeroCanvasAnimation({ onReady }: HeroCanvasAnimationProp
         img.onerror = () => {
           handleLoadOrError();
         };
-        img.src = `${FRAME_PATH}/run-${num}.webp`;
+        img.src = `${FRAME_PATH}/2x-run-${num}.webp`;
       };
 
       const loadRemainingFrames = () => {

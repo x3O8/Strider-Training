@@ -51,7 +51,7 @@ export default function RootLayout({
         <link 
           rel="preload" 
           as="image" 
-          href="/runframes/run-001.webp"
+          href="/runframes/outputs/2x-run-001.webp"
           type="image/webp"
           fetchPriority="high" 
         />
