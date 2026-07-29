@@ -29,10 +29,10 @@ export default function ProductShowcase({ onApply }: { onApply: (goal: string) =
             Choose Your Path
           </p>
           <h2
-            className="text-[clamp(52px,8vw,110px)] text-white leading-none"
+            className="whitespace-nowrap text-[clamp(34px,9vw,52px)] text-white leading-none sm:text-[clamp(52px,8vw,110px)]"
             style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
           >
-            Coaching<br />Programs
+            Coaching Programs
           </h2>
           <div className="w-10 h-px bg-white/25 mt-2" />
         </motion.div>

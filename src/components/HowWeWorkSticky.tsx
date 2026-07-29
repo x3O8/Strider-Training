@@ -52,10 +52,163 @@ const steps = [
 const phaseTargets = [0, 0.27, 0.52, 0.77];
 const phasePositions = [
   "left-6 bottom-[13vh] items-start text-left md:left-[18vw] md:bottom-[15vh]",
-  "right-6 top-[27vh] items-end text-right md:right-[7vw]",
-  "left-6 top-[36vh] items-start text-left md:left-[7vw]",
+  "right-6 top-[14vh] items-end text-right md:right-[7vw] md:top-[27vh]",
+  "left-6 top-[12vh] items-start text-left md:left-[7vw] md:top-[36vh]",
   "right-6 bottom-[7vh] items-end text-right md:right-[7vw]",
 ];
+
+const assessmentMetrics = [
+  { label: "Movement quality", value: 82 },
+  { label: "Joint stability", value: 74 },
+  { label: "Hip mobility", value: 68 },
+  { label: "Shoulder balance", value: 71 },
+  { label: "Recovery capacity", value: 79 },
+  { label: "Training readiness", value: 88 },
+];
+
+const correctiveActions = [
+  { issue: "Shoulder imbalance", action: "Unilateral stability work · 3x weekly" },
+  { issue: "Restricted hip rotation", action: "Daily 10-minute mobility block" },
+  { issue: "Low trunk control", action: "Anti-rotation and carry progressions" },
+];
+
+const workoutPlan = [
+  { day: "Mon", session: "Lower-body strength", detail: "Squat · Hinge · Carry" },
+  { day: "Wed", session: "Movement + engine", detail: "Mobility · Zone 2" },
+  { day: "Fri", session: "Upper-body strength", detail: "Push · Pull · Stability" },
+  { day: "Sat", session: "Restore", detail: "Mobility · Recovery" },
+];
+
+const glassPanelClass =
+  "relative mt-5 w-full max-w-[330px] overflow-hidden rounded-[18px] border border-white/[0.16] bg-[linear-gradient(145deg,rgba(25,25,29,0.72),rgba(3,3,5,0.48))] p-4 text-left shadow-[0_28px_90px_rgba(0,0,0,0.62),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl min-[360px]:p-5 md:mt-0 md:p-6";
+
+type PanelMotion = {
+  opacity: MotionValue<number>;
+  x: MotionValue<number>;
+};
+
+function GlassHighlights() {
+  return (
+    <>
+      <span className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/55 to-transparent" />
+      <span className="pointer-events-none absolute -right-12 -top-16 h-36 w-36 rounded-full bg-orange-500/[0.07] blur-3xl" />
+    </>
+  );
+}
+
+function AssessmentReport({ opacity, x }: PanelMotion) {
+  return (
+    <motion.div
+      className={`${glassPanelClass} md:absolute md:bottom-0 md:left-[calc(100%+4rem)] md:w-[340px] md:max-w-none xl:left-[calc(82vw-380px)]`}
+      style={{ opacity, x }}
+    >
+      <GlassHighlights />
+      <div className="relative mb-5 flex items-center justify-between border-b border-white/10 pb-4">
+        <div>
+          <p
+            className="text-[8px] uppercase tracking-[0.34em] text-white/40"
+            style={{ fontFamily: "var(--font-inter), sans-serif" }}
+          >
+            Assessment report
+          </p>
+          <p
+            className="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/75"
+            style={{ fontFamily: "var(--font-inter), sans-serif" }}
+          >
+            Athlete profile · 01
+          </p>
+        </div>
+        <span className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_14px_rgba(249,115,22,0.8)]" />
+      </div>
+      <div className="relative grid grid-cols-2 gap-x-5 gap-y-4 md:grid-cols-1">
+        {assessmentMetrics.map((metric, metricIndex) => (
+          <div key={metric.label}>
+            <div className="mb-1.5 flex items-center justify-between text-[8px] uppercase tracking-[0.16em] text-white/45">
+              <span>{metric.label}</span>
+              <span className="text-white/70">{metric.value}%</span>
+            </div>
+            <div className="h-px overflow-hidden bg-white/12">
+              <motion.div
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.65, delay: 0.12 + metricIndex * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                className="h-full origin-left bg-gradient-to-r from-orange-600 to-orange-400"
+                style={{ width: `${metric.value}%` }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+function BlueprintAnalysis({ opacity, x }: PanelMotion) {
+  return (
+    <motion.div
+      className={`${glassPanelClass} md:absolute md:right-[calc(100%+4rem)] md:top-0 md:w-[340px] md:max-w-none xl:right-[calc(93vw-380px)]`}
+      style={{ opacity, x }}
+    >
+      <GlassHighlights />
+      <div className="relative mb-5 border-b border-white/10 pb-4">
+        <p className="text-[8px] uppercase tracking-[0.34em] text-white/40">Correction analysis</p>
+        <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/75">Priority actions · Cycle 01</p>
+      </div>
+      <div className="relative space-y-4">
+        {correctiveActions.map((item, itemIndex) => (
+          <motion.div
+            key={item.issue}
+            initial={{ opacity: 0, x: -8 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.12 + itemIndex * 0.1 }}
+            className="border-l border-orange-500/55 pl-3"
+          >
+            <p className="text-[9px] uppercase tracking-[0.16em] text-orange-400/85">{item.issue}</p>
+            <p className="mt-1 text-[10px] leading-relaxed text-white/55">{item.action}</p>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+function ExecuteWorkoutPlan({ opacity, x }: PanelMotion) {
+  return (
+    <motion.div
+      className={`${glassPanelClass} md:absolute md:left-[calc(100%+4rem)] md:top-0 md:w-[350px] md:max-w-none xl:left-[calc(93vw-390px)]`}
+      style={{ opacity, x }}
+    >
+      <GlassHighlights />
+      <div className="relative mb-3 flex items-end justify-between border-b border-white/10 pb-3 md:mb-4 md:pb-4">
+        <div>
+          <p className="text-[8px] uppercase tracking-[0.34em] text-white/40">Workout plan</p>
+          <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/75">Foundation week · 01</p>
+        </div>
+        <span className="text-[8px] uppercase tracking-[0.18em] text-orange-400/75">4 sessions</span>
+      </div>
+      <div className="relative divide-y divide-white/[0.08]">
+        {workoutPlan.map((session, sessionIndex) => (
+          <motion.div
+            key={session.day}
+            initial={{ opacity: 0, y: 6 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.35, delay: 0.1 + sessionIndex * 0.08 }}
+            className="grid grid-cols-[38px_1fr] gap-4 py-2.5 md:py-3"
+          >
+            <span className="text-[9px] uppercase tracking-[0.16em] text-orange-400/80">{session.day}</span>
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.14em] text-white/72">{session.session}</p>
+              <p className="mt-0.5 text-[9px] text-white/38">{session.detail}</p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
 
 function PhaseOverlay({
   phase,
@@ -78,6 +231,16 @@ function PhaseOverlay({
   const opacityOutput = isFirst ? [1, 1, 0] : isLast ? [0, 1, 1] : [0, 1, 1, 0];
   const opacity = useTransform(progress, input, opacityOutput);
   const rightAligned = index % 2 === 1;
+  const panelInput = isFirst
+    ? [0, exit - 0.11, exit + 0.01]
+    : [entry - 0.03, entry + 0.018, exit - 0.1, exit + 0.01];
+  const panelOpacity = useTransform(progress, panelInput, isFirst ? [1, 1, 0] : [0, 1, 1, 0]);
+  const panelOffset = rightAligned ? -22 : 22;
+  const panelX = useTransform(
+    progress,
+    panelInput,
+    isFirst ? [0, 0, panelOffset] : [panelOffset, 0, 0, panelOffset]
+  );
 
   return (
     <motion.div
@@ -105,6 +268,9 @@ function PhaseOverlay({
         >
           {phase.description}
         </p>
+        {isFirst && <AssessmentReport opacity={panelOpacity} x={panelX} />}
+        {index === 1 && <BlueprintAnalysis opacity={panelOpacity} x={panelX} />}
+        {index === 2 && <ExecuteWorkoutPlan opacity={panelOpacity} x={panelX} />}
     </motion.div>
   );
 }

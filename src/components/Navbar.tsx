@@ -8,7 +8,7 @@ import Link from "next/link";
 const navLinksLeft = [
   { label: "Knowledge Hub", href: "/blog" },
   { label: "Stories", href: "/client-stories" },
-  { label: "Contact", href: "/#contact" },
+  { label: "Contact", href: "/contact" },
 ];
 
 const allNavLinks = [...navLinksLeft];
@@ -96,7 +96,7 @@ export default function Navbar() {
           {/* ── RIGHT: Get Started CTA only ─────────────────────────── */}
           <div className="hidden md:flex items-center flex-1 justify-end">
             <motion.a
-              href="/#contact"
+              href="/contact#contact"
               whileHover={{ scale: 1.02, backgroundColor: "#e8e8e8" }}
               whileTap={{ scale: 0.97 }}
               className="flex items-center px-6 py-2.5 bg-white text-black rounded-full text-[10px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200"
@@ -207,7 +207,7 @@ export default function Navbar() {
                 className="pt-5"
               >
                 <Link
-                  href="/#contact"
+                  href="/contact#contact"
                   onClick={() => setMenuOpen(false)}
                   className="flex min-h-11 items-center justify-center py-3.5 bg-white text-black rounded-full text-[10px] font-semibold tracking-[0.18em] uppercase hover:bg-[#e8e8e8] transition-colors"
                   style={{ fontFamily: "var(--font-inter), sans-serif" }}

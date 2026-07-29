@@ -77,10 +77,10 @@ export default function TestimonialsSection() {
               Real Transformations
             </p>
             <h2
-              className="text-[clamp(48px,8vw,105px)] text-white leading-none"
+              className="whitespace-nowrap text-[clamp(40px,12vw,48px)] text-white leading-none sm:text-[clamp(48px,8vw,105px)]"
               style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
             >
-              Client<br />Stories
+              Client Stories
             </h2>
           </div>
           <Link

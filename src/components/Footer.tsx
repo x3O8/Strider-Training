@@ -12,7 +12,7 @@ const columns = [
       { label: "Meet the Coaches", href: "/#about" },
       { label: "Careers", href: "#" },
       { label: "Press", href: "#" },
-      { label: "Contact Us", href: "/#contact" },
+      { label: "Contact Us", href: "/contact" },
     ],
   },
   {
@@ -90,7 +90,7 @@ export default function Footer() {
             {/* Contact */}
             <div className="flex flex-col gap-2.5 mt-2">
               {[
-                { icon: "✉", text: "info@striderfitness.com" },
+                { icon: "✉", text: "info@stridertraining.com" },
                 { icon: "📞", text: "9995906262" },
                 { icon: "📍", text: "Kerala, India · Remote Worldwide" },
               ].map((c, i) => (

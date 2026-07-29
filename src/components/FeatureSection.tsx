@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { features, FeatureHighlight } from "@/data/products";
@@ -64,8 +64,17 @@ const sectorLayout = [
 ] as const;
 
 export default function FeatureSection() {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const activeFeature = activeIndex === null ? null : features[activeIndex];
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isInteracting, setIsInteracting] = useState(false);
+  const activeFeature = features[activeIndex];
+
+  useEffect(() => {
+    if (isInteracting) return;
+    const rotationTimer = window.setTimeout(() => {
+      setActiveIndex((current) => (current + 1) % features.length);
+    }, 4000);
+    return () => window.clearTimeout(rotationTimer);
+  }, [activeIndex, isInteracting]);
 
   return (
     <section id="features" className="relative bg-black border-t border-white/8 overflow-hidden">
@@ -82,9 +91,6 @@ export default function FeatureSection() {
       <div className="max-w-7xl mx-auto px-6 md:px-10 pt-14 md:pt-20 pb-14 md:pb-16 relative z-10">
         <div
           className="grid items-center gap-y-10 lg:grid-cols-[minmax(0,0.86fr)_minmax(430px,1.14fr)] lg:gap-x-16 lg:gap-y-0"
-          onMouseLeave={() => {
-            if (window.matchMedia("(hover: hover)").matches) setActiveIndex(null);
-          }}
         >
         
         {/* Header */}
@@ -111,6 +117,10 @@ export default function FeatureSection() {
         {/* Interactive system wheel */}
         <div
           className="relative flex min-h-[460px] flex-col items-center justify-center gap-7 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:min-h-[540px]"
+          onMouseEnter={() => setIsInteracting(true)}
+          onMouseLeave={() => setIsInteracting(false)}
+          onFocusCapture={() => setIsInteracting(true)}
+          onBlurCapture={() => setIsInteracting(false)}
         >
           <div className="pointer-events-none absolute left-1/2 top-1/2 h-[400px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.014] blur-3xl" />
 
@@ -146,7 +156,11 @@ export default function FeatureSection() {
                   aria-label={`${feature.title}: ${feature.description}`}
                   aria-pressed={isActive}
                   aria-controls="feature-dialog"
-                  onMouseEnter={() => setActiveIndex(index)}
+                  onMouseEnter={() => {
+                    setIsInteracting(true);
+                    setActiveIndex(index);
+                  }}
+                  onMouseLeave={() => setIsInteracting(false)}
                   onFocus={() => setActiveIndex(index)}
                   onClick={() => setActiveIndex(index)}
                   animate={isActive
@@ -199,7 +213,6 @@ export default function FeatureSection() {
             {/* Inner Core */}
             <motion.div
               className="absolute inset-[18%] z-30 flex items-center justify-center rounded-full border border-white/10 bg-[#030303] shadow-[inset_0_1px_0_rgba(255,255,255,0.055),0_0_42px_rgba(0,0,0,0.88)]"
-              onMouseEnter={() => setActiveIndex(null)}
               animate={{ scale: [1, 1.008, 1] }}
               transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
             >
@@ -223,7 +236,7 @@ export default function FeatureSection() {
           </motion.div>
 
           <motion.div
-            animate={{ opacity: activeFeature ? 0 : 1 }}
+            animate={{ opacity: 0 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
             className="flex items-center gap-3 text-[8px] uppercase tracking-[0.34em] text-white lg:absolute lg:bottom-5"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
@@ -238,7 +251,7 @@ export default function FeatureSection() {
           {/* Description dialog */}
           <div className="relative z-30 w-full max-w-sm lg:col-start-1 lg:row-start-2 lg:h-[360px] lg:w-full lg:max-w-[390px] lg:self-start" aria-live="polite">
             <AnimatePresence mode="wait">
-              {activeFeature && activeIndex !== null ? (
+              {activeFeature ? (
                 <motion.div
                   id="feature-dialog"
                   key={activeFeature.title}

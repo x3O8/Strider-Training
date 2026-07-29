@@ -108,6 +108,15 @@ export default function ProtocolModel3D({
     const modelPivot = new THREE.Group();
     scene.add(modelPivot);
 
+    const assessmentLightColor = new THREE.Color(0xff341f);
+    const evolveLightColor = new THREE.Color(0x35ff78);
+    const phaseLight = new THREE.DirectionalLight(assessmentLightColor, 0);
+    const phaseLightTarget = new THREE.Object3D();
+    phaseLight.position.set(0.8, 1.75, 2);
+    phaseLightTarget.position.set(0, 1.25, 0);
+    phaseLight.target = phaseLightTarget;
+    scene.add(phaseLight, phaseLightTarget);
+
     scene.add(new THREE.HemisphereLight(0x8f99aa, 0x000000, cinematic ? 0.3 : 0.24));
 
     const keyLight = new THREE.DirectionalLight(0xf4f6fa, cinematic ? 2.15 : 1.85);
@@ -261,8 +270,20 @@ export default function ProtocolModel3D({
         cameraTarget.set(0, focusY, 0);
         camera.lookAt(cameraTarget);
         modelPivot.rotation.y = 0;
+
+        const assessmentIntensity = 1 - THREE.MathUtils.smoothstep(easedProgress, 0.12, 0.24);
+        const evolveIntensity = THREE.MathUtils.smoothstep(easedProgress, 0.72, 0.82);
+        const combinedIntensity = assessmentIntensity + evolveIntensity;
+        const evolveMix = combinedIntensity > 0 ? evolveIntensity / combinedIntensity : 0;
+        const phaseLightY = THREE.MathUtils.lerp(1.35, -0.65, evolveIntensity);
+        phaseLight.color.copy(assessmentLightColor).lerp(evolveLightColor, evolveMix);
+        phaseLight.position.set(0.8, phaseLightY + 0.5, 2);
+        phaseLightTarget.position.set(0, phaseLightY - 0.1, 0);
+        phaseLightTarget.updateMatrixWorld();
+        phaseLight.intensity = assessmentIntensity * 7.5 + evolveIntensity * 14;
       } else {
         modelPivot.rotation.y = reducedMotion ? 0 : idleRotation + smoothedProgress * Math.PI * 1.5;
+        phaseLight.intensity = 0;
       }
 
       renderer.render(scene, camera);
@@ -281,7 +302,6 @@ export default function ProtocolModel3D({
       unsubscribeFromProgress();
       resizeObserver.disconnect();
       studioEnvironment.dispose();
-
       if (modelRoot) {
         disposeModelResources(modelRoot);
         clearProtocolSceneCache();

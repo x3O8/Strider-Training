@@ -37,11 +37,22 @@ export default function FinalCTA() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="text-[clamp(58px,12vw,155px)] text-white leading-none mb-8 md:mb-10"
+            className="mb-4 text-[clamp(58px,12vw,155px)] leading-none text-white"
             style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
           >
             Train Smarter.<br />Live Better.
           </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.14 }}
+            className="mb-8 text-[11px] uppercase tracking-[0.46em] text-orange-500 md:mb-10 md:text-xs"
+            style={{ fontFamily: "var(--font-inter), sans-serif" }}
+          >
+            Join the Stride
+          </motion.p>
 
           <motion.p
             initial={{ opacity: 0, y: 16 }}

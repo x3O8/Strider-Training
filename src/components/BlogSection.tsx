@@ -124,10 +124,10 @@ export default function BlogSection() {
               Knowledge Hub
             </p>
             <h2
-              className="text-[clamp(48px,8vw,105px)] text-white leading-none"
+              className="whitespace-nowrap text-[clamp(26px,7.5vw,48px)] text-white leading-none sm:text-[clamp(48px,8vw,105px)]"
               style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
             >
-              From the Coaches<br />Brain
+              From the Coaches Brain
             </h2>
           </div>
           <Link
