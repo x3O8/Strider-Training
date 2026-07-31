@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import { clientStories, ClientStory } from "@/data/testimonials";
 import Navbar from "@/components/Navbar";
@@ -189,7 +190,7 @@ function StoryCard({ story }: { story: ClientStory }) {
               {story.name}
             </h2>
             <p className="text-[10px] text-white/30 tracking-[0.18em]" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-              {story.age} · {story.location}
+              {story.age ? `${story.age} · ` : ""}{story.location}
             </p>
           </div>
         </div>
@@ -235,6 +236,18 @@ function StoryCard({ story }: { story: ClientStory }) {
 
         {/* Right: Quotes + Coach note */}
         <div className="bg-[#080808] p-5 min-[360px]:p-8 flex flex-col gap-8">
+          {story.image && (
+            <div className="relative aspect-[16/9] overflow-hidden border border-white/[0.07] bg-black">
+              <Image
+                src={story.image}
+                alt={story.imageAlt ?? `${story.name} client result`}
+                fill
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-cover object-center"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+            </div>
+          )}
 
           {/* Full quote */}
           <div>

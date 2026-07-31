@@ -1,7 +1,7 @@
 export interface ClientStory {
   id: string;
   name: string;
-  age: number;
+  age?: number;
   location: string;
   program: string;
   duration: string;
@@ -18,35 +18,42 @@ export interface ClientStory {
   chartUnit: string;
   chartInvert: boolean; // true = lower is better (e.g. pace)
   progressData: number[];
+  image?: string;
+  imageAlt?: string;
 }
 
 export const clientStories: ClientStory[] = [
   {
-    id: "marcus-chen",
-    name: "Marcus Chen",
-    age: 34,
-    location: "New York, NY",
-    program: "Elite 1-on-1 Coaching",
-    duration: "16 weeks",
-    goal: "Weight Loss",
-    category: "weight-loss",
-    shortQuote: "I lost 41 lbs without ever feeling like I was on a diet. My coach made it sustainable.",
+    id: "abhijith-powerlifting",
+    name: "Abhijith",
+    age: 21,
+    location: "Calicut, IN",
+    program: "Competition Preparation",
+    duration: "1 year",
+    goal: "U66 Junior Powerlifting",
+    category: "strength",
+    shortQuote:
+      "Every plan changed with my strength, energy, and progress. That personalised approach took my bench from 40 kg to 92.5 kg.",
     fullQuote:
-      "I've tried every diet and every app. Nothing stuck — because nothing fit my actual life. With Strider, my coach sat down with me week one and said 'let's build something you can actually do.' The check-ins held me accountable in a way that felt like support, not judgment. Sixteen weeks later, I'm 41 lbs lighter, my blood pressure is normal for the first time in a decade, and I can run a 5K without stopping. This wasn't just weight loss — it was a complete lifestyle change that I'm going to maintain for life.",
-    initials: "MC",
-    coachName: "Alex Rivera",
+      "When I started with Strider, I weighed 60 kg and benched 40 kg. I wanted to prepare seriously for powerlifting, but I needed more than a fixed programme. My training was adjusted around how my strength and energy changed from week to week, so every block felt built for where I actually was. Over the year, my bench reached 92.5 kg and I placed second in the under-66 kg junior unequipped bench press at the Kollam District Championship. The biggest difference was having a plan that kept evolving with me.",
+    initials: "AB",
+    coachName: "Strider Performance Team",
     coachNote:
-      "Marcus came in with 3 failed diet attempts behind him. The key was removing the all-or-nothing mindset and building one habit at a time. By week 6 he was training 4x/week and cooking 90% of his meals — without ever feeling deprived.",
+      "Abhijith's preparation was built around progressive strength blocks, weekly readiness tracking, and adjustments based on his recovery. The goal was to arrive at competition technically confident and strong, not simply to chase numbers in training.",
     stats: [
-      { label: "Body Weight",   before: "225", after: "184",  unit: "lbs" },
-      { label: "Body Fat %",    before: "33",  after: "20",   unit: "%" },
-      { label: "Resting HR",    before: "82",  after: "61",   unit: "bpm" },
-      { label: "Weekly Steps",  before: "3.2", after: "11.4", unit: "K" },
+      { label: "Bench Press", before: "40", after: "92.5", unit: "kg" },
+      { label: "Body Weight", before: "60", after: "70", unit: "kg" },
     ],
-    chartLabel: "Body Weight",
-    chartUnit: "lbs",
-    chartInvert: true,
-    progressData: [225, 222, 220, 217, 213, 210, 207, 204, 200, 197, 193, 190, 188, 186, 184, 184],
+    chartLabel: "Bench Press",
+    chartUnit: "kg",
+    chartInvert: false,
+    progressData: [
+      40, 42.5, 41, 44, 45, 43.5, 46, 48, 46.5, 50, 52.5, 51, 54,
+      56, 54.5, 58, 60, 57.5, 61, 63, 60.5, 65, 67.5, 64, 68, 70,
+      67, 72.5, 74, 71.5, 76, 78, 74.5, 80, 82.5, 79, 84, 85, 82,
+      87.5, 88, 85.5, 90, 88, 91, 89.5, 92, 90, 92.5, 91, 92, 91.5,
+      92.5,
+    ],
   },
   {
     id: "sarah-kim",
