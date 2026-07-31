@@ -1,1 +1,3 @@
-Website for striderfitness.com
+stridertraining.com
+stridertraining.in
+striderfitness.in
