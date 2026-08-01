@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import type { MotionValue } from "framer-motion";
@@ -85,10 +86,10 @@ const workoutPlan = [
 ];
 
 const evolutionNodes = [
-  { label: "Assessment", status: "82%", position: "left-1/2 top-0 -translate-x-1/2" },
-  { label: "Blueprint", status: "Ready", position: "right-0 top-1/2 -translate-y-1/2 min-[360px]:-right-[9px]" },
-  { label: "Execution", status: "Active", position: "bottom-0 left-1/2 -translate-x-1/2" },
-  { label: "Evolution", status: "+2.4%", position: "left-0 top-1/2 -translate-y-1/2 min-[360px]:-left-[9px]" },
+  { label: "Assessment", status: "Analyzed", statusColor: "text-emerald-400", position: "left-1/2 top-0 -translate-x-1/2" },
+  { label: "Blueprint", status: "Ready", statusColor: "text-sky-400", position: "right-0 top-1/2 -translate-y-1/2 min-[360px]:-right-[9px]" },
+  { label: "Execution", status: "Active", statusColor: "text-emerald-400", position: "bottom-0 left-1/2 -translate-x-1/2" },
+  { label: "Adaptation", status: "Achieved", statusColor: "text-red-400", position: "left-0 top-1/2 -translate-y-1/2 min-[360px]:-left-[9px]" },
 ];
 
 const evolutionDots = Array.from({ length: 6 }, (_, index) => index);
@@ -133,23 +134,39 @@ function AssessmentReport({ opacity, x }: PanelMotion) {
             Athlete profile · 01
           </p>
         </div>
-        <span className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_14px_rgba(249,115,22,0.8)]" />
       </div>
       <div className="relative grid grid-cols-2 gap-x-5 gap-y-4 md:grid-cols-1">
         {assessmentMetrics.map((metric, metricIndex) => (
           <div key={metric.label} className={metricIndex >= 3 ? "hidden md:block" : undefined}>
-            <div className="mb-1.5 flex items-center justify-between text-[8px] uppercase tracking-[0.16em] text-white/45">
+            <div className="mb-1.5 text-[8px] uppercase tracking-[0.16em] text-white/45">
               <span>{metric.label}</span>
-              <span className="text-white/70">{metric.value}%</span>
             </div>
-            <div className="h-px overflow-hidden bg-white/12">
-              <motion.div
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
+            <div className="flex items-center gap-2.5">
+              <div className="h-px min-w-0 flex-1 bg-white/12">
+                <motion.div
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.8, delay: 0.18 + metricIndex * 0.12, ease: [0.22, 1, 0.36, 1] }}
+                  className="h-full w-full origin-left bg-gradient-to-r from-orange-600 to-orange-400"
+                />
+              </div>
+              <motion.span
+                initial={{
+                  opacity: 0.55,
+                  scale: 0.75,
+                  backgroundColor: "rgba(255,255,255,0.18)",
+                  boxShadow: "0 0 0 rgba(249,115,22,0)",
+                }}
+                whileInView={{
+                  opacity: 1,
+                  scale: 1,
+                  backgroundColor: "rgb(249,115,22)",
+                  boxShadow: "0 0 11px rgba(249,115,22,0.95)",
+                }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.65, delay: 0.12 + metricIndex * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                className="h-full origin-left bg-gradient-to-r from-orange-600 to-orange-400"
-                style={{ width: `${metric.value}%` }}
+                transition={{ duration: 0.25, delay: 1.98 + metricIndex * 0.12, ease: "easeOut" }}
+                className="h-2.5 w-2.5 flex-none rounded-full border border-white/10"
               />
             </div>
           </div>
@@ -354,6 +371,7 @@ function EvolutionSystemLoop({ opacity, x }: PanelMotion) {
 
         {evolutionNodes.map((node, nodeIndex) => {
           const firstDotArrival = nodeIndex === 0 ? 0.88 : 0.13 + (nodeIndex - 1) * 0.25;
+          const statusOffStarts = [0.38, 0.63, 0.88, 0.13];
 
           return (
             <motion.div
@@ -378,9 +396,16 @@ function EvolutionSystemLoop({ opacity, x }: PanelMotion) {
             >
               <span className="relative z-30 text-[7px] uppercase tracking-[0.12em] text-white/72">{node.label}</span>
               <motion.span
-                className="relative z-30 mt-1 text-[7px] uppercase tracking-[0.12em] text-white/62"
-                animate={{ opacity: [0.48, 0.88, 0.48] }}
-                transition={{ duration: 3.8 + nodeIndex * 0.4, repeat: Infinity, ease: "easeInOut" }}
+                className={`relative z-30 mt-1 text-[7px] uppercase tracking-[0.12em] ${node.statusColor}`}
+                animate={{ opacity: [0.72, 0, 0, 0.72] }}
+                transition={{
+                  duration: evolutionCycleDuration * 0.5,
+                  delay: statusOffStarts[nodeIndex] * evolutionCycleDuration,
+                  repeat: Infinity,
+                  repeatDelay: evolutionCycleDuration * 0.5,
+                  times: [0, 0.04, 0.96, 1],
+                  ease: "linear",
+                }}
               >
                 {node.status}
               </motion.span>
@@ -388,8 +413,14 @@ function EvolutionSystemLoop({ opacity, x }: PanelMotion) {
           );
         })}
 
-        <div className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 bg-transparent text-center">
-          <span className="text-xl leading-none text-white" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.08em" }}>YOU</span>
+        <div className="absolute left-1/2 top-1/2 z-20 h-8 w-24 -translate-x-1/2 -translate-y-1/2">
+          <Image
+            src="/strider-logo.png"
+            alt="Strider Training Systems"
+            fill
+            sizes="96px"
+            className="object-contain"
+          />
         </div>
       </div>
     </motion.div>

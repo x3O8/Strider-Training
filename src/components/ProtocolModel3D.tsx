@@ -109,7 +109,7 @@ export default function ProtocolModel3D({
     scene.add(modelPivot);
 
     const assessmentLightColor = new THREE.Color(0xff341f);
-    const evolveLightColor = new THREE.Color(0x35ff78);
+    const neutralRimColor = new THREE.Color(0x7189bd);
     const phaseLight = new THREE.DirectionalLight(assessmentLightColor, 0);
     const phaseLightTarget = new THREE.Object3D();
     phaseLight.position.set(0.8, 1.75, 2);
@@ -272,15 +272,19 @@ export default function ProtocolModel3D({
         modelPivot.rotation.y = 0;
 
         const assessmentIntensity = 1 - THREE.MathUtils.smoothstep(easedProgress, 0.12, 0.24);
+        const executionIntensity =
+          THREE.MathUtils.smoothstep(easedProgress, 0.48, 0.56) *
+          (1 - THREE.MathUtils.smoothstep(easedProgress, 0.7, 0.78));
         const evolveIntensity = THREE.MathUtils.smoothstep(easedProgress, 0.72, 0.82);
-        const combinedIntensity = assessmentIntensity + evolveIntensity;
-        const evolveMix = combinedIntensity > 0 ? evolveIntensity / combinedIntensity : 0;
-        const phaseLightY = THREE.MathUtils.lerp(1.35, -0.65, evolveIntensity);
-        phaseLight.color.copy(assessmentLightColor).lerp(evolveLightColor, evolveMix);
+        const redRimMix = Math.max(executionIntensity, evolveIntensity);
+        const phaseLightY = THREE.MathUtils.lerp(1.35, -0.65, easedProgress);
+        phaseLight.color.copy(assessmentLightColor);
+        rimLight.color.copy(neutralRimColor).lerp(assessmentLightColor, redRimMix);
         phaseLight.position.set(0.8, phaseLightY + 0.5, 2);
         phaseLightTarget.position.set(0, phaseLightY - 0.1, 0);
         phaseLightTarget.updateMatrixWorld();
-        phaseLight.intensity = assessmentIntensity * 7.5 + evolveIntensity * 14;
+        phaseLight.intensity =
+          assessmentIntensity * 7.5 + executionIntensity * 10 + evolveIntensity * 14;
       } else {
         modelPivot.rotation.y = reducedMotion ? 0 : idleRotation + smoothedProgress * Math.PI * 1.5;
         phaseLight.intensity = 0;

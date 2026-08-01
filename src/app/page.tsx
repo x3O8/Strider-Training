@@ -15,9 +15,6 @@ const HowWeWorkSticky = dynamic(() => import("@/components/HowWeWorkSticky"), {
 const MeetTheCoachSection = dynamic(() => import("@/components/MeetTheCoachSection"), {
   loading: () => <div className="h-[600px] bg-black" />
 });
-const FeatureSection = dynamic(() => import("@/components/FeatureSection"), {
-  loading: () => <div className="h-[1000px] bg-black" />
-});
 const ProductShowcase = dynamic(() => import("@/components/ProductShowcase"), {
   loading: () => <div className="h-[800px] bg-black" />
 });
@@ -119,9 +116,6 @@ export default function Home() {
           <AboutSection />
           <HowWeWorkSticky preloadModel={heroReady} />
           <MeetTheCoachSection />
-
-          {/* 4. Results You Can Measure — features */}
-          <FeatureSection />
 
           {/* 5. Coaching programs */}
           <ProductShowcase onApply={handleApply} />

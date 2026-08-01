@@ -37,20 +37,18 @@ export default function BlogArchivePage() {
 
         <main className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 pt-32 sm:pt-44 pb-20 sm:pb-32">
           
-          {/* Top Actions */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-14 sm:mb-20">
-            <Link 
-              href="/" 
-              className="inline-flex min-h-11 sm:min-h-0 items-center gap-3 text-[10px] text-white/50 tracking-[0.3em] uppercase group hover:text-white transition-colors"
-            >
-              <div className="w-8 h-8 flex items-center justify-center border border-white/10 group-hover:bg-white group-hover:text-black transition-all">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M19 12H5M12 19l-7-7 7-7" />
-                </svg>
-              </div>
-              Back to Main Page
-            </Link>
+          {/* Page Header */}
+          <div className="mb-16 sm:mb-24">
+            <p className="text-[10px] text-orange-400 tracking-[0.5em] uppercase mb-4" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+              Archive
+            </p>
+            <h1 className="text-[clamp(60px,10vw,140px)] leading-[0.85] text-white" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.02em" }}>
+              KNOWLEDGE<br />HUB.
+            </h1>
+          </div>
 
+          {/* Top Actions */}
+          <div className="flex justify-end mb-14 sm:mb-20">
             <div className="flex w-full flex-col items-start gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-6">
               <span className="text-[10px] text-white/30 tracking-[0.3em] uppercase">Sort by:</span>
               <div className="grid w-full grid-cols-3 gap-1 p-1 bg-white/[0.03] border border-white/10 rounded-full min-[360px]:gap-2 sm:flex sm:w-auto">
@@ -69,16 +67,6 @@ export default function BlogArchivePage() {
                 ))}
               </div>
             </div>
-          </div>
-
-          {/* Page Header */}
-          <div className="mb-16 sm:mb-24">
-            <p className="text-[10px] text-white/30 tracking-[0.5em] uppercase mb-4" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-              Archive
-            </p>
-            <h1 className="text-[clamp(60px,10vw,140px)] leading-[0.85] text-white" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.02em" }}>
-              KNOWLEDGE<br />HUB.
-            </h1>
           </div>
 
           {/* Dynamic Grid using AnimatePresence for smooth transitions */}

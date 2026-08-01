@@ -313,15 +313,7 @@ export default function ClientStoriesPage() {
           }}
         />
         <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-[9px] text-white/25 tracking-[0.3em] uppercase hover:text-white/50 transition-colors duration-200 mb-10"
-            style={{ fontFamily: "var(--font-inter), sans-serif" }}
-          >
-            ← Back to Strider
-          </Link>
-
-          <p className="text-[9px] text-white/25 tracking-[0.5em] uppercase mb-5" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+          <p className="text-[10px] text-orange-400 tracking-[0.5em] uppercase mb-5" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
             Proof. Not Promises.
           </p>
           <h1
@@ -330,25 +322,6 @@ export default function ClientStoriesPage() {
           >
             Client<br />Transformations
           </h1>
-
-          {/* Global stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 border border-white/[0.08] mt-12">
-            {[
-              { val: "3,500+", lbl: "Clients Coached" },
-              { val: "96%",    lbl: "Hit Their Goal" },
-              { val: "avg 12", lbl: "Weeks to Results" },
-              { val: "4.9★",   lbl: "Client Rating"  },
-            ].map((s, i) => (
-              <div key={i} className="px-3 py-8 min-[360px]:px-7 border-r border-b border-white/[0.08] last:border-r-0 md:[&:nth-child(n+3)]:border-b-0 text-center">
-                <p className="text-[clamp(28px,3.5vw,48px)] text-white leading-none mb-1.5" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.04em" }}>
-                  {s.val}
-                </p>
-                <p className="text-[8px] text-white/25 tracking-[0.28em] uppercase" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-                  {s.lbl}
-                </p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
