@@ -8,15 +8,6 @@ export default function MeetTheCoachSection() {
     <section id="founder" className="bg-black py-14 md:py-20 relative border-t border-white/[0.07] overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10">
         <div>
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-[9px] text-white/28 tracking-[0.5em] uppercase mb-5"
-            style={{ fontFamily: "var(--font-inter), sans-serif" }}
-          >
-            Founder • Lead Performance Coach
-          </motion.p>
           <motion.h3
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -96,9 +87,8 @@ export default function MeetTheCoachSection() {
                   className="col-span-2 space-y-4 text-sm text-white/60 leading-relaxed font-light sm:col-auto"
                   style={{ fontFamily: "var(--font-inter), sans-serif" }}
                 >
-                  <p>I&apos;ve always been fascinated by the human body—not simply by how it looks, but by how it moves, adapts, heals, and performs. That curiosity led me into years of studying strength training, biomechanics, nutrition, physiology, and human performance, where one realization became impossible to ignore.</p>
-                  <p>Every individual is different, yet most people are still given the same programs, the same diets, and the same advice. To me, that was never enough.</p>
-                  <p>Strider was built to challenge that idea. Every system begins with the individual, integrating movement, anatomy, nutrition, recovery, health markers, lifestyle, experience, and personal goals into one adaptive framework that evolves over time.</p>
+                  <p>I&apos;ve always been fascinated by the human body, not simply by how it looks, but by how it moves, adapts, heals, and performs. That curiosity led me into years of studying strength training, biomechanics, nutrition, physiology, and human performance, where one realization became impossible to ignore. Every individual is different, yet most people are still given the same programs, the same diets, and the same advice. To me, that was never enough. Strider was built to challenge that idea. Every system begins with the individual, integrating movement, anatomy, nutrition, recovery, health markers, lifestyle, experience, and personal goals into one adaptive framework that evolves over time.</p>
+                  <p></p>
                   <p>As Founder and Lead Performance Coach, my role isn&apos;t simply to prescribe training. It&apos;s to design systems that help people move better, perform at their highest level, and build healthier, more resilient bodies for life.</p>
                 </div>
               </div>

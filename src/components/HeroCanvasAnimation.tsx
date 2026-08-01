@@ -32,7 +32,7 @@ const FADE_END_2 = T3;         // skel fully in at CP3
 // How long each snapping animation takes (ms).
 // Longer = cross-fade fully resolves before user can trigger next scroll.
 const SNAP_DURATION = 850;
-const FIRST_TRANSITION_DURATION = 1050;
+const FIRST_TRANSITION_DURATION = 1250;
 
 const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
@@ -522,7 +522,7 @@ function HeroPlayer({
 
         {/* ── Gradient overlays to blend images into background ──────────────────────────── */}
         <div
-          className="absolute inset-0 pointer-events-none"
+          className="pointer-events-none absolute inset-0 hidden sm:block"
           style={{
             background: `
               linear-gradient(to top, rgba(8,9,13,1) 0%, rgba(8,9,13,1) 5%, rgba(8,9,13,0.6) 20%, transparent 40%),

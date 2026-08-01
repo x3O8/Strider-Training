@@ -69,7 +69,7 @@ export default function ProgramCard({
       {program.badge && (
         <div className="absolute top-3 right-3 z-10">
           <span
-            className="px-2.5 py-1 text-[8px] text-white/50 tracking-[0.22em] uppercase border border-white/12"
+            className="px-2.5 py-1 text-[8px] text-white tracking-[0.22em] uppercase border border-white/20"
             style={{ fontFamily: "var(--font-inter), sans-serif", background: "rgba(0,0,0,0.8)" }}
           >
             {program.badge}
@@ -86,43 +86,34 @@ export default function ProgramCard({
         {/* Title + tagline */}
         <div>
           <h3
-            className="text-2xl text-white leading-none mb-1.5 sm:text-3xl"
+            className="text-2xl font-bold text-white leading-none mb-1.5 sm:text-3xl"
             style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.04em" }}
           >
             {program.name}
           </h3>
           <p
-            className="text-[10px] text-white/55 tracking-[0.22em] uppercase mb-4"
+            className="text-[10px] font-bold text-white tracking-[0.22em] uppercase mb-4"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
             {program.tagline}
           </p>
           <p
-            className="text-sm md:text-[15px] text-white/70 leading-[1.75] border-l border-white/20 pl-4"
+            className="ml-3 border-l border-white/30 pl-5 text-[13px] leading-[1.75] text-white md:ml-5 md:text-sm"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
             {program.description}
           </p>
         </div>
 
-        {/* Short feature tags */}
-        <div>
-          <p
-            className="mb-2 text-[8px] uppercase tracking-[0.24em] text-white/35"
-            style={{ fontFamily: "var(--font-inter), sans-serif" }}
-          >
-            System Components
-          </p>
-          <div className="flex flex-wrap gap-1.5">
-            {program.features.map((f) => (
-              <span
-                key={f}
-                className="text-[8px] text-white/28 tracking-[0.14em] uppercase border border-white/9 px-2.5 py-1"
-                style={{ fontFamily: "var(--font-inter), sans-serif" }}
-              >
-                {f}
-              </span>
-            ))}
+        {/* Primary programme outcomes */}
+        <div className="space-y-5 border-y border-white/[0.1] py-5">
+          <div>
+            <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-white" style={{ fontFamily: "var(--font-inter), sans-serif" }}>Ideal for</p>
+            <p className="ml-3 border-l border-white/20 pl-5 text-[10px] leading-[1.75] text-white md:ml-5 md:text-[11px]" style={{ fontFamily: "var(--font-inter), sans-serif" }}>{program.forWho}</p>
+          </div>
+          <div>
+            <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-white" style={{ fontFamily: "var(--font-inter), sans-serif" }}>Results</p>
+            <p className="ml-3 border-l border-white/20 pl-5 text-[10px] leading-[1.75] text-white md:ml-5 md:text-[11px]" style={{ fontFamily: "var(--font-inter), sans-serif" }}>{program.resultsTimeline}</p>
           </div>
         </div>
 
@@ -130,7 +121,7 @@ export default function ProgramCard({
         <div>
           <button
             onClick={onToggle}
-            className="flex min-h-11 sm:min-h-0 items-center gap-2 text-[9px] text-white/35 tracking-[0.2em] uppercase hover:text-white/60 transition-colors duration-200 mb-3"
+            className="mb-3 flex min-h-11 items-center gap-2 text-[9px] font-bold uppercase tracking-[0.2em] text-white transition-colors duration-200 sm:min-h-0"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
             <motion.span
@@ -151,12 +142,12 @@ export default function ProgramCard({
                 transition={{ duration: 0.3 }}
                 className="overflow-hidden"
               >
-                <ul className="space-y-2 mb-4">
+                <ul className="mb-4 ml-3 space-y-2 border-l border-white/20 pl-5 md:ml-5">
                   {program.includes.map((item, i) => (
                     <li key={i} className="flex items-start gap-2">
-                      <span className="mt-1 text-white/25 text-[9px] flex-shrink-0">✓</span>
+                      <span className="mt-1 text-white text-[9px] flex-shrink-0">✓</span>
                       <span
-                        className="text-[10px] text-white/32 leading-snug"
+                        className="text-[9px] text-white leading-snug md:text-[10px]"
                         style={{ fontFamily: "var(--font-inter), sans-serif" }}
                       >
                         {item}
@@ -165,24 +156,37 @@ export default function ProgramCard({
                   ))}
                 </ul>
 
-                {/* Extra meta */}
+                {/* Commitment */}
                 <div className="space-y-2 pt-3 border-t border-white/[0.06]">
-                  <div className="flex gap-2 items-start">
-                    <span className="text-[8px] text-white/22 tracking-[0.2em] uppercase mt-0.5" style={{ fontFamily: "var(--font-inter), sans-serif" }}>Ideal for</span>
-                    <span className="text-[10px] text-white/35 leading-snug flex-1" style={{ fontFamily: "var(--font-inter), sans-serif" }}>{program.forWho}</span>
-                  </div>
-                  <div className="flex gap-2 items-start">
-                    <span className="text-[8px] text-white/22 tracking-[0.2em] uppercase mt-0.5 flex-shrink-0" style={{ fontFamily: "var(--font-inter), sans-serif" }}>Results</span>
-                    <span className="text-[10px] text-white/35 leading-snug flex-1" style={{ fontFamily: "var(--font-inter), sans-serif" }}>{program.resultsTimeline}</span>
-                  </div>
-                  <div className="flex gap-2 items-start">
-                    <span className="text-[8px] text-white/22 tracking-[0.2em] uppercase mt-0.5 flex-shrink-0" style={{ fontFamily: "var(--font-inter), sans-serif" }}>Recommended commitment</span>
-                    <span className="text-[10px] text-white/35 leading-snug flex-1" style={{ fontFamily: "var(--font-inter), sans-serif" }}>{program.commitment}</span>
+                  <div className="flex flex-col items-start gap-2">
+                    <span className="text-[8px] font-bold text-white tracking-[0.2em] uppercase mt-0.5 flex-shrink-0" style={{ fontFamily: "var(--font-inter), sans-serif" }}>Recommended commitment</span>
+                    <span className="ml-3 border-l border-white/20 pl-5 text-[9px] leading-snug text-white md:ml-5 md:text-[10px]" style={{ fontFamily: "var(--font-inter), sans-serif" }}>{program.commitment}</span>
                   </div>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
+        </div>
+
+        {/* System components */}
+        <div>
+          <p
+            className="mb-2 text-[9px] font-bold uppercase tracking-[0.24em] text-white"
+            style={{ fontFamily: "var(--font-inter), sans-serif" }}
+          >
+            System Components
+          </p>
+          <div className="ml-3 flex flex-wrap gap-1.5 border-l border-white/20 pl-5 md:ml-5">
+            {program.features.map((feature) => (
+              <span
+                key={feature}
+                className="border border-white/20 px-2.5 py-1 text-[7px] uppercase tracking-[0.14em] text-white md:text-[8px]"
+                style={{ fontFamily: "var(--font-inter), sans-serif" }}
+              >
+                {feature}
+              </span>
+            ))}
+          </div>
         </div>
 
         {/* Price + CTA */}
@@ -195,7 +199,7 @@ export default function ProgramCard({
               {program.price}
             </span>
             <span
-              className="text-[10px] text-white/28 ml-1"
+              className="ml-1 text-[10px] text-white"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
               {program.per}

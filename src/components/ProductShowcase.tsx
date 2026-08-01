@@ -23,19 +23,19 @@ export default function ProductShowcase({ onApply }: { onApply: (goal: string) =
           className="flex flex-col gap-4"
         >
           <p
-            className="text-[9px] text-white/30 tracking-[0.5em] uppercase"
+            className="text-[9px] font-bold text-white tracking-[0.5em] uppercase"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
             Your Journey Starts Here
           </p>
           <h2
-            className="whitespace-nowrap text-[clamp(34px,9vw,52px)] text-white leading-none sm:text-[clamp(52px,8vw,110px)]"
+            className="whitespace-nowrap text-[clamp(34px,9vw,52px)] font-bold text-white leading-none sm:text-[clamp(52px,8vw,110px)]"
             style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
           >
             Become a Strider.
           </h2>
           <p
-            className="max-w-3xl text-sm font-light leading-[1.8] text-white/55"
+            className="max-w-2xl self-end text-right text-xs leading-[1.8] text-white md:text-[13px]"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
             People don&apos;t join Strider to just train. They join Strider to become healthier, stronger, more capable, and ready for whatever life demands. Every journey begins with an assessment and an individualized system that evolves with you over time.
@@ -72,7 +72,7 @@ export default function ProductShowcase({ onApply }: { onApply: (goal: string) =
         >
           <a
             href="/#contact"
-            className="inline-block px-12 py-3.5 border border-white/18 text-[10px] text-white/45 tracking-[0.3em] uppercase hover:border-white/45 hover:text-white/75 transition-all duration-300"
+            className="inline-block px-12 py-3.5 border border-white/30 text-[10px] text-white tracking-[0.3em] uppercase hover:border-white/60 transition-all duration-300"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
             Discuss Custom Plans →

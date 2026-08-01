@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import type { MotionValue } from "framer-motion";
 
@@ -84,6 +84,16 @@ const workoutPlan = [
   { day: "Sat", session: "Restore", detail: "Mobility · Recovery" },
 ];
 
+const evolutionNodes = [
+  { label: "Assessment", status: "82%", position: "left-1/2 top-0 -translate-x-1/2" },
+  { label: "Blueprint", status: "Ready", position: "right-0 top-1/2 -translate-y-1/2 min-[360px]:-right-[9px]" },
+  { label: "Execution", status: "Active", position: "bottom-0 left-1/2 -translate-x-1/2" },
+  { label: "Evolution", status: "+2.4%", position: "left-0 top-1/2 -translate-y-1/2 min-[360px]:-left-[9px]" },
+];
+
+const evolutionDots = Array.from({ length: 6 }, (_, index) => index);
+const evolutionCycleDuration = 12;
+
 const glassPanelClass =
   "relative mt-5 w-full max-w-[330px] overflow-hidden rounded-[18px] border border-white/[0.16] bg-[linear-gradient(145deg,rgba(25,25,29,0.72),rgba(3,3,5,0.48))] p-4 text-left shadow-[0_28px_90px_rgba(0,0,0,0.62),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl min-[360px]:p-5 md:mt-0 md:p-6";
 
@@ -149,7 +159,39 @@ function AssessmentReport({ opacity, x }: PanelMotion) {
   );
 }
 
-function BlueprintAnalysis({ opacity, x }: PanelMotion) {
+function BlueprintAnalysis({ opacity, x, progress }: PanelMotion & { progress: MotionValue<number> }) {
+  const [generationStatus, setGenerationStatus] = useState<"idle" | "generating" | "complete">("idle");
+  const [generationCycle, setGenerationCycle] = useState(0);
+  const generationTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const phaseActiveRef = useRef(false);
+
+  useEffect(() => {
+    const updateGeneration = (value: number) => {
+      const isBlueprintPhase = value >= 0.245 && value < 0.52;
+
+      if (isBlueprintPhase && !phaseActiveRef.current) {
+        phaseActiveRef.current = true;
+        setGenerationCycle((cycle) => cycle + 1);
+        setGenerationStatus("generating");
+        generationTimerRef.current = setTimeout(() => {
+          setGenerationStatus("complete");
+        }, 2200);
+      } else if (!isBlueprintPhase && phaseActiveRef.current) {
+        phaseActiveRef.current = false;
+        if (generationTimerRef.current) clearTimeout(generationTimerRef.current);
+        generationTimerRef.current = undefined;
+      }
+    };
+
+    updateGeneration(progress.get());
+    const unsubscribe = progress.on("change", updateGeneration);
+
+    return () => {
+      unsubscribe();
+      if (generationTimerRef.current) clearTimeout(generationTimerRef.current);
+    };
+  }, [progress]);
+
   return (
     <motion.div
       className={`${glassPanelClass} md:absolute md:right-[calc(100%+4rem)] md:top-0 md:w-[340px] md:max-w-none xl:right-[calc(93vw-380px)]`}
@@ -181,8 +223,38 @@ function BlueprintAnalysis({ opacity, x }: PanelMotion) {
         transition={{ duration: 0.45, delay: 0.9 }}
         className="relative mt-5 border-t border-white/10 pt-4"
       >
-        <p className="text-[8px] uppercase tracking-[0.28em] text-white/35">Output</p>
-        <p className="mt-1 text-[10px] uppercase tracking-[0.18em] text-blue-300/85">Adaptive Performance System</p>
+        <div className="flex items-center justify-between gap-4">
+          <p className="text-[8px] uppercase tracking-[0.28em] text-white/35">Output</p>
+          <motion.p
+            key={generationStatus}
+            initial={{ opacity: 0, y: 3 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`text-right text-[8px] uppercase tracking-[0.14em] ${
+              generationStatus === "complete" ? "text-emerald-400" : "text-blue-300/85"
+            }`}
+          >
+            {generationStatus === "complete" ? "Adaptive Blueprint Generated" : "Generating..."}
+          </motion.p>
+        </div>
+        <div className="mt-3 h-px overflow-hidden bg-white/10">
+          <motion.div
+            key={generationCycle}
+            className={`h-full origin-left ${generationStatus === "complete" ? "bg-emerald-400" : "bg-blue-400"}`}
+            initial={{ scaleX: 0 }}
+            animate={
+              generationStatus === "complete"
+                ? { scaleX: 1, opacity: 1 }
+                : generationStatus === "generating"
+                  ? { scaleX: 0.94, opacity: 1 }
+                  : { scaleX: 0, opacity: 0 }
+            }
+            transition={
+              generationStatus === "generating"
+                ? { duration: 2.1, ease: "linear" }
+                : { duration: 0.45, ease: [0.22, 1, 0.36, 1] }
+            }
+          />
+        </div>
       </motion.div>
     </motion.div>
   );
@@ -224,6 +296,106 @@ function ExecuteWorkoutPlan({ opacity, x }: PanelMotion) {
   );
 }
 
+function EvolutionSystemLoop({ opacity, x }: PanelMotion) {
+  return (
+    <motion.div
+      className={`${glassPanelClass} md:absolute md:bottom-0 md:right-[calc(100%+4rem)] md:w-[350px] md:max-w-none xl:right-[calc(93vw-390px)]`}
+      style={{ opacity, x }}
+    >
+      <GlassHighlights />
+      <div className="relative mb-4 border-b border-white/10 pb-4">
+        <p className="text-[8px] uppercase tracking-[0.34em] text-white/40">System evolution</p>
+        <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/75">Continuous optimization loop</p>
+      </div>
+
+      <div className="relative mx-auto aspect-square w-[240px] max-w-full min-[360px]:w-[280px]">
+        <svg aria-hidden="true" viewBox="0 0 280 280" className="absolute inset-0 z-10 h-full w-full overflow-visible">
+          <circle cx="140" cy="140" r="112" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1" />
+          {evolutionDots.map((dotIndex) => {
+            const stagger = (dotIndex + 1) * 0.01;
+            const travel = 0.12;
+
+            return (
+              <motion.circle
+                key={dotIndex}
+                cx="140"
+                cy="28"
+                r={2.8 + dotIndex * 0.1}
+                fill={`rgba(255,255,255,${0.68 + dotIndex * 0.06})`}
+                stroke="rgba(255,255,255,0.92)"
+                strokeWidth="0.45"
+                animate={{ rotate: [0, 0, 90, 90, 180, 180, 270, 270, 360, 360] }}
+                transition={{
+                  duration: evolutionCycleDuration,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  times: [
+                    0,
+                    stagger,
+                    travel + stagger,
+                    0.25 + stagger,
+                    0.25 + travel + stagger,
+                    0.5 + stagger,
+                    0.5 + travel + stagger,
+                    0.75 + stagger,
+                    0.75 + travel + stagger,
+                    1,
+                  ],
+                }}
+                style={{
+                  transformBox: "view-box",
+                  transformOrigin: "140px 140px",
+                  filter: "drop-shadow(0 0 4px rgba(255,255,255,0.95))",
+                }}
+              />
+            );
+          })}
+        </svg>
+
+        {evolutionNodes.map((node, nodeIndex) => {
+          const firstDotArrival = nodeIndex === 0 ? 0.88 : 0.13 + (nodeIndex - 1) * 0.25;
+
+          return (
+            <motion.div
+              key={node.label}
+              className={`absolute z-20 flex h-[56px] w-[74px] flex-col items-center justify-center rounded-xl border border-white/15 bg-black text-center shadow-none min-[360px]:w-[74px] ${node.position}`}
+              animate={{
+                scale: [1, 1, 1.045, 1, 1],
+                borderColor: [
+                  "rgba(255,255,255,0.15)",
+                  "rgba(255,255,255,0.15)",
+                  "rgba(255,255,255,0.72)",
+                  "rgba(255,255,255,0.24)",
+                  "rgba(255,255,255,0.15)",
+                ],
+              }}
+              transition={{
+                duration: evolutionCycleDuration,
+                repeat: Infinity,
+                ease: "linear",
+                times: [0, firstDotArrival - 0.015, firstDotArrival, firstDotArrival + 0.05, 1],
+              }}
+            >
+              <span className="relative z-30 text-[7px] uppercase tracking-[0.12em] text-white/72">{node.label}</span>
+              <motion.span
+                className="relative z-30 mt-1 text-[7px] uppercase tracking-[0.12em] text-white/62"
+                animate={{ opacity: [0.48, 0.88, 0.48] }}
+                transition={{ duration: 3.8 + nodeIndex * 0.4, repeat: Infinity, ease: "easeInOut" }}
+              >
+                {node.status}
+              </motion.span>
+            </motion.div>
+          );
+        })}
+
+        <div className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 bg-transparent text-center">
+          <span className="text-xl leading-none text-white" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.08em" }}>YOU</span>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 function PhaseOverlay({
   phase,
   index,
@@ -247,13 +419,19 @@ function PhaseOverlay({
   const rightAligned = index % 2 === 1;
   const panelInput = isFirst
     ? [0, exit - 0.11, exit + 0.01]
-    : [entry - 0.03, entry + 0.018, exit - 0.1, exit + 0.01];
-  const panelOpacity = useTransform(progress, panelInput, isFirst ? [1, 1, 0] : [0, 1, 1, 0]);
+    : isLast
+      ? [entry - 0.03, entry + 0.018, 1]
+      : [entry - 0.03, entry + 0.018, exit - 0.1, exit + 0.01];
+  const panelOpacity = useTransform(
+    progress,
+    panelInput,
+    isFirst ? [1, 1, 0] : isLast ? [0, 1, 1] : [0, 1, 1, 0]
+  );
   const panelOffset = rightAligned ? -22 : 22;
   const panelX = useTransform(
     progress,
     panelInput,
-    isFirst ? [0, 0, panelOffset] : [panelOffset, 0, 0, panelOffset]
+    isFirst ? [0, 0, panelOffset] : isLast ? [panelOffset, 0, 0] : [panelOffset, 0, 0, panelOffset]
   );
 
   return (
@@ -283,8 +461,9 @@ function PhaseOverlay({
           {phase.description}
         </p>
         {isFirst && <AssessmentReport opacity={panelOpacity} x={panelX} />}
-        {index === 1 && <BlueprintAnalysis opacity={panelOpacity} x={panelX} />}
+        {index === 1 && <BlueprintAnalysis opacity={panelOpacity} x={panelX} progress={progress} />}
         {index === 2 && <ExecuteWorkoutPlan opacity={panelOpacity} x={panelX} />}
+        {isLast && <EvolutionSystemLoop opacity={panelOpacity} x={panelX} />}
     </motion.div>
   );
 }

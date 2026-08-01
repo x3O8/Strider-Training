@@ -9,19 +9,19 @@ function PremiumIcon({ type }: { type: FeatureHighlight["icon"] }) {
   if (type === "credential") {
     return (
       <svg aria-hidden="true" viewBox="0 0 32 32" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M16 3.5 25 7v7.2c0 6.1-3.6 10.9-9 14.3-5.4-3.4-9-8.2-9-14.3V7l9-3.5Z" />
-        <path d="m11.5 15.7 3 3 6.3-6.5" />
+        <circle cx="16" cy="10" r="3.4" />
+        <path d="M10.2 26.5c.5-6.5 2.5-10 5.8-10s5.3 3.5 5.8 10" />
+        <path d="M5.5 11V6.5H10M22 6.5h4.5V11M5.5 21v4.5H10M22 25.5h4.5V21" />
       </svg>
     );
   }
 
   if (type === "plan") {
     return (
-      <svg aria-hidden="true" viewBox="0 0 32 32" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round">
-        <path d="M5 8h8M19 8h8M5 16h15M25 16h2M5 24h4M15 24h12" />
-        <circle cx="16" cy="8" r="3" />
-        <circle cx="23" cy="16" r="3" />
-        <circle cx="12" cy="24" r="3" />
+      <svg aria-hidden="true" viewBox="0 0 32 32" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M25.7 12A10.5 10.5 0 0 0 7.8 8.5L5 11.5M5 6v5.5h5.5" />
+        <path d="M6.3 20A10.5 10.5 0 0 0 24.2 23.5l2.8-3M27 26v-5.5h-5.5" />
+        <path d="m10.5 18 3.4-3.8 3.1 2.6 4.7-5.2" />
       </svg>
     );
   }
@@ -29,17 +29,18 @@ function PremiumIcon({ type }: { type: FeatureHighlight["icon"] }) {
   if (type === "analytics") {
     return (
       <svg aria-hidden="true" viewBox="0 0 32 32" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M5 5v22h22" />
-        <path d="m8 22 5.2-5.5 4.2 2.7L25 10" />
-        <path d="M20.5 10H25v4.5" />
+        <path d="M5.5 5.5v21h21" />
+        <path d="M9 22v-4M14 22v-8M19 22v-5.5M24 22V10" />
+        <path d="m8.5 14 5-4 5 2 6-6" />
       </svg>
     );
   }
 
   return (
     <svg aria-hidden="true" viewBox="0 0 32 32" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M6 6.5h20a2.5 2.5 0 0 1 2.5 2.5v11a2.5 2.5 0 0 1-2.5 2.5H15l-6.5 5v-5H6A2.5 2.5 0 0 1 3.5 20V9A2.5 2.5 0 0 1 6 6.5Z" />
-      <path d="M10 13h12M10 17h8" />
+      <circle cx="16" cy="16" r="4" />
+      <path d="M13.2 13.2 8.5 8.5M18.8 13.2l4.7-4.7M18.8 18.8l4.7 4.7M13.2 18.8l-4.7 4.7" />
+      <path d="M5.5 5.5h6v6h-6zM20.5 5.5h6v6h-6zM20.5 20.5h6v6h-6zM5.5 20.5h6v6h-6z" />
     </svg>
   );
 }
