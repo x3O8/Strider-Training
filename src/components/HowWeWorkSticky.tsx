@@ -87,9 +87,9 @@ const workoutPlan = [
 
 const evolutionNodes = [
   { label: "Assessment", status: "Analyzed", statusColor: "text-emerald-400", position: "left-1/2 top-0 -translate-x-1/2" },
-  { label: "Blueprint", status: "Ready", statusColor: "text-sky-400", position: "right-0 top-1/2 -translate-y-1/2 min-[360px]:-right-[9px]" },
+  { label: "Blueprint", status: "Ready", statusColor: "text-emerald-400", position: "right-0 top-1/2 -translate-y-1/2 min-[360px]:-right-[9px]" },
   { label: "Execution", status: "Active", statusColor: "text-emerald-400", position: "bottom-0 left-1/2 -translate-x-1/2" },
-  { label: "Adaptation", status: "Achieved", statusColor: "text-red-400", position: "left-0 top-1/2 -translate-y-1/2 min-[360px]:-left-[9px]" },
+  { label: "Adaptation", status: "Achieved", statusColor: "text-emerald-400", position: "left-0 top-1/2 -translate-y-1/2 min-[360px]:-left-[9px]" },
 ];
 
 const evolutionDots = Array.from({ length: 6 }, (_, index) => index);
@@ -113,6 +113,19 @@ function GlassHighlights() {
 }
 
 function AssessmentReport({ opacity, x }: PanelMotion) {
+  const [metricTimings, setMetricTimings] = useState(() =>
+    assessmentMetrics.map((_, index) => ({ duration: 1.8, delay: 0.18 + index * 0.12 }))
+  );
+
+  useEffect(() => {
+    setMetricTimings(
+      assessmentMetrics.map(() => ({
+        duration: 1.4 + Math.random() * 1.2,
+        delay: 0.12 + Math.random() * 0.9,
+      }))
+    );
+  }, []);
+
   return (
     <motion.div
       className={`${glassPanelClass} md:absolute md:bottom-0 md:left-[calc(100%+4rem)] md:w-[340px] md:max-w-none xl:left-[calc(82vw-380px)]`}
@@ -136,7 +149,10 @@ function AssessmentReport({ opacity, x }: PanelMotion) {
         </div>
       </div>
       <div className="relative grid grid-cols-2 gap-x-5 gap-y-4 md:grid-cols-1">
-        {assessmentMetrics.map((metric, metricIndex) => (
+        {assessmentMetrics.map((metric, metricIndex) => {
+          const timing = metricTimings[metricIndex];
+
+          return (
           <div key={metric.label} className={metricIndex >= 3 ? "hidden md:block" : undefined}>
             <div className="mb-1.5 text-[8px] uppercase tracking-[0.16em] text-white/45">
               <span>{metric.label}</span>
@@ -147,7 +163,7 @@ function AssessmentReport({ opacity, x }: PanelMotion) {
                   initial={{ scaleX: 0 }}
                   whileInView={{ scaleX: 1 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 1.8, delay: 0.18 + metricIndex * 0.12, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: timing.duration, delay: timing.delay, ease: "linear" }}
                   className="h-full w-full origin-left bg-gradient-to-r from-orange-600 to-orange-400"
                 />
               </div>
@@ -165,12 +181,13 @@ function AssessmentReport({ opacity, x }: PanelMotion) {
                   boxShadow: "0 0 11px rgba(249,115,22,0.95)",
                 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.25, delay: 1.98 + metricIndex * 0.12, ease: "easeOut" }}
+                transition={{ duration: 0.08, delay: timing.delay + timing.duration, ease: "linear" }}
                 className="h-2.5 w-2.5 flex-none rounded-full border border-white/10"
               />
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
     </motion.div>
   );

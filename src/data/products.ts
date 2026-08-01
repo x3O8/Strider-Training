@@ -67,7 +67,7 @@ export const coachingPrograms: CoachingProgram[] = [
     forWho: "Athletes, competitors, martial artists, endurance athletes, and individuals pursuing the highest levels of physical performance, precision, and accountability.",
     resultsTimeline: "Develop the strength, power, endurance, resilience, and movement efficiency required to consistently perform at your highest level while reducing injury risk and maximizing long-term athletic development.",
     commitment: "Program duration is based on your performance goals or competitive calendar. A minimum three-month commitment is recommended for meaningful adaptation and measurable progress.",
-    image: "/unsplash/compprep.jpg",
+    image: "/athlete/performance-boxing.jpg",
   }
 ];
 

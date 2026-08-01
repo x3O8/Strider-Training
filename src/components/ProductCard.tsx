@@ -14,7 +14,7 @@ function ProgramVisual({ program, index }: { program: CoachingProgram; index: nu
         alt={program.name}
         fill
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        className="object-cover opacity-60 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out group-hover:opacity-80"
+        className={`object-cover opacity-60 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out group-hover:opacity-80 ${program.id === "competition-prep" ? "object-top" : "object-center"}`}
       />
       {/* Dark gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/20 to-transparent pointer-events-none" />
