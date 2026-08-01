@@ -244,9 +244,9 @@ function BlueprintAnalysis({ opacity, x, progress }: PanelMotion & { progress: M
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.12 + itemIndex * 0.08 }}
-            className="border-l border-blue-400/55 pl-3"
+            className="border-l border-orange-400/55 pl-3"
           >
-            <p className="text-[9px] uppercase tracking-[0.16em] text-blue-300/85">{input}</p>
+            <p className="text-[9px] uppercase tracking-[0.16em] text-orange-300/85">{input}</p>
           </motion.div>
         ))}
       </div>
@@ -264,7 +264,7 @@ function BlueprintAnalysis({ opacity, x, progress }: PanelMotion & { progress: M
             initial={{ opacity: 0, y: 3 }}
             animate={{ opacity: 1, y: 0 }}
             className={`text-right text-[8px] uppercase tracking-[0.14em] ${
-              generationStatus === "complete" ? "text-emerald-400" : "text-blue-300/85"
+              generationStatus === "complete" ? "text-emerald-400" : "text-orange-300/85"
             }`}
           >
             {generationStatus === "complete" ? "Adaptive Blueprint Generated" : "Generating..."}
@@ -273,7 +273,7 @@ function BlueprintAnalysis({ opacity, x, progress }: PanelMotion & { progress: M
         <div className="mt-3 h-px overflow-hidden bg-white/10">
           <motion.div
             key={generationCycle}
-            className={`h-full origin-left ${generationStatus === "complete" ? "bg-emerald-400" : "bg-blue-400"}`}
+            className={`h-full origin-left ${generationStatus === "complete" ? "bg-emerald-400" : "bg-orange-400"}`}
             initial={{ scaleX: 0 }}
             animate={
               generationStatus === "complete"

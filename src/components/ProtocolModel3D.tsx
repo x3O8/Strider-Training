@@ -272,11 +272,14 @@ export default function ProtocolModel3D({
         modelPivot.rotation.y = 0;
 
         const assessmentIntensity = 1 - THREE.MathUtils.smoothstep(easedProgress, 0.12, 0.24);
+        const blueprintIntensity =
+          THREE.MathUtils.smoothstep(easedProgress, 0.2, 0.28) *
+          (1 - THREE.MathUtils.smoothstep(easedProgress, 0.48, 0.56));
         const executionIntensity =
           THREE.MathUtils.smoothstep(easedProgress, 0.48, 0.56) *
           (1 - THREE.MathUtils.smoothstep(easedProgress, 0.7, 0.78));
         const evolveIntensity = THREE.MathUtils.smoothstep(easedProgress, 0.72, 0.82);
-        const redRimMix = Math.max(executionIntensity, evolveIntensity);
+        const redRimMix = Math.max(blueprintIntensity, executionIntensity, evolveIntensity);
         const phaseLightY = THREE.MathUtils.lerp(1.35, -0.65, easedProgress);
         phaseLight.color.copy(assessmentLightColor);
         rimLight.color.copy(neutralRimColor).lerp(assessmentLightColor, redRimMix);
@@ -284,7 +287,10 @@ export default function ProtocolModel3D({
         phaseLightTarget.position.set(0, phaseLightY - 0.1, 0);
         phaseLightTarget.updateMatrixWorld();
         phaseLight.intensity =
-          assessmentIntensity * 7.5 + executionIntensity * 10 + evolveIntensity * 14;
+          assessmentIntensity * 7.5 +
+          blueprintIntensity * 9 +
+          executionIntensity * 10 +
+          evolveIntensity * 14;
       } else {
         modelPivot.rotation.y = reducedMotion ? 0 : idleRotation + smoothedProgress * Math.PI * 1.5;
         phaseLight.intensity = 0;

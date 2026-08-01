@@ -98,7 +98,7 @@ export default function ProgramCard({
             {program.tagline}
           </p>
           <p
-            className="ml-3 border-l border-white/30 pl-5 text-[13px] leading-[1.75] text-white md:ml-5 md:text-sm"
+            className="ml-3 border-l border-white/30 pl-5 text-[10px] leading-[1.75] text-white md:ml-5 md:text-[11px]"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
             {program.description}
