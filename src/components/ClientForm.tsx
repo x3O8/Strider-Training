@@ -86,7 +86,7 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
               className="text-[10px] text-white tracking-[0.5em] uppercase mb-5"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              Start Your Journey
+              Your Next Step
             </motion.p>
 
             <motion.h2
@@ -97,7 +97,7 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
               className="text-[clamp(52px,8vw,110px)] text-white leading-none mb-8"
               style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
             >
-              Ready to<br />Transform?
+              Request Your Free<br />{" "}Consultation.
             </motion.h2>
 
             <motion.div
@@ -111,15 +111,14 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
                 className="text-base text-white leading-[1.9]"
                 style={{ fontFamily: "var(--font-inter), sans-serif" }}
               >
-                Fill in your details and one of our coaches will reach out within 24 hours
-                to schedule your free consultation call. No commitment, just a conversation
-                about your goals.
+                Complete the form below and tell us about your goals, training experience, lifestyle, and any injuries or challenges you&apos;re working through. A Strider Performance Coach will personally review your inquiry and contact you within 24 hours to schedule your complimentary consultation.
               </p>
 
               {/* Promises */}
               {[
-                "Free 30-minute consultation with a certified coach",
-                "Transparent pricing — no hidden fees",
+                "Complimentary 30-minute consultation with a Strider Performance Coach",
+                "Personalized recommendations based on your goals and current condition",
+                "Transparent pricing and clear expectations — no pressure, no obligations",
               ].map((p, i) => (
                 <motion.div
                   key={i}
@@ -169,8 +168,8 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
                     className="text-xs text-white/70 leading-relaxed max-w-sm"
                     style={{ fontFamily: "var(--font-inter), sans-serif" }}
                   >
-                    Your application has been received. A Strider coach will contact you
-                    within 24 hours to schedule your free consultation.
+                    Your inquiry has been received. A Strider Performance Coach will contact you
+                    within 24 hours to schedule your complimentary consultation.
                   </p>
                 </motion.div>
               ) : (
@@ -318,7 +317,7 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
                         Submitting…
                       </>
                     ) : (
-                      "Begin My Transformation →"
+                      "Request Free Consultation →"
                     )}
                   </motion.button>
 

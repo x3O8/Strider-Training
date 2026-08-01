@@ -124,18 +124,24 @@ export default function BlogSection() {
               Knowledge Hub
             </p>
             <h2
-              className="whitespace-nowrap text-[clamp(26px,7.5vw,48px)] text-white leading-none sm:text-[clamp(48px,8vw,105px)]"
+              className="text-[clamp(34px,10vw,48px)] text-white leading-[0.95] sm:text-[clamp(48px,6.5vw,88px)]"
               style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
             >
-              From the Coaches Brain
+              Learn the Science of Human Performance.
             </h2>
+            <p
+              className="mt-5 max-w-3xl text-sm font-light leading-[1.8] text-white/48"
+              style={{ fontFamily: "var(--font-inter), sans-serif" }}
+            >
+              Better performance begins with better understanding. Explore evidence-based articles, practical guides, and insights from Strider Training Systems covering training, nutrition, recovery, movement, longevity, and the science of human performance.
+            </p>
           </div>
           <Link
             href="/blog"
             className="inline-flex min-h-11 sm:min-h-0 items-center gap-2 text-[10px] text-white/35 tracking-[0.25em] uppercase border border-white/14 px-6 py-3 hover:border-white/40 hover:text-white/70 transition-all duration-300 self-start md:self-auto"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            All articles →
+            Explore Knowledge Hub →
           </Link>
         </motion.div>
 

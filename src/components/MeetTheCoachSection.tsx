@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function MeetTheCoachSection() {
   return (
-    <section className="bg-black py-14 md:py-20 relative border-t border-white/[0.07] overflow-hidden">
+    <section id="founder" className="bg-black py-14 md:py-20 relative border-t border-white/[0.07] overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10">
         <div>
           <motion.p
@@ -15,7 +15,7 @@ export default function MeetTheCoachSection() {
             className="text-[9px] text-white/28 tracking-[0.5em] uppercase mb-5"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Coaches Notes
+            Founder • Lead Performance Coach
           </motion.p>
           <motion.h3
             initial={{ opacity: 0, y: 20 }}
@@ -24,7 +24,7 @@ export default function MeetTheCoachSection() {
             className="text-[clamp(40px,6vw,80px)] text-white leading-none mb-10 md:mb-12"
             style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
           >
-            Meet Your Coach
+            Why I Built Strider
           </motion.h3>
 
           <div className="relative bg-[#080808] border border-white/[0.1] p-5 min-[360px]:p-6 sm:p-8 md:p-12 overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
@@ -70,31 +70,37 @@ export default function MeetTheCoachSection() {
                     className="mb-4 text-[10px] uppercase tracking-[0.16em] text-white/60 min-[360px]:text-[11px] sm:mb-6 sm:text-[12px] sm:tracking-[0.2em]"
                     style={{ fontFamily: "var(--font-inter), sans-serif" }}
                   >
-                    Performance Coaching
+                    Founder • Lead Performance Coach
+                  </p>
+
+                  <p
+                    className="mb-4 text-[10px] uppercase tracking-[0.18em] text-orange-400/80 sm:mb-6 sm:text-[11px]"
+                    style={{ fontFamily: "var(--font-inter), sans-serif" }}
+                  >
+                    14+ Years in Human Performance
                   </p>
 
                   <div className="flex flex-col gap-2.5 sm:mb-8 sm:gap-3">
-                    <div className="flex items-center gap-2.5 sm:gap-3">
-                      <span className="w-1.5 h-1.5 rounded-full bg-white/40 flex-shrink-0" />
-                      <span className="text-xs text-white/70 tracking-wide sm:text-sm" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-                        Strength and Conditioning
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2.5 sm:gap-3">
-                      <span className="w-1.5 h-1.5 rounded-full bg-white/40 flex-shrink-0" />
-                      <span className="text-xs text-white/70 tracking-wide sm:text-sm" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-                        Mobility and Injury Prevention
-                      </span>
-                    </div>
+                    {["Human Performance Systems", "Strength & Conditioning", "Movement & Biomechanics", "Health & Longevity"].map((speciality) => (
+                      <div key={speciality} className="flex items-center gap-2.5 sm:gap-3">
+                        <span className="w-1.5 h-1.5 rounded-full bg-white/40 flex-shrink-0" />
+                        <span className="text-xs text-white/70 tracking-wide sm:text-sm" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+                          {speciality}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
-                <p
-                  className="col-span-2 text-sm text-white/60 leading-relaxed font-light sm:col-auto"
+                <div
+                  className="col-span-2 space-y-4 text-sm text-white/60 leading-relaxed font-light sm:col-auto"
                   style={{ fontFamily: "var(--font-inter), sans-serif" }}
                 >
-                  Ashik Divakaran brings a comprehensive, science-backed approach to human performance. By integrating elite strength principles with deep biomechanical analysis, Ashik aims not only to maximize your physical output but to fortify your body against injuries. Whether you are an athlete preparing for your next critical competition, or simply looking to restructure your general fitness for the long term, Ashik’s methodology breaks down limitations and guarantees sustainable peak performance. Every protocol is tailored to adapt dynamically as you evolve, ensuring that your training matches the demands of your unique anatomy.
-                </p>
+                  <p>I&apos;ve always been fascinated by the human body—not simply by how it looks, but by how it moves, adapts, heals, and performs. That curiosity led me into years of studying strength training, biomechanics, nutrition, physiology, and human performance, where one realization became impossible to ignore.</p>
+                  <p>Every individual is different, yet most people are still given the same programs, the same diets, and the same advice. To me, that was never enough.</p>
+                  <p>Strider was built to challenge that idea. Every system begins with the individual, integrating movement, anatomy, nutrition, recovery, health markers, lifestyle, experience, and personal goals into one adaptive framework that evolves over time.</p>
+                  <p>As Founder and Lead Performance Coach, my role isn&apos;t simply to prescribe training. It&apos;s to design systems that help people move better, perform at their highest level, and build healthier, more resilient bodies for life.</p>
+                </div>
               </div>
             </div>
           </div>

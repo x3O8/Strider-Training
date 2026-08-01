@@ -38,9 +38,9 @@ const contactChannels = [
   },
   {
     label: "Email",
-    value: "info@stridertraining.com",
+    value: "hello@stridertraining.com",
     detail: "Replies within one business day",
-    href: "mailto:info@stridertraining.com",
+    href: "mailto:hello@stridertraining.com",
     external: false,
     icon: (
       <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.4">

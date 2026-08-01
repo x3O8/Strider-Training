@@ -74,21 +74,27 @@ export default function TestimonialsSection() {
               className="text-[9px] text-white/28 tracking-[0.5em] uppercase mb-4"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              Real Transformations
+              The Strider Community
             </p>
             <h2
-              className="whitespace-nowrap text-[clamp(40px,12vw,48px)] text-white leading-none sm:text-[clamp(48px,8vw,105px)]"
+              className="whitespace-nowrap text-[clamp(27px,8vw,40px)] text-white leading-none sm:text-[clamp(48px,6.5vw,88px)]"
               style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
             >
-              Client Stories
+              Real People. Real Progress.
             </h2>
+            <p
+              className="mt-5 max-w-3xl text-sm font-light leading-[1.8] text-white/48"
+              style={{ fontFamily: "var(--font-inter), sans-serif" }}
+            >
+              Every story begins with a decision to become a Strider. Different goals. Different challenges. Different starting points. What connects them is an individualized system that helped them become healthier, stronger, more capable, and ready for whatever life demands.
+            </p>
           </div>
           <Link
             href="/client-stories"
             className="inline-flex min-h-11 sm:min-h-0 items-center gap-2 text-[10px] text-white/35 tracking-[0.25em] uppercase border border-white/14 px-6 py-3 hover:border-white/40 hover:text-white/70 transition-all duration-300 self-start md:self-auto"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            View all stories ↗
+            View All Journeys →
           </Link>
         </motion.div>
 
@@ -219,7 +225,7 @@ export default function TestimonialsSection() {
             className="inline-flex items-center gap-3 px-12 py-4 bg-white text-black text-xs font-bold tracking-[0.28em] uppercase hover:bg-white/88 transition-colors duration-200"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            View All ↗
+            View All Journeys →
           </Link>
         </motion.div>
 

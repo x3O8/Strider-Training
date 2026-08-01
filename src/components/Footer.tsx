@@ -8,28 +8,37 @@ const columns = [
   {
     heading: "Company",
     links: [
-      { label: "About Strider", href: "/#about" },
-      { label: "Meet the Coaches", href: "/#about" },
-      { label: "Careers", href: "#" },
-      { label: "Press", href: "#" },
-      { label: "Contact Us", href: "/contact" },
+      { label: "About", href: "/#about" },
+      { label: "Meet the Founder", href: "/#founder" },
+      { label: "Client Stories", href: "/client-stories" },
+      { label: "Knowledge Hub", href: "/blog" },
+      { label: "Contact", href: "/contact" },
     ],
   },
   {
     heading: "Coaching",
     links: [
-      { label: "1-on-1 Coaching", href: "/#programs" },
-      { label: "Group Programs", href: "/#programs" },
-      { label: "Online Coaching", href: "/#programs" },
-      { label: "Corporate Wellness", href: "/#programs" },
-      { label: "Student Athletes", href: "/#programs" },
+      { label: "Foundational Fitness", href: "/#program-general-fitness" },
+      { label: "Performance Coaching", href: "/#program-competition-prep" },
+      { label: "Request a Consultation", href: "/#contact" },
+      { label: "FAQ", href: "#" },
     ],
   },
   {
-    heading: "Legal",
+    heading: "Resources",
     links: [
-      { label: "Terms & Conditions", href: "/terms" },
-      { label: "Return Policy", href: "/return-policy" },
+      { label: "Articles", href: "/blog" },
+      { label: "Success Stories", href: "/client-stories" },
+      { label: "Free Guides", href: "/blog" },
+    ],
+  },
+  {
+    heading: "Connect",
+    links: [
+      { label: "hello@stridertraining.com", href: "mailto:hello@stridertraining.com" },
+      { label: "Coaching Worldwide", href: "/contact" },
+      { label: "Instagram", href: "https://www.instagram.com/strider_training/" },
+      { label: "YouTube", href: "#" },
     ],
   },
 ];
@@ -67,7 +76,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 md:px-10 pt-12 pb-7 relative z-10">
 
         {/* ── Top row: logo + description + link columns ──────────────── */}
-        <div className="grid grid-cols-1 md:grid-cols-[1.8fr_1fr_1fr_1fr] gap-10 pb-10 border-b border-white/[0.07]">
+        <div className="grid grid-cols-1 gap-10 border-b border-white/[0.07] pb-10 md:grid-cols-2 lg:grid-cols-[1.6fr_repeat(4,1fr)]">
 
           {/* Brand column */}
           <div className="flex flex-col gap-5">
@@ -83,28 +92,9 @@ export default function Footer() {
               className="text-xs text-white/30 leading-[1.9] max-w-[220px]"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              Elite fitness coaching for everyone. Personalised plans, certified coaches,
-              and a community that keeps you accountable.
+              Helping people realize their potential through intelligent coaching,
+              deliberate practice, and lifelong health.
             </p>
-
-            {/* Contact */}
-            <div className="flex flex-col gap-2.5 mt-2">
-              {[
-                { icon: "✉", text: "info@stridertraining.com" },
-                { icon: "📞", text: "9995906262" },
-                { icon: "📍", text: "Kerala, India · Remote Worldwide" },
-              ].map((c, i) => (
-                <div key={i} className="flex items-start gap-2.5">
-                  <span className="text-[10px] mt-0.5 text-white/25">{c.icon}</span>
-                  <span
-                    className="text-[10px] text-white/30 leading-snug"
-                    style={{ fontFamily: "var(--font-inter), sans-serif" }}
-                  >
-                    {c.text}
-                  </span>
-                </div>
-              ))}
-            </div>
           </div>
 
           {/* Link columns */}
@@ -138,7 +128,14 @@ export default function Footer() {
             className="text-[9px] text-white/20 tracking-[0.25em]"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            © Strider Fitness 2025. All rights reserved.
+            © 2026 Strider Training Systems. All rights reserved.
+          </p>
+
+          <p
+            className="text-[9px] uppercase tracking-[0.22em] text-white/20"
+            style={{ fontFamily: "var(--font-inter), sans-serif" }}
+          >
+            Built for longevity. Engineered for performance.
           </p>
 
           {/* Social icons */}

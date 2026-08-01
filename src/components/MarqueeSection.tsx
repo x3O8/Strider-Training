@@ -1,7 +1,7 @@
 "use client";
 
 export default function MarqueeSection() {
-  const topStripItems = ["PLAN", "//", "EXECUTE", "//", "ADAPT", "//", "PROGRESS", "//"];
+  const topStripItems = ["ASSESS", "//", "PLAN", "//", "EXECUTE", "//", "ADAPT", "//", "PROGRESS", "//"];
 
   // Duplicate items enough times so that a single set exceeds the ultra-wide screen width
   const topContent = Array(8).fill(topStripItems).flat();

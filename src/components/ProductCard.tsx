@@ -106,16 +106,24 @@ export default function ProgramCard({
         </div>
 
         {/* Short feature tags */}
-        <div className="flex flex-wrap gap-1.5">
-          {program.features.map((f) => (
-            <span
-              key={f}
-              className="text-[8px] text-white/28 tracking-[0.14em] uppercase border border-white/9 px-2.5 py-1"
-              style={{ fontFamily: "var(--font-inter), sans-serif" }}
-            >
-              {f}
-            </span>
-          ))}
+        <div>
+          <p
+            className="mb-2 text-[8px] uppercase tracking-[0.24em] text-white/35"
+            style={{ fontFamily: "var(--font-inter), sans-serif" }}
+          >
+            System Components
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {program.features.map((f) => (
+              <span
+                key={f}
+                className="text-[8px] text-white/28 tracking-[0.14em] uppercase border border-white/9 px-2.5 py-1"
+                style={{ fontFamily: "var(--font-inter), sans-serif" }}
+              >
+                {f}
+              </span>
+            ))}
+          </div>
         </div>
 
         {/* Expandable "What's included" */}
@@ -131,7 +139,7 @@ export default function ProgramCard({
             >
               ▶
             </motion.span>
-            What's included
+            Your Coaching Experience
           </button>
 
           <AnimatePresence initial={false}>
@@ -168,7 +176,7 @@ export default function ProgramCard({
                     <span className="text-[10px] text-white/35 leading-snug flex-1" style={{ fontFamily: "var(--font-inter), sans-serif" }}>{program.resultsTimeline}</span>
                   </div>
                   <div className="flex gap-2 items-start">
-                    <span className="text-[8px] text-white/22 tracking-[0.2em] uppercase mt-0.5 flex-shrink-0" style={{ fontFamily: "var(--font-inter), sans-serif" }}>Term</span>
+                    <span className="text-[8px] text-white/22 tracking-[0.2em] uppercase mt-0.5 flex-shrink-0" style={{ fontFamily: "var(--font-inter), sans-serif" }}>Recommended commitment</span>
                     <span className="text-[10px] text-white/35 leading-snug flex-1" style={{ fontFamily: "var(--font-inter), sans-serif" }}>{program.commitment}</span>
                   </div>
                 </div>
@@ -202,7 +210,7 @@ export default function ProgramCard({
             className="min-h-11 px-5 py-2.5 text-[10px] font-semibold tracking-[0.2em] uppercase bg-white text-black transition-colors duration-200 hover:bg-white/88 sm:min-h-0"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            {applied ? "✓ Applied" : "Apply Now"}
+            {applied ? "✓ Applied" : "Start Your Journey"}
           </motion.button>
         </div>
       </div>

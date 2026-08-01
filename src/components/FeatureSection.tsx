@@ -104,13 +104,13 @@ export default function FeatureSection() {
             className="text-[9px] text-white/40 tracking-[0.5em] uppercase mb-5"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Why Choose Strider
+            Why Strider Works
           </p>
           <h2
             className="text-[clamp(48px,8vw,90px)] text-white leading-none"
             style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.04em" }}
           >
-            Results You<br />Can Measure
+            Every Variable<br />{" "}Matters.
           </h2>
         </motion.div>
 

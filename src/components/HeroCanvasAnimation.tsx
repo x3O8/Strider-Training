@@ -543,7 +543,7 @@ function HeroPlayer({
               className="text-[9px] text-white/25 tracking-[0.55em] uppercase mb-7"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              Join the Stride
+              Strider Training Systems
             </p>
             <h1
               className="text-[clamp(96px,26vw,120px)] text-white leading-none sm:text-[clamp(80px,18vw,200px)]"
@@ -559,7 +559,7 @@ function HeroPlayer({
               className="text-sm text-white/35 tracking-[0.25em] uppercase mt-6"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              Stronger. Pain-free. Performance-ready.
+              Individualized • Adaptive • Human Performance Systems
             </p>
           </div>
         </div>
@@ -574,7 +574,7 @@ function HeroPlayer({
               className="text-[9px] text-white/25 tracking-[0.3em] uppercase mb-4"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              FITNESS IS NOT SURFACE LEVEL
+              Individualized Systems
             </p>
             <h2
               className="text-[clamp(56px,14vw,64px)] text-white leading-none sm:text-[clamp(50px,12vw,140px)]"
@@ -584,13 +584,13 @@ function HeroPlayer({
                 textShadow: "0 0 80px rgba(255,255,255,0.07)",
               }}
             >
-              SYSTEM-DRIVEN<br />PERFORMANCE
+              UNIQUELY DESIGNED<br />{" "}AROUND YOU.
             </h2>
             <p
               className="text-sm text-white/35 tracking-[0.25em] uppercase mt-6"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              Where muscle, structure, and the nervous system align.
+              Considering every variable that shapes your health and performance.
             </p>
           </div>
         </div>
@@ -608,7 +608,7 @@ function HeroPlayer({
             className="text-[9px] text-white/25 tracking-[0.3em] uppercase mb-4"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            The Engine
+            Movement Systems
           </p>
           <h2
             className="text-[clamp(54px,14vw,62px)] text-white leading-none mb-5 sm:text-[clamp(48px,6.5vw,90px)]"
@@ -620,7 +620,7 @@ function HeroPlayer({
             className="text-[12px] text-white/45 tracking-[0.18em] uppercase leading-relaxed"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Train how your muscles move, not just how they look.
+            Train your body to move better, not just look better.
           </p>
         </div>
 
@@ -649,7 +649,7 @@ function HeroPlayer({
             className="text-[12px] text-white/45 tracking-[0.18em] uppercase leading-relaxed ml-auto"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Alignment, stability, and control, so your body performs without breaking down.
+            Building resilience through alignment, stability, and control.
           </p>
         </div>
 

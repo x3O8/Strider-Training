@@ -29,7 +29,7 @@ export default function FinalCTA() {
             className="text-[9px] text-white/28 tracking-[0.5em] uppercase mb-6"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Your Transformation Starts Here
+            Your Journey Starts Here
           </motion.p>
 
           <motion.h2
@@ -40,7 +40,7 @@ export default function FinalCTA() {
             className="mb-4 text-[clamp(58px,12vw,155px)] leading-none text-white"
             style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
           >
-            Train Smarter.<br />Live Better.
+            Ready to Realize<br />{" "}Your Potential?
           </motion.h2>
 
           <motion.p
@@ -62,7 +62,7 @@ export default function FinalCTA() {
             className="text-sm text-white/45 mb-10 max-w-md mx-auto leading-relaxed"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Book your free 30-minute consultation and discover what a dedicated coach can do for your goals.
+            Every journey begins with understanding. Book a complimentary consultation to discuss your goals, ask questions, and discover whether Strider Training Systems is the right fit for your journey.
           </motion.p>
 
           <motion.div

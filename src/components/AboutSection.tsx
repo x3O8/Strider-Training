@@ -28,7 +28,7 @@ export default function AboutSection() {
             className="mb-5 text-[9px] uppercase tracking-[0.5em] text-white/40"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Our Approach
+            The Strider Approach
           </p>
 
           <div className="grid grid-cols-1 items-start gap-8 md:gap-12 lg:grid-cols-2">
@@ -46,13 +46,7 @@ export default function AboutSection() {
                 style={{ fontFamily: "var(--font-inter), sans-serif" }}
               >
                 <p>
-                  Most training plans focus only on exercises, sets, and intensity. They rarely account for how your structure, movement quality, recovery capacity, injury history, and nervous system influence the way your body performs.
-                </p>
-                <p>
-                  At Strider Training Systems, every journey begins with assessment. We identify limitations, understand your current capacity, and build a progression that responds to your goals and real-life demands instead of relying on guesswork or generic templates.
-                </p>
-                <p className="text-white/90">
-                  Strength, mobility, control, conditioning, and recovery are developed as one connected system—creating progress that is measurable, sustainable, and built to last.
+                  Training is only one part of the equation. Lasting performance comes from understanding how movement, nutrition, recovery, lifestyle, physiology, and health markers work together. That&apos;s why Strider builds human performance systems—not isolated programs.
                 </p>
               </div>
             </div>
@@ -100,7 +94,7 @@ export default function AboutSection() {
               className="text-[clamp(22px,5vw,70px)] leading-none text-white"
               style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.05em" }}
             >
-              Train with the Best. Become the Best.
+              The Best Is Built Through Systems.
             </h3>
           </div>
         </motion.div>

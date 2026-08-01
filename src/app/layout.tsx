@@ -24,13 +24,13 @@ const barlowCondensed = Barlow_Condensed({
 });
 
 export const metadata: Metadata = {
-  title: "Strider | Built for Speed",
+  title: "Strider Training Systems | Human Performance Coaching",
   description:
-    "Premium athletic performance gear engineered for champions. Run faster. Train harder. Go further.",
-  keywords: ["athletic", "running", "performance", "sprint", "gear", "sports"],
+    "Individualized, adaptive human performance systems integrating training, nutrition, recovery, movement, and lifestyle.",
+  keywords: ["human performance", "fitness coaching", "strength and conditioning", "movement", "nutrition", "recovery"],
   openGraph: {
-    title: "Strider | Built for Speed",
-    description: "Premium athletic performance gear engineered for champions.",
+    title: "Strider Training Systems | Human Performance Coaching",
+    description: "Individualized, adaptive human performance systems built around you.",
     type: "website",
   },
 };

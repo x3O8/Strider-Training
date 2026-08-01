@@ -26,14 +26,20 @@ export default function ProductShowcase({ onApply }: { onApply: (goal: string) =
             className="text-[9px] text-white/30 tracking-[0.5em] uppercase"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Choose Your Path
+            Your Journey Starts Here
           </p>
           <h2
             className="whitespace-nowrap text-[clamp(34px,9vw,52px)] text-white leading-none sm:text-[clamp(52px,8vw,110px)]"
             style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
           >
-            Coaching Programs
+            Become a Strider.
           </h2>
+          <p
+            className="max-w-3xl text-sm font-light leading-[1.8] text-white/55"
+            style={{ fontFamily: "var(--font-inter), sans-serif" }}
+          >
+            People don&apos;t join Strider to just train. They join Strider to become healthier, stronger, more capable, and ready for whatever life demands. Every journey begins with an assessment and an individualized system that evolves with you over time.
+          </p>
           <div className="w-10 h-px bg-white/25 mt-2" />
         </motion.div>
       </div>

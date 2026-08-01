@@ -22,30 +22,30 @@ const steps = [
   {
     step: "01",
     heading: "Assessment",
-    eyebrow: "Read the system",
+    eyebrow: "Understand the individual",
     description:
-      "Every Strider journey begins with a deep understanding of the individual. We evaluate movement quality, structural limitations, current performance, training history, and readiness. The result is clarity on what is holding you back and what needs to be built.",
+      "Every Strider journey begins with understanding the individual. We evaluate every variable that influences performance—from internal and external health markers to movement quality, recovery, habits, lifestyle, training history, experience, and goals—to build the system around you.",
   },
   {
     step: "02",
     heading: "Blueprint",
-    eyebrow: "Build the path",
+    eyebrow: "Design the system",
     description:
-      "Your assessment becomes a personalized progression strategy—not a generic workout plan. Exercise selection, intensity, volume, and recovery are organized into a clear roadmap built around your goals, capacity, and current condition.",
+      "Guided by your assessment, we engineer a personalized performance system where every variable—from training and nutrition to recovery, lifestyle, habits, and progression—is intentionally integrated into one adaptive blueprint.",
   },
   {
     step: "03",
-    heading: "Execute",
-    eyebrow: "Train with intent",
+    heading: "Execution",
+    eyebrow: "Execute the blueprint",
     description:
-      "The plan comes to life through precise, consistent work. Every session has a purpose inside the larger system, with technique and quality of movement turning effort into measurable progress.",
+      "Your blueprint becomes action. Every training session, meal, recovery strategy, and daily habit is executed as part of one connected system. Along the way, Strider continuously collects data on performance, recovery, adherence, and progress—creating the feedback needed to refine your program and drive long-term results.",
   },
   {
     step: "04",
-    heading: "Evolve",
-    eyebrow: "Adapt through data",
+    heading: "Evolution",
+    eyebrow: "Adapt and evolve",
     description:
-      "Strider evolves as you do. Performance feedback and your response to training guide each adjustment, keeping progress moving while fatigue is managed and plateaus are avoided. The system becomes more specific as you become more capable.",
+      "Human performance is never static, and neither is your system. Every cycle of execution generates new data, leading to reassessment, refinement, and more precise decisions. As the cycle repeats, Strider continuously evolves your system to match your body's changing needs, helping you achieve better health, performance, and longevity.",
   },
 ];
 
@@ -58,18 +58,23 @@ const phasePositions = [
 ];
 
 const assessmentMetrics = [
-  { label: "Movement quality", value: 82 },
-  { label: "Joint stability", value: 74 },
-  { label: "Hip mobility", value: 68 },
-  { label: "Shoulder balance", value: 71 },
-  { label: "Recovery capacity", value: 79 },
-  { label: "Training readiness", value: 88 },
+  { label: "Movement capacity", value: 82 },
+  { label: "Structural integrity", value: 74 },
+  { label: "Health markers", value: 68 },
+  { label: "Recovery status", value: 71 },
+  { label: "Lifestyle habits", value: 79 },
+  { label: "Performance goals", value: 88 },
 ];
 
-const correctiveActions = [
-  { issue: "Shoulder imbalance", action: "Unilateral stability work · 3x weekly" },
-  { issue: "Restricted hip rotation", action: "Daily 10-minute mobility block" },
-  { issue: "Low trunk control", action: "Anti-rotation and carry progressions" },
+const blueprintInputs = [
+  "Anatomy",
+  "Movement",
+  "Strength",
+  "Nutrition",
+  "Recovery",
+  "Lifestyle",
+  "Bloodwork",
+  "Goals",
 ];
 
 const workoutPlan = [
@@ -122,7 +127,7 @@ function AssessmentReport({ opacity, x }: PanelMotion) {
       </div>
       <div className="relative grid grid-cols-2 gap-x-5 gap-y-4 md:grid-cols-1">
         {assessmentMetrics.map((metric, metricIndex) => (
-          <div key={metric.label}>
+          <div key={metric.label} className={metricIndex >= 3 ? "hidden md:block" : undefined}>
             <div className="mb-1.5 flex items-center justify-between text-[8px] uppercase tracking-[0.16em] text-white/45">
               <span>{metric.label}</span>
               <span className="text-white/70">{metric.value}%</span>
@@ -152,24 +157,33 @@ function BlueprintAnalysis({ opacity, x }: PanelMotion) {
     >
       <GlassHighlights />
       <div className="relative mb-5 border-b border-white/10 pb-4">
-        <p className="text-[8px] uppercase tracking-[0.34em] text-white/40">Correction analysis</p>
-        <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/75">Priority actions · Cycle 01</p>
+        <p className="text-[8px] uppercase tracking-[0.34em] text-white/40">System blueprint</p>
+        <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/75">Input layers · Cycle 01</p>
       </div>
-      <div className="relative space-y-4">
-        {correctiveActions.map((item, itemIndex) => (
+      <div className="relative grid grid-cols-2 gap-3">
+        {blueprintInputs.map((input, itemIndex) => (
           <motion.div
-            key={item.issue}
+            key={input}
             initial={{ opacity: 0, x: -8 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.12 + itemIndex * 0.1 }}
-            className="border-l border-orange-500/55 pl-3"
+            transition={{ duration: 0.4, delay: 0.12 + itemIndex * 0.08 }}
+            className="border-l border-blue-400/55 pl-3"
           >
-            <p className="text-[9px] uppercase tracking-[0.16em] text-orange-400/85">{item.issue}</p>
-            <p className="mt-1 text-[10px] leading-relaxed text-white/55">{item.action}</p>
+            <p className="text-[9px] uppercase tracking-[0.16em] text-blue-300/85">{input}</p>
           </motion.div>
         ))}
       </div>
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.45, delay: 0.9 }}
+        className="relative mt-5 border-t border-white/10 pt-4"
+      >
+        <p className="text-[8px] uppercase tracking-[0.28em] text-white/35">Output</p>
+        <p className="mt-1 text-[10px] uppercase tracking-[0.18em] text-blue-300/85">Adaptive Performance System</p>
+      </motion.div>
     </motion.div>
   );
 }
