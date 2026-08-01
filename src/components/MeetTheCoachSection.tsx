@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function MeetTheCoachSection() {
   return (
@@ -64,23 +65,6 @@ export default function MeetTheCoachSection() {
                     Founder • Lead Performance Coach
                   </p>
 
-                  <p
-                    className="mb-4 text-[10px] uppercase tracking-[0.18em] text-orange-400/80 sm:mb-6 sm:text-[11px]"
-                    style={{ fontFamily: "var(--font-inter), sans-serif" }}
-                  >
-                    14+ Years in Human Performance
-                  </p>
-
-                  <div className="flex flex-col gap-2.5 sm:mb-8 sm:gap-3">
-                    {["Human Performance Systems", "Strength & Conditioning", "Movement & Biomechanics", "Health & Longevity"].map((speciality) => (
-                      <div key={speciality} className="flex items-center gap-2.5 sm:gap-3">
-                        <span className="w-1.5 h-1.5 rounded-full bg-white/40 flex-shrink-0" />
-                        <span className="text-xs text-white/70 tracking-wide sm:text-sm" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-                          {speciality}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
                 </div>
 
                 <div
@@ -90,6 +74,13 @@ export default function MeetTheCoachSection() {
                   <p>I&apos;ve always been fascinated by the human body, not simply by how it looks, but by how it moves, adapts, heals, and performs. That curiosity led me into years of studying strength training, biomechanics, nutrition, physiology, and human performance, where one realization became impossible to ignore. Every individual is different, yet most people are still given the same programs, the same diets, and the same advice. To me, that was never enough. Strider was built to challenge that idea. Every system begins with the individual, integrating movement, anatomy, nutrition, recovery, health markers, lifestyle, experience, and personal goals into one adaptive framework that evolves over time.</p>
                   <p></p>
                   <p>As Founder and Lead Performance Coach, my role isn&apos;t simply to prescribe training. It&apos;s to design systems that help people move better, perform at their highest level, and build healthier, more resilient bodies for life.</p>
+                  <Link
+                    href="/team"
+                    className="group mt-7 inline-flex min-h-11 items-center gap-4 text-[10px] font-medium uppercase tracking-[0.24em] text-white transition-colors duration-300 hover:text-white/45"
+                  >
+                    Learn more about the team
+                    <span aria-hidden="true" className="text-[8px] transition-transform duration-300 group-hover:translate-x-1">&#9654;</span>
+                  </Link>
                 </div>
               </div>
             </div>

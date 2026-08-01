@@ -86,7 +86,7 @@ export default function ProgramCard({
         {/* Title + tagline */}
         <div>
           <h3
-            className="text-2xl font-bold text-white leading-none mb-1.5 sm:text-3xl"
+            className="text-2xl text-white leading-none mb-1.5 sm:text-3xl"
             style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.04em" }}
           >
             {program.name}

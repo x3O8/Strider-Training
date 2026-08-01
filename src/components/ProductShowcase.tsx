@@ -23,7 +23,7 @@ export default function ProductShowcase({ onApply }: { onApply: (goal: string) =
           className="flex flex-col gap-4"
         >
           <p
-            className="text-[9px] font-bold text-white tracking-[0.5em] uppercase"
+            className="text-[9px] text-white tracking-[0.5em] uppercase"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
             Your Journey Starts Here
@@ -35,7 +35,7 @@ export default function ProductShowcase({ onApply }: { onApply: (goal: string) =
             Become a Strider.
           </h2>
           <p
-            className="max-w-2xl self-end text-right text-xs leading-[1.8] text-white md:text-[13px]"
+            className="max-w-2xl self-start text-left text-xs leading-[1.8] text-white md:text-[13px]"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
             People don&apos;t join Strider to just train. They join Strider to become healthier, stronger, more capable, and ready for whatever life demands. Every journey begins with an assessment and an individualized system that evolves with you over time.

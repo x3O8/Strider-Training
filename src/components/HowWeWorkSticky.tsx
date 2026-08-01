@@ -52,9 +52,9 @@ const steps = [
 const phaseTargets = [0, 0.27, 0.52, 0.77];
 const phasePositions = [
   "left-6 bottom-[13vh] items-start text-left md:left-[18vw] md:bottom-[15vh]",
-  "right-6 top-[14vh] items-end text-right md:right-[7vw] md:top-[27vh]",
-  "left-6 top-[12vh] items-start text-left md:left-[7vw] md:top-[36vh]",
-  "right-6 bottom-[7vh] items-end text-right md:right-[7vw]",
+  "right-6 top-[20vh] items-end text-right md:right-[7vw] md:top-[27vh]",
+  "left-6 top-[20vh] items-start text-left md:left-[7vw] md:top-[36vh]",
+  "right-6 bottom-[2vh] items-end text-right md:right-[7vw] md:bottom-[7vh]",
 ];
 
 const assessmentMetrics = [
@@ -95,7 +95,7 @@ const evolutionDots = Array.from({ length: 6 }, (_, index) => index);
 const evolutionCycleDuration = 12;
 
 const glassPanelClass =
-  "relative mt-5 w-full max-w-[330px] overflow-hidden rounded-[18px] border border-white/[0.16] bg-[linear-gradient(145deg,rgba(25,25,29,0.72),rgba(3,3,5,0.48))] p-4 text-left shadow-[0_28px_90px_rgba(0,0,0,0.62),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl min-[360px]:p-5 md:mt-0 md:p-6";
+  "relative mt-5 w-[92%] max-w-[270px] overflow-hidden rounded-[18px] border border-white/[0.16] bg-[linear-gradient(145deg,rgba(25,25,29,0.72),rgba(3,3,5,0.48))] p-3.5 text-left shadow-[0_28px_90px_rgba(0,0,0,0.62),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl min-[360px]:p-4 md:mt-0 md:p-6";
 
 type PanelMotion = {
   opacity: MotionValue<number>;

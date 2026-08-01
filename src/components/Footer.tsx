@@ -21,7 +21,7 @@ const columns = [
       { label: "Foundational Fitness", href: "/#program-general-fitness" },
       { label: "Performance Coaching", href: "/#program-competition-prep" },
       { label: "Request a Consultation", href: "/#contact" },
-      { label: "FAQ", href: "#" },
+      { label: "FAQ", href: "/faq" },
     ],
   },
   {
