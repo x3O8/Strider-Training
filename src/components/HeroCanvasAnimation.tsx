@@ -559,7 +559,7 @@ function HeroPlayer({
               className="text-sm text-white/35 tracking-[0.25em] uppercase mt-6"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              Individualized • Adaptive • Human Performance Systems
+              Individualized Coaching • Adaptive Programming • Lifelong Performance
             </p>
           </div>
         </div>
