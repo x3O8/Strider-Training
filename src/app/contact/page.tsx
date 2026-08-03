@@ -13,7 +13,7 @@ const contactChannels = [
   {
     label: "Instagram",
     value: "@strider_training",
-    detail: "Training insights and daily updates",
+    detail: "Training insights, education, and coaching updates.",
     href: "https://www.instagram.com/strider_training/",
     external: true,
     icon: (
@@ -39,7 +39,7 @@ const contactChannels = [
   {
     label: "Email",
     value: "hello@stridertraining.com",
-    detail: "Replies within one business day",
+    detail: "General enquiries and support.",
     href: "mailto:hello@stridertraining.com",
     external: false,
     icon: (
@@ -95,15 +95,16 @@ export default function ContactPage() {
                   className="text-base font-light leading-[1.9] text-white/58 md:text-lg"
                   style={{ fontFamily: "var(--font-inter), sans-serif" }}
                 >
-                  Tell us where you are, where you want to go, and what has been
-                  holding you back. Our team will help you identify the right
-                  coaching path.
+                  Whether you&apos;re looking to improve your health, return from injury,
+                  or perform at your highest level, we&apos;re here to help you find the
+                  right path. Reach out through the contact method that works best
+                  for you, or request a complimentary consultation to get started.
                 </p>
                 <p
                   className="mt-5 text-[9px] uppercase tracking-[0.34em] text-white/28"
                   style={{ fontFamily: "var(--font-inter), sans-serif" }}
                 >
-                  Kerala, India · Coaching worldwide
+                  Kerala, India &bull; Coaching worldwide
                 </p>
               </div>
             </div>

@@ -32,15 +32,15 @@ function Sparkline({ data, invert }: { data: number[]; invert: boolean }) {
 
   return (
     <svg viewBox={`0 0 ${w} ${h}`} width={w} height={h} className="overflow-visible">
-      <path d={d} fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="1.2" />
-      <circle cx={last.x} cy={last.y} r="2.5" fill="white" />
+      <path d={d} fill="none" stroke="rgba(249,115,22,0.86)" strokeWidth="1.2" style={{ filter: "drop-shadow(0 0 4px rgba(249,115,22,0.35))" }} />
+      <circle cx={last.x} cy={last.y} r="2.7" fill="rgb(249,115,22)" />
       <circle cx={first.x} cy={first.y} r="2" fill="rgba(255,255,255,0.25)" />
     </svg>
   );
 }
 
 const CATEGORY_LABELS: Record<string, string> = {
-  "weight-loss": "Weight Loss",
+  "weight-loss": "Fat Loss",
   "strength": "Strength",
   "endurance": "Endurance",
 };
@@ -86,7 +86,7 @@ export default function TestimonialsSection() {
               className="mt-5 max-w-3xl text-sm font-light leading-[1.8] text-white/48"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              Every story begins with a decision to become a Strider. Different goals. Different challenges. Different starting points. What connects them is an individualized system that helped them become healthier, stronger, more capable, and ready for whatever life demands.
+              Every journey starts in a different place. Different goals. Different challenges. Different starting points. What connects them is an individualized coaching system that continuously adapts&mdash;helping every client build better health, higher performance, and lasting results.
             </p>
           </div>
           <Link

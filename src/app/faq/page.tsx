@@ -13,52 +13,57 @@ const faqs = [
   {
     question: "Who is Strider coaching designed for?",
     answer:
-      "Strider is designed for people who want an individualized approach to health and performance—from those building a stronger foundation to athletes preparing for demanding performance goals.",
+      "Strider is designed for people who want coaching built around them, not a generic programme. Whether your goal is improving your health, building strength, changing body composition, returning from injury, or preparing for competition, your coaching is tailored to your starting point, goals, and progress. Your consultation helps determine whether Strider is the right fit for you.",
   },
   {
-    question: "How is my programme individualized?",
+    question: "Can I join if I have an injury or medical condition?",
     answer:
-      "Your system begins with an assessment of your goals, experience, movement, recovery, lifestyle, training history, and relevant health markers. Those inputs guide the training, nutrition, recovery, and progression decisions within your programme.",
+      "In many cases, yes. Your coaching can be adapted around injuries, medical conditions, or physical limitations where appropriate. If you're under the care of a doctor or other healthcare professional, we'll take their recommendations into account and adapt your coaching accordingly. In some situations, we may recommend delaying coaching until it's appropriate to begin training safely.",
   },
   {
-    question: "What is the difference between Foundation and Performance?",
+    question: "Do I need access to a gym?",
     answer:
-      "Foundation focuses on lifelong health, strength, movement quality, body composition, and sustainable habits. Performance is intended for athletes and competitors who need advanced programming, monitoring, and preparation around a specific performance target or competitive calendar.",
+      "No. Your coaching is designed around the equipment and environment available to you. Whether you train in a commercial gym, home gym, or with minimal equipment, we'll build the most effective coaching system for your situation. For highly specific performance goals, we may recommend access to additional equipment where appropriate.",
   },
   {
-    question: "Can I work with Strider remotely?",
+    question: "How is my coaching individualized?",
     answer:
-      "Yes. Strider supports clients worldwide through structured online coaching, regular reviews, programme updates, movement feedback, and direct communication with the coaching team.",
+      "Your coaching begins with a comprehensive assessment of your goals, training history, lifestyle, movement, recovery, and any relevant health data. We use that information to build your initial coaching system, then continuously refine your training, nutrition, and recovery strategies as your progress, feedback, and performance data evolve.",
   },
   {
-    question: "What happens during the initial assessment?",
+    question: "What happens after I join?",
     answer:
-      "The assessment establishes your starting point. It reviews your goals, training background, movement capacity, recovery, lifestyle, current challenges, and any information needed to design an appropriate coaching system.",
+      "Your journey begins with a comprehensive onboarding process. We'll collect the information needed to understand your goals, training history, lifestyle, movement, recovery, and any relevant health data before building your individualized coaching system. Once onboarding is complete, we'll deliver your initial coaching system, guide you through getting started, and support you throughout your journey as your coaching evolves over time.",
   },
   {
-    question: "How often will my programme be updated?",
+    question: "How often is my coaching updated?",
     answer:
-      "Your programme evolves as meaningful feedback and performance data become available. Reviews consider execution, progress, readiness, recovery, and changing circumstances rather than relying on a fixed generic schedule.",
+      "Your coaching isn't updated on a fixed schedule. It's updated when it's needed. Your coach continuously monitors your progress, feedback, recovery, lifestyle, and available performance data. Your coaching system is refined whenever meaningful changes are needed, whether you've achieved a phase goal, reached a plateau, sustained an injury, experienced lifestyle changes, or your data indicates it's time to progress.",
   },
   {
-    question: "Can Strider work around injuries or movement limitations?",
+    question: "How do I communicate with my coach?",
     answer:
-      "Training can be adapted around many limitations after they are understood. During your consultation and assessment, share any injury history, pain, medical guidance, or restrictions so the team can determine whether Strider is the appropriate coaching option.",
+      "You'll have ongoing access to your coach throughout your membership. Questions, updates, and feedback are handled through your dedicated coaching channel, with support available Monday-Friday, 9:00 AM-6:00 PM GMT. If needed, or when recommended by your coach, you may book one coaching call per week. We aim to respond as promptly and accurately as possible, so you receive thoughtful guidance rather than rushed answers.",
   },
   {
-    question: "How much time do I need to commit each week?",
+    question: "Do I need bloodwork to join?",
     answer:
-      "The required schedule depends on your goals, current capacity, and lifestyle. The system is designed around the time and resources you can use consistently, with the exact commitment agreed during onboarding.",
+      "No. Bloodwork is recommended where appropriate, but it isn't required to begin coaching. If you have recent bloodwork, we'll use it to better understand your internal health and further individualize your coaching. Based on your assessment, we may also recommend additional blood tests when they can help guide better coaching decisions and optimize your health. If you don't have bloodwork, we can still build an effective coaching system using your assessment and available data.",
   },
   {
-    question: "Do I need access to a fully equipped gym?",
+    question: "What results can I realistically expect?",
     answer:
-      "Not always. Available equipment is considered when your programme is designed. Tell the team what you have access to during your assessment so the plan can be built around realistic training conditions.",
+      "Every client starts from a different place, with different goals, genetics, lifestyle, and level of commitment. Because of this, results vary from person to person. Our focus is on building an individualized coaching system that gives you the best opportunity to make consistent, measurable progress toward your goals over time.",
   },
   {
-    question: "How do I know which programme is right for me?",
+    question: "Can I cancel my coaching?",
     answer:
-      "Start with a complimentary consultation. The team will discuss your goals, training history, lifestyle, and expectations, then recommend the most suitable path without pressure or obligation.",
+      "Yes. Strider operates on a subscription model without long-term contracts. If you decide to stop coaching, simply let us know before your next billing cycle. If appropriate, your coach can also help you decide whether adjusting your coaching or taking a short break is the better option.",
+  },
+  {
+    question: "How do I get started?",
+    answer:
+      "Book a complimentary consultation through our website or WhatsApp. We'll discuss your goals, answer your questions, and determine whether Strider is the right fit for your needs. If you decide to move forward, we'll guide you through onboarding, collect the information needed to individualize your coaching, and begin building your coaching system.",
   },
 ];
 
@@ -86,13 +91,13 @@ export default function FAQPage() {
               Questions, answered
             </p>
             <div className="grid items-end gap-8 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16">
-              <h1 className="text-[clamp(72px,12vw,164px)] leading-[0.78] tracking-[0.025em] text-white" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
-                Frequently
+              <h1 className="text-[clamp(58px,11vw,150px)] leading-[0.78] tracking-[0.025em] text-white" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
+                Frequently Asked
                 <br />
-                asked.
+                Questions.
               </h1>
               <p className="max-w-xl text-base font-light leading-[1.9] text-white/58 md:text-lg" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-                A straightforward guide to Strider&apos;s coaching process. Open any question below to learn how the system works and what you can expect.
+                Learn how Strider works, what to expect, and how our coaching adapts to your goals. If you don&apos;t find the answer you&apos;re looking for, our team is here to help.
               </p>
             </div>
           </div>
@@ -108,13 +113,13 @@ export default function FAQPage() {
                 Start with clarity.
               </h2>
               <p className="mt-6 max-w-sm text-sm font-light leading-[1.8] text-white/45" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-                If your question is not covered here, the Strider team can help you understand the right next step.
+                Most questions are answered below. If you still need guidance, we&apos;re happy to help you choose the right next step.
               </p>
             </div>
 
             <div className="border-t border-white/[0.12]">
               {faqs.map((faq, index) => (
-                <details key={faq.question} className="group border-b border-white/[0.12]">
+                <details key={faq.question} name="strider-faq" className="group border-b border-white/[0.12]">
                   <summary className="flex min-h-[76px] cursor-pointer list-none items-center justify-between gap-5 py-5 text-left marker:content-none [&::-webkit-details-marker]:hidden">
                     <span className="flex min-w-0 items-start gap-4 sm:gap-6">
                       <span className="mt-1 text-[8px] tracking-[0.2em] text-orange-400/75" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
@@ -149,9 +154,12 @@ export default function FAQPage() {
               <h2 className="mt-3 text-4xl leading-none text-white md:text-6xl" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}>
                 Talk to the Strider team.
               </h2>
+              <p className="mt-4 max-w-xl text-sm font-light leading-[1.8] text-white/45" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+                Book a complimentary consultation to discuss your goals, ask questions, and find the coaching approach that&apos;s right for you.
+              </p>
             </div>
             <Link href="/contact" className="inline-flex min-h-12 items-center gap-4 bg-white px-7 py-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-black transition-colors hover:bg-orange-400" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-              Contact us
+              Book Free Consultation
               <span aria-hidden="true">&#9654;</span>
             </Link>
           </div>

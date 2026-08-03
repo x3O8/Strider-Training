@@ -26,19 +26,19 @@ export default function ProductShowcase({ onApply }: { onApply: (goal: string) =
             className="text-[9px] text-white tracking-[0.5em] uppercase"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Your Journey Starts Here
+            Individualized Human Performance Coaching
           </p>
           <h2
             className="whitespace-nowrap text-[clamp(34px,9vw,52px)] font-bold text-white leading-none sm:text-[clamp(52px,8vw,110px)]"
             style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
           >
-            Become a Strider.
+            Choose Your Coaching Path.
           </h2>
           <p
             className="max-w-2xl self-start text-left text-xs leading-[1.8] text-white md:text-[13px]"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            People don&apos;t join Strider to just train. They join Strider to become healthier, stronger, more capable, and ready for whatever life demands. Every journey begins with an assessment and an individualized system that evolves with you over time.
+            Whether your goal is improving your health, building strength, reducing body fat, moving pain-free, or maximizing athletic performance, every Strider membership begins with a comprehensive assessment and an individualized human performance system. Through continuous coaching, regular reviews, and adaptive programming, your training, nutrition, cardio, recovery, and lifestyle strategies evolve with you—because lasting results come from an evolving system, not a one-time program.
           </p>
           <div className="w-10 h-px bg-white/25 mt-2" />
         </motion.div>

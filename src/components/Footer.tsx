@@ -10,7 +10,7 @@ const columns = [
     links: [
       { label: "About", href: "/#about" },
       { label: "Meet the Founder", href: "/#founder" },
-      { label: "Client Stories", href: "/client-stories" },
+      { label: "Success Stories", href: "/client-stories" },
       { label: "Knowledge Hub", href: "/blog" },
       { label: "Contact", href: "/contact" },
     ],
@@ -18,9 +18,9 @@ const columns = [
   {
     heading: "Coaching",
     links: [
-      { label: "Foundational Fitness", href: "/#program-general-fitness" },
-      { label: "Performance Coaching", href: "/#program-competition-prep" },
-      { label: "Request a Consultation", href: "/#contact" },
+      { label: "Foundation", href: "/#program-general-fitness" },
+      { label: "Performance", href: "/#program-competition-prep" },
+      { label: "Request Consultation", href: "/#contact" },
       { label: "FAQ", href: "/faq" },
     ],
   },
@@ -36,7 +36,7 @@ const columns = [
     heading: "Connect",
     links: [
       { label: "hello@stridertraining.com", href: "mailto:hello@stridertraining.com" },
-      { label: "Coaching Worldwide", href: "/contact" },
+      { label: "Remote Coaching Worldwide", href: "/contact" },
       { label: "Instagram", href: "https://www.instagram.com/strider_training/" },
       { label: "YouTube", href: "#" },
     ],
@@ -92,8 +92,8 @@ export default function Footer() {
               className="text-xs text-white/30 leading-[1.9] max-w-[220px]"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              Helping people realize their potential through intelligent coaching,
-              deliberate practice, and lifelong health.
+              Helping people build healthier, stronger, and more capable bodies through
+              individualized coaching, adaptive systems, and evidence-based practice.
             </p>
           </div>
 

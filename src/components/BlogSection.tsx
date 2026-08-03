@@ -133,7 +133,7 @@ export default function BlogSection() {
               className="mt-5 max-w-3xl text-sm font-light leading-[1.8] text-white/48"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              Better performance begins with better understanding. Explore evidence-based articles, practical guides, and insights from Strider Training Systems covering training, nutrition, recovery, movement, longevity, and the science of human performance.
+              Better decisions begin with better understanding. Explore evidence-based articles, practical guides, and actionable insights covering training, nutrition, recovery, movement, physiology, longevity, and human performance&mdash;so you understand not just what to do, but why it works.
             </p>
           </div>
           <Link

@@ -590,7 +590,7 @@ function HeroPlayer({
               className="text-sm text-white/35 tracking-[0.25em] uppercase mt-6"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              Considering every variable that shapes your health and performance.
+              Your physiology, movement, recovery, goals, and lifestyle shape your program.
             </p>
           </div>
         </div>
@@ -649,7 +649,7 @@ function HeroPlayer({
             className="text-[12px] text-white/45 tracking-[0.18em] uppercase leading-relaxed ml-auto"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Building resilience through alignment, stability, and control.
+            Building resilient bodies that perform for life.
           </p>
         </div>
 
@@ -663,7 +663,7 @@ function HeroPlayer({
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
             onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
           >
-            Discover
+            See How It Works
           </button>
         </div>
 

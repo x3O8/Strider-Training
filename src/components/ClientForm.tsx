@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 
 type Field = "name" | "email" | "phone" | "goal" | "level" | "message";
 
-const goalOptions = ["Weight Loss", "Muscle Gain", "Endurance", "Sports Performance", "General Fitness", "Injury Rehabilitation"];
-const levelOptions = ["Complete Beginner", "Some Experience", "Intermediate", "Advanced Athlete"];
+const goalOptions = ["Fat Loss", "Muscle Gain", "Strength", "Endurance", "Sports Performance", "General Fitness", "Injury Rehabilitation"];
+const levelOptions = ["Beginner", "Intermediate", "Advanced", "Competitive Athlete"];
 
 export default function ClientForm({ preselectedGoal }: { preselectedGoal: string | null }) {
   const [form, setForm] = useState<Record<Field, string>>({
@@ -111,14 +111,16 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
                 className="text-base text-white leading-[1.9]"
                 style={{ fontFamily: "var(--font-inter), sans-serif" }}
               >
-                Complete the form below and tell us about your goals, training experience, lifestyle, and any injuries or challenges you&apos;re working through. A Strider Performance Coach will personally review your inquiry and contact you within 24 hours to schedule your complimentary consultation.
+                Every coaching journey begins with understanding the individual. Complete the form below and tell us about your goals, training history, lifestyle, injuries, or performance challenges. A Strider Performance Coach will personally review your enquiry and contact you to schedule your complimentary consultation.
               </p>
 
               {/* Promises */}
               {[
                 "Complimentary 30-minute consultation with a Strider Performance Coach",
-                "Personalized recommendations based on your goals and current condition",
-                "Transparent pricing and clear expectations — no pressure, no obligations",
+                "Discussion of your goals, current challenges, and training history",
+                "Initial recommendations based on your individual situation",
+                "An overview of how Strider can support your long-term health or performance goals",
+                "Transparent pricing, clear expectations, and no obligation to join",
               ].map((p, i) => (
                 <motion.div
                   key={i}
@@ -168,8 +170,8 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
                     className="text-xs text-white/70 leading-relaxed max-w-sm"
                     style={{ fontFamily: "var(--font-inter), sans-serif" }}
                   >
-                    Your inquiry has been received. A Strider Performance Coach will contact you
-                    within 24 hours to schedule your complimentary consultation.
+                    Your enquiry has been received. A Strider Performance Coach will contact you
+                    to schedule your complimentary consultation.
                   </p>
                 </motion.div>
               ) : (
@@ -260,7 +262,7 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
                       className="block text-[9px] text-white tracking-[0.35em] uppercase mb-3"
                       style={{ fontFamily: "var(--font-inter), sans-serif" }}
                     >
-                      Current Fitness Level *
+                      Current Training Experience *
                     </label>
                     <div className="flex flex-wrap gap-2">
                       {levelOptions.map((l) => (
@@ -290,7 +292,7 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
                     </label>
                     <textarea
                       rows={4}
-                      placeholder="Share your background, any injuries, or anything else your coach should know..."
+                      placeholder="Share your goals, training background, injuries, medical history, competition plans, or anything else you'd like your coach to know before your consultation."
                       value={form.message}
                       onChange={set("message")}
                       {...inputBase("message")}

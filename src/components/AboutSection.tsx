@@ -46,7 +46,10 @@ export default function AboutSection() {
                 style={{ fontFamily: "var(--font-inter), sans-serif" }}
               >
                 <p>
-                  Training is only one part of the equation. Lasting performance comes from understanding how movement, nutrition, recovery, lifestyle, physiology, and health markers work together. That&apos;s why Strider builds human performance systems—not isolated programs.
+                  Training alone doesn&apos;t create lasting results. Real performance is built when movement, nutrition, recovery, lifestyle, physiology, and health all work together as one integrated system. That&apos;s why Strider doesn&apos;t sell workout plans—we engineer individualized human performance systems designed around the person behind the goal.
+                </p>
+                <p>
+                  Every decision has a purpose. Every phase has a reason. Every recommendation moves you toward becoming more resilient, capable, and adaptable.
                 </p>
               </div>
             </div>
@@ -88,7 +91,7 @@ export default function AboutSection() {
               className="mb-2 text-[8px] uppercase tracking-[0.5em] text-white/40 md:mb-3 md:text-[9px]"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              Science-Backed · Results-Driven
+              Rooted in Science • Primed for Results
             </p>
             <h3
               className="text-[clamp(22px,5vw,70px)] leading-none text-white"

@@ -62,7 +62,7 @@ export default function FinalCTA() {
             className="text-sm text-white/45 mb-10 max-w-md mx-auto leading-relaxed"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Every journey begins with understanding. Book a complimentary consultation to discuss your goals, ask questions, and discover whether Strider Training Systems is the right fit for your journey.
+            Every journey begins with understanding. Book a complimentary consultation to discuss your goals, evaluate where you are today, and discover how an individualized coaching system can help you build better health, higher performance, and lasting results.
           </motion.p>
 
           <motion.div

@@ -10,12 +10,27 @@ import SmoothScroll from "@/components/SmoothScroll";
 import { blogPosts, BlogPost } from "@/data/blog";
 
 type SortType = "latest" | "alphabetical" | "length";
+const TOPICS = ["All", "Training", "Nutrition", "Recovery", "Movement", "Performance", "Longevity", "Bloodwork", "Rehabilitation", "Mindset"] as const;
+type TopicType = typeof TOPICS[number];
 
 export default function BlogArchivePage() {
   const [sortBy, setSortBy] = useState<SortType>("latest");
+  const [topic, setTopic] = useState<TopicType>("All");
+  const [query, setQuery] = useState("");
 
   const sortedPosts = useMemo(() => {
-    const posts = [...blogPosts];
+    const normalizedQuery = query.trim().toLowerCase();
+    const posts = blogPosts.filter((post) => {
+      const matchesTopic = topic === "All" || post.category === topic;
+      const matchesQuery =
+        normalizedQuery.length === 0 ||
+        post.title.toLowerCase().includes(normalizedQuery) ||
+        post.excerpt.toLowerCase().includes(normalizedQuery) ||
+        post.category.toLowerCase().includes(normalizedQuery);
+
+      return matchesTopic && matchesQuery;
+    });
+
     if (sortBy === "alphabetical") {
       return posts.sort((a, b) => a.title.localeCompare(b.title));
     }
@@ -28,7 +43,7 @@ export default function BlogArchivePage() {
     }
     // "latest" -> Keep original order (assuming latest is first in array)
     return posts;
-  }, [sortBy]);
+  }, [query, sortBy, topic]);
 
   return (
     <SmoothScroll>
@@ -38,35 +53,77 @@ export default function BlogArchivePage() {
         <main className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 pt-32 sm:pt-44 pb-20 sm:pb-32">
           
           {/* Page Header */}
-          <div className="mb-16 sm:mb-24">
-            <p className="text-[10px] text-orange-400 tracking-[0.5em] uppercase mb-4" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-              Archive
-            </p>
-            <h1 className="text-[clamp(60px,10vw,140px)] leading-[0.85] text-white" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.02em" }}>
-              KNOWLEDGE<br />HUB.
-            </h1>
-          </div>
-
-          {/* Top Actions */}
-          <div className="flex justify-end mb-14 sm:mb-20">
-            <div className="flex w-full flex-col items-start gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-6">
-              <span className="text-[10px] text-white/30 tracking-[0.3em] uppercase">Sort by:</span>
-              <div className="grid w-full grid-cols-3 gap-1 p-1 bg-white/[0.03] border border-white/10 rounded-full min-[360px]:gap-2 sm:flex sm:w-auto">
-                {(["latest", "alphabetical", "length"] as SortType[]).map((type) => (
-                  <button
-                    key={type}
-                    onClick={() => setSortBy(type)}
-                    className={`min-h-11 px-2 py-1.5 text-[8px] tracking-[0.12em] uppercase transition-all rounded-full min-[360px]:px-4 min-[360px]:text-[9px] min-[360px]:tracking-[0.2em] sm:min-h-0 ${
-                      sortBy === type 
-                        ? "bg-white text-black font-bold" 
-                        : "text-white/40 hover:text-white/70"
-                    }`}
-                  >
-                    {type}
-                  </button>
-                ))}
-              </div>
+          <div className="mb-16 grid gap-10 sm:mb-24 lg:grid-cols-[1fr_380px] lg:items-end lg:gap-16">
+            <div>
+              <p className="text-[10px] text-orange-400 tracking-[0.5em] uppercase mb-4" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+                Knowledge Hub
+              </p>
+              <h1 className="text-[clamp(60px,10vw,140px)] leading-[0.85] text-white" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.02em" }}>
+                LEARN THE SCIENCE<br />OF HUMAN PERFORMANCE.
+              </h1>
+              <p className="mt-7 max-w-3xl text-sm font-light leading-[1.85] text-white/50 md:text-base" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+                Better decisions begin with better understanding. Explore evidence-based articles, practical guides, and actionable insights covering training, nutrition, recovery, movement, physiology, longevity, and human performance&mdash;so you understand not just what to do, but why it works.
+              </p>
             </div>
+
+            <aside className="border border-white/10 bg-white/[0.025] p-5 sm:p-6">
+              <p className="mb-4 text-[9px] uppercase tracking-[0.42em] text-orange-400" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+                Discover
+              </p>
+              <label className="block border-b border-white/15 pb-3">
+                <span className="sr-only">Search the Knowledge Hub</span>
+                <input
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder="Search the Knowledge Hub..."
+                  className="w-full bg-transparent text-sm text-white outline-none placeholder:text-white/28"
+                  style={{ fontFamily: "var(--font-inter), sans-serif" }}
+                />
+              </label>
+
+              <div className="mt-6">
+                <p className="mb-3 text-[8px] uppercase tracking-[0.34em] text-white/35" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+                  Browse by Topic
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {TOPICS.map((item) => (
+                    <button
+                      key={item}
+                      onClick={() => setTopic(item)}
+                      className={`min-h-9 border px-3 py-1.5 text-[8px] uppercase tracking-[0.16em] transition-colors ${
+                        topic === item
+                          ? "border-white bg-white text-black"
+                          : "border-white/12 text-white/38 hover:border-white/28 hover:text-white/70"
+                      }`}
+                      style={{ fontFamily: "var(--font-inter), sans-serif" }}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <p className="mb-3 text-[8px] uppercase tracking-[0.34em] text-white/35" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+                  Sort by
+                </p>
+                <div className="grid grid-cols-3 gap-1 p-1 bg-white/[0.03] border border-white/10 rounded-full">
+                  {(["latest", "alphabetical", "length"] as SortType[]).map((type) => (
+                    <button
+                      key={type}
+                      onClick={() => setSortBy(type)}
+                      className={`min-h-10 px-2 py-1.5 text-[8px] tracking-[0.12em] uppercase transition-all rounded-full min-[360px]:px-4 min-[360px]:text-[9px] min-[360px]:tracking-[0.2em] ${
+                        sortBy === type
+                          ? "bg-white text-black font-bold"
+                          : "text-white/40 hover:text-white/70"
+                      }`}
+                    >
+                      {type === "length" ? "Read Time" : type === "alphabetical" ? "A-Z" : "Latest"}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </aside>
           </div>
 
           {/* Dynamic Grid using AnimatePresence for smooth transitions */}
@@ -126,6 +183,12 @@ export default function BlogArchivePage() {
               ))}
             </AnimatePresence>
           </div>
+
+          {sortedPosts.length === 0 && (
+            <p className="mt-12 text-sm text-white/40" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+              No articles match the current filters.
+            </p>
+          )}
 
         </main>
 

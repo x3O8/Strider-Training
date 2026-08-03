@@ -114,7 +114,7 @@ function LineChart({ story }: { story: ClientStory }) {
         {/* Start dot */}
         <circle cx={first.x} cy={first.y} r="3" fill="rgba(255,255,255,0.25)" />
         {/* End dot (highlighted) */}
-        <circle cx={last.x} cy={last.y} r="4.5" fill="white" />
+        <circle cx={last.x} cy={last.y} r="4.5" fill="rgb(249,115,22)" />
 
         {/* Midline dots */}
         {pts.filter((_, i) => i > 0 && i < pts.length - 1 && i % Math.ceil(pts.length / 8) === 0).map((p, i) => (
@@ -265,7 +265,7 @@ function StoryCard({ story }: { story: ClientStory }) {
           {/* Coach note */}
           <div className="mt-auto border border-white/[0.07] bg-white/[0.015] p-6">
             <p className="text-[9px] text-white/25 tracking-[0.35em] uppercase mb-1" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-              Coach's Perspective
+              Coach&apos;s Analysis
             </p>
             <p className="text-[10px] text-white/35 mb-4" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
               {story.coachName}
@@ -281,11 +281,11 @@ function StoryCard({ story }: { story: ClientStory }) {
 }
 
 // ── Page ─────────────────────────────────────────────────────────────────────
-const FILTERS = ["All", "Weight Loss", "Strength", "Endurance"] as const;
+const FILTERS = ["All", "Fat Loss", "Strength", "Endurance", "Rehabilitation", "Performance"] as const;
 type FilterType = typeof FILTERS[number];
 
 const CATEGORY_MAP: Record<string, FilterType> = {
-  "weight-loss": "Weight Loss",
+  "weight-loss": "Fat Loss",
   "strength":    "Strength",
   "endurance":   "Endurance",
 };
@@ -320,8 +320,11 @@ export default function ClientStoriesPage() {
             className="text-[37px] text-white leading-none mb-8 min-[320px]:text-[43px] min-[360px]:text-[54px] min-[430px]:text-[clamp(60px,12vw,160px)]"
             style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
           >
-            Client<br />Transformations
+            Client Stories.<br />Real Results.
           </h1>
+          <p className="max-w-3xl text-sm font-light leading-[1.8] text-white/50 md:text-base" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+            Every client starts with different goals, challenges, and constraints. These case studies show how individualized coaching, continuous adaptation, and evidence-based decision making produce meaningful long-term results.
+          </p>
         </div>
       </section>
 
@@ -367,10 +370,10 @@ export default function ClientStoriesPage() {
         {/* Bottom CTA */}
         <div className="text-center mt-20 pt-14 border-t border-white/[0.07]">
           <p className="text-[9px] text-white/25 tracking-[0.45em] uppercase mb-4" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-            Ready to write your own story?
+            Ready to start your own story?
           </p>
           <h2 className="text-[clamp(40px,7vw,100px)] text-white leading-none mb-8" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}>
-            Start Your Journey
+            Start Your Journey.
           </h2>
           <Link
             href="/#contact"

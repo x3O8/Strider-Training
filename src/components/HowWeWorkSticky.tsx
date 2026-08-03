@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useInView, useScroll, useSpring, useTransform } from "framer-motion";
 import type { MotionValue } from "framer-motion";
 
 const loadProtocolModel = () => import("@/components/ProtocolModel3D");
@@ -50,6 +50,37 @@ const steps = [
   },
 ];
 
+const protocolSteps: typeof steps = [
+  {
+    step: "01",
+    heading: "Assessment",
+    eyebrow: "Understand the individual",
+    description:
+      "Before writing a single workout, we build a complete understanding of the individual. Movement capacity, recovery, lifestyle, health markers, training history, experience, and performance goals all become part of one comprehensive assessment. Because the best program isn't chosen, it's engineered.",
+  },
+  {
+    step: "02",
+    heading: "Blueprint",
+    eyebrow: "Design the system",
+    description:
+      "Your assessment becomes the foundation for everything that follows. We combine movement, nutrition, recovery, lifestyle, health data, and long-term objectives into one adaptive performance blueprint engineered specifically for you. Nothing is random. Every recommendation serves a purpose.",
+  },
+  {
+    step: "03",
+    heading: "Execution",
+    eyebrow: "Execute the blueprint",
+    description:
+      "Your personalized blueprint now becomes action. Every training session, nutrition plan, cardio protocol, recovery strategy, and daily habit works together as one integrated system. As you progress, we continuously evaluate your performance, recovery, biofeedback, and adherence, refining every component to keep your program aligned with your body, your lifestyle, and your goals.",
+  },
+  {
+    step: "04",
+    heading: "Evolution",
+    eyebrow: "Adapt and evolve",
+    description:
+      "Human performance is never static, and neither is your system. Every cycle of execution produces new insights. As your body adapts, your performance improves, and your goals evolve, your system evolves with you through reassessment, refinement, and continuous adaptation.",
+  },
+];
+
 const phaseTargets = [0, 0.27, 0.52, 0.77];
 const phasePositions = [
   "left-6 bottom-[13vh] items-start text-left md:left-[18vw] md:bottom-[15vh]",
@@ -68,13 +99,13 @@ const assessmentMetrics = [
 ];
 
 const blueprintInputs = [
-  "Anatomy",
   "Movement",
-  "Strength",
-  "Nutrition",
+  "Anatomy",
+  "Health Markers",
   "Recovery",
+  "Nutrition",
   "Lifestyle",
-  "Bloodwork",
+  "Training History",
   "Goals",
 ];
 
@@ -93,7 +124,7 @@ const evolutionNodes = [
 ];
 
 const evolutionDots = Array.from({ length: 6 }, (_, index) => index);
-const evolutionCycleDuration = 12;
+const evolutionCycleDuration = 8;
 
 const glassPanelClass =
   "relative mt-5 w-[92%] max-w-[270px] overflow-hidden rounded-[18px] border border-white/[0.16] bg-[linear-gradient(145deg,rgba(25,25,29,0.72),rgba(3,3,5,0.48))] p-3.5 text-left shadow-[0_28px_90px_rgba(0,0,0,0.62),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl min-[360px]:p-4 md:mt-0 md:p-6";
@@ -112,22 +143,45 @@ function GlassHighlights() {
   );
 }
 
-function AssessmentReport({ opacity, x }: PanelMotion) {
+function AssessmentReport({ opacity, x, progress }: PanelMotion & { progress: MotionValue<number> }) {
+  const reportRef = useRef<HTMLDivElement>(null);
+  const isReportInView = useInView(reportRef, { amount: 0.1 });
   const [metricTimings, setMetricTimings] = useState(() =>
-    assessmentMetrics.map((_, index) => ({ duration: 1.8, delay: 0.18 + index * 0.12 }))
+    assessmentMetrics.map((_, index) => ({ duration: 0.9, delay: 0.08 + index * 0.06 }))
   );
+  const [assessmentCycle, setAssessmentCycle] = useState(0);
+  const phaseActiveRef = useRef(false);
 
   useEffect(() => {
-    setMetricTimings(
-      assessmentMetrics.map(() => ({
-        duration: 1.4 + Math.random() * 1.2,
-        delay: 0.12 + Math.random() * 0.9,
-      }))
-    );
-  }, []);
+    if (!isReportInView) {
+      phaseActiveRef.current = false;
+      return;
+    }
+
+    const updateAssessment = (value: number) => {
+      const isAssessmentPhase = value >= 0 && value < 0.245;
+
+      if (isAssessmentPhase && !phaseActiveRef.current) {
+        phaseActiveRef.current = true;
+        setMetricTimings(
+          assessmentMetrics.map(() => ({
+            duration: 0.75 + Math.random() * 0.5,
+            delay: 0.05 + Math.random() * 0.4,
+          }))
+        );
+        setAssessmentCycle((cycle) => cycle + 1);
+      } else if (!isAssessmentPhase && phaseActiveRef.current) {
+        phaseActiveRef.current = false;
+      }
+    };
+
+    updateAssessment(progress.get());
+    return progress.on("change", updateAssessment);
+  }, [isReportInView, progress]);
 
   return (
     <motion.div
+      ref={reportRef}
       className={`${glassPanelClass} md:absolute md:bottom-0 md:left-[calc(100%+4rem)] md:w-[340px] md:max-w-none xl:left-[calc(82vw-380px)]`}
       style={{ opacity, x }}
     >
@@ -138,13 +192,13 @@ function AssessmentReport({ opacity, x }: PanelMotion) {
             className="text-[8px] uppercase tracking-[0.34em] text-white/40"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Assessment report
+            STS Assessment Report
           </p>
           <p
             className="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/75"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Athlete profile · 01
+            Client Profile - 01
           </p>
         </div>
       </div>
@@ -160,27 +214,27 @@ function AssessmentReport({ opacity, x }: PanelMotion) {
             <div className="flex items-center gap-2.5">
               <div className="h-px min-w-0 flex-1 bg-white/12">
                 <motion.div
+                  key={`${assessmentCycle}-${metric.label}-bar`}
                   initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true }}
+                  animate={{ scaleX: 1 }}
                   transition={{ duration: timing.duration, delay: timing.delay, ease: "linear" }}
                   className="h-full w-full origin-left bg-gradient-to-r from-orange-600 to-orange-400"
                 />
               </div>
               <motion.span
+                key={`${assessmentCycle}-${metric.label}-indicator`}
                 initial={{
                   opacity: 0.55,
                   scale: 0.75,
                   backgroundColor: "rgba(255,255,255,0.18)",
                   boxShadow: "0 0 0 rgba(249,115,22,0)",
                 }}
-                whileInView={{
+                animate={{
                   opacity: 1,
                   scale: 1,
                   backgroundColor: "rgb(249,115,22)",
                   boxShadow: "0 0 11px rgba(249,115,22,0.95)",
                 }}
-                viewport={{ once: true }}
                 transition={{ duration: 0.08, delay: timing.delay + timing.duration, ease: "linear" }}
                 className="h-2.5 w-2.5 flex-none rounded-full border border-white/10"
               />
@@ -209,7 +263,7 @@ function BlueprintAnalysis({ opacity, x, progress }: PanelMotion & { progress: M
         setGenerationStatus("generating");
         generationTimerRef.current = setTimeout(() => {
           setGenerationStatus("complete");
-        }, 2200);
+        }, 1600);
       } else if (!isBlueprintPhase && phaseActiveRef.current) {
         phaseActiveRef.current = false;
         if (generationTimerRef.current) clearTimeout(generationTimerRef.current);
@@ -233,17 +287,16 @@ function BlueprintAnalysis({ opacity, x, progress }: PanelMotion & { progress: M
     >
       <GlassHighlights />
       <div className="relative mb-5 border-b border-white/10 pb-4">
-        <p className="text-[8px] uppercase tracking-[0.34em] text-white/40">System blueprint</p>
-        <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/75">Input layers · Cycle 01</p>
+        <p className="text-[8px] uppercase tracking-[0.34em] text-white/40">System Blueprint</p>
+        <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/75">Input Parameters</p>
       </div>
       <div className="relative grid grid-cols-2 gap-3">
         {blueprintInputs.map((input, itemIndex) => (
           <motion.div
-            key={input}
+            key={`${generationCycle}-${input}`}
             initial={{ opacity: 0, x: -8 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.12 + itemIndex * 0.08 }}
+            animate={generationStatus === "idle" ? { opacity: 0, x: -8 } : { opacity: 1, x: 0 }}
+            transition={{ duration: 0.28, delay: 0.08 + itemIndex * 0.14, ease: "easeOut" }}
             className="border-l border-orange-400/55 pl-3"
           >
             <p className="text-[9px] uppercase tracking-[0.16em] text-orange-300/85">{input}</p>
@@ -284,8 +337,8 @@ function BlueprintAnalysis({ opacity, x, progress }: PanelMotion & { progress: M
             }
             transition={
               generationStatus === "generating"
-                ? { duration: 2.1, ease: "linear" }
-                : { duration: 0.45, ease: [0.22, 1, 0.36, 1] }
+                ? { duration: 1.5, ease: "linear" }
+                : { duration: 0.25, ease: [0.22, 1, 0.36, 1] }
             }
           />
         </div>
@@ -303,8 +356,8 @@ function ExecuteWorkoutPlan({ opacity, x }: PanelMotion) {
       <GlassHighlights />
       <div className="relative mb-3 flex items-end justify-between border-b border-white/10 pb-3 md:mb-4 md:pb-4">
         <div>
-          <p className="text-[8px] uppercase tracking-[0.34em] text-white/40">Workout plan</p>
-          <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/75">Foundation week · 01</p>
+          <p className="text-[8px] uppercase tracking-[0.34em] text-white/40">STS Performance System</p>
+          <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/75">Foundation - Weeks 1-5</p>
         </div>
         <span className="text-[8px] uppercase tracking-[0.18em] text-orange-400/75">4 sessions</span>
       </div>
@@ -338,8 +391,8 @@ function EvolutionSystemLoop({ opacity, x }: PanelMotion) {
     >
       <GlassHighlights />
       <div className="relative mb-4 border-b border-white/10 pb-4">
-        <p className="text-[8px] uppercase tracking-[0.34em] text-white/40">System evolution</p>
-        <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/75">Continuous optimization loop</p>
+        <p className="text-[8px] uppercase tracking-[0.34em] text-white/40">System Evolution</p>
+        <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/75">Continuous Adaptation Loop</p>
       </div>
 
       <div className="relative mx-auto aspect-square w-[240px] max-w-full min-[360px]:w-[280px]">
@@ -449,7 +502,7 @@ function PhaseOverlay({
   index,
   progress,
 }: {
-  phase: (typeof steps)[number];
+  phase: (typeof protocolSteps)[number];
   index: number;
   progress: MotionValue<number>;
 }) {
@@ -508,7 +561,7 @@ function PhaseOverlay({
         >
           {phase.description}
         </p>
-        {isFirst && <AssessmentReport opacity={panelOpacity} x={panelX} />}
+        {isFirst && <AssessmentReport opacity={panelOpacity} x={panelX} progress={progress} />}
         {index === 1 && <BlueprintAnalysis opacity={panelOpacity} x={panelX} progress={progress} />}
         {index === 2 && <ExecuteWorkoutPlan opacity={panelOpacity} x={panelX} />}
         {isLast && <EvolutionSystemLoop opacity={panelOpacity} x={panelX} />}
@@ -729,7 +782,7 @@ export default function HowWeWorkSticky({ preloadModel = false }: { preloadModel
           </span>
         </div>
 
-        {steps.map((phase, index) => (
+        {protocolSteps.map((phase, index) => (
           <PhaseOverlay key={phase.step} phase={phase} index={index} progress={cinematicProgress} />
         ))}
 
