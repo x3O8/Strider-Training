@@ -129,7 +129,7 @@ const evolutionDots = Array.from({ length: 6 }, (_, index) => index);
 const evolutionCycleDuration = 8;
 
 const glassPanelClass =
-  "relative mt-5 w-[92%] max-w-[270px] overflow-hidden rounded-[18px] border border-white/[0.16] bg-[linear-gradient(145deg,rgba(25,25,29,0.72),rgba(3,3,5,0.48))] p-3.5 text-left shadow-[0_28px_90px_rgba(0,0,0,0.62),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl min-[360px]:p-4 md:mt-0 md:p-6";
+  "relative mt-4 w-[88%] max-w-[220px] overflow-hidden rounded-[14px] border border-white/[0.16] bg-[linear-gradient(145deg,rgba(25,25,29,0.72),rgba(3,3,5,0.48))] p-2.5 text-left shadow-[0_28px_90px_rgba(0,0,0,0.62),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl min-[360px]:p-3 md:mt-0 md:max-w-none md:rounded-[18px] md:p-6";
 
 type PanelMotion = {
   opacity: MotionValue<number>;
@@ -395,7 +395,7 @@ function EvolutionSystemLoop({ opacity, x }: PanelMotion) {
         <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/75">Continuous Adaptation Loop</p>
       </div>
 
-      <div className="relative mx-auto aspect-square w-[240px] max-w-full min-[360px]:w-[280px]">
+      <div className="relative mx-auto aspect-square w-[180px] max-w-full min-[360px]:w-[210px] md:w-[280px]">
         <svg aria-hidden="true" viewBox="0 0 280 280" className="absolute inset-0 z-10 h-full w-full overflow-visible">
           <circle cx="140" cy="140" r="112" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1" />
           {evolutionDots.map((dotIndex) => {
@@ -446,7 +446,7 @@ function EvolutionSystemLoop({ opacity, x }: PanelMotion) {
           return (
             <motion.div
               key={node.label}
-              className={`absolute z-20 flex h-[56px] w-[74px] flex-col items-center justify-center rounded-xl border border-white/15 bg-black text-center shadow-none min-[360px]:w-[74px] ${node.position}`}
+              className={`absolute z-20 flex h-[44px] w-[58px] flex-col items-center justify-center rounded-xl border border-white/15 bg-black text-center shadow-none min-[360px]:h-[50px] min-[360px]:w-[64px] md:h-[56px] md:w-[74px] ${node.position}`}
               animate={{
                 scale: [1, 1, 1.045, 1, 1],
                 borderColor: [
@@ -550,13 +550,13 @@ function PhaseOverlay({
           </p>
         </div>
         <h3
-          className="text-[clamp(52px,7vw,96px)] leading-[0.82] text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.8)]"
+          className="text-[clamp(38px,10vw,96px)] leading-[0.82] text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.8)] md:text-[clamp(52px,7vw,96px)]"
           style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.025em" }}
         >
           {phase.heading}
         </h3>
         <p
-          className="mt-5 max-w-md text-[13px] font-light leading-[1.8] text-white/65 drop-shadow-[0_4px_14px_rgba(0,0,0,0.9)] md:text-sm"
+          className="mt-3 max-w-md text-[11px] font-light leading-[1.7] text-white/65 drop-shadow-[0_4px_14px_rgba(0,0,0,0.9)] md:mt-5 md:text-sm md:leading-[1.8]"
           style={{ fontFamily: "var(--font-inter), sans-serif" }}
         >
           {phase.description}

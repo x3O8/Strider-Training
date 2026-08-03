@@ -213,7 +213,12 @@ function HeroPlayer({
       const t = Math.min((now - t0) / duration, 1);
       window.scrollTo(0, startY + diff * easeOutCubic(t));
       if (t < 1) { rafRef.current = requestAnimationFrame(tick); }
-      else { onDone?.(); }
+      else {
+        // Force the exact target position one final time before signalling done,
+        // so that window.scrollY is accurate when completeTransition releases the lock.
+        window.scrollTo(0, targetY);
+        onDone?.();
+      }
     };
     rafRef.current = requestAnimationFrame(tick);
   }, []);
@@ -253,9 +258,15 @@ function HeroPlayer({
 
     const completeTransition = (transitionId: number, onComplete?: () => void) => {
       if (transitionId !== transitionIdRef.current) return;
-      downLockRef.current = false;
-      transitionDirectionRef.current = null;
-      onComplete?.();
+      // Defer the lock-release by one rAF so the browser has time to apply
+      // the final window.scrollTo() from animateToY before handleScrollSync
+      // fires and re-computes the active checkpoint from window.scrollY.
+      requestAnimationFrame(() => {
+        if (transitionId !== transitionIdRef.current) return;
+        downLockRef.current = false;
+        transitionDirectionRef.current = null;
+        onComplete?.();
+      });
     };
 
     const snapToCheckpoint = (
@@ -392,15 +403,13 @@ function HeroPlayer({
     const handleScrollSync = () => {
       if (!downLockRef.current) {
         const { heroTop, checkpointStep } = getHeroBounds();
-        const cp = Math.max(
-          0,
-          Math.min(
-            MAX_CHECKPOINT,
-            checkpointStep > 0
-              ? Math.round((window.scrollY - heroTop) / checkpointStep)
-              : 0,
-          )
-        );
+        if (checkpointStep <= 0) return;
+        // Use a ±45% tolerance band around each checkpoint so small overshoots
+        // from mobile momentum/rounding never flicker activeSection to the wrong step.
+        const raw = (window.scrollY - heroTop) / checkpointStep;
+        const cp = Math.max(0, Math.min(MAX_CHECKPOINT, Math.round(raw)));
+        const fraction = Math.abs(raw - cp);
+        if (fraction > 0.45) return; // Not clearly at any checkpoint — skip update
         if (cp !== targetCPRef.current) {
           targetCPRef.current = cp;
           setActiveSection(cp);
@@ -784,7 +793,7 @@ export default function HeroCanvasAnimation({ onReady }: HeroCanvasAnimationProp
       if (!cancelled) setMuscleImg(muscle);
     };
     muscle.decoding = "async";
-    muscle.fetchPriority = "auto";
+    muscle.fetchPriority = "high";
     muscle.src = `${FRAME_PATH}/muscle.webp`;
   
     const skel = new Image();

@@ -190,7 +190,7 @@ export default function ProgramCard({
         </div>
 
         {/* Price + CTA */}
-        <div className="flex items-end justify-between mt-auto pt-5 border-t border-white/[0.07]">
+        <div className="flex flex-col gap-4 mt-auto pt-5 border-t border-white/[0.07] sm:flex-row sm:items-end sm:justify-between">
           <div>
             <span
               className="text-4xl text-white leading-none"
@@ -211,7 +211,7 @@ export default function ProgramCard({
             onClick={handleApplyClick}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
-            className="min-h-11 px-5 py-2.5 text-[10px] font-semibold tracking-[0.2em] uppercase bg-white text-black transition-colors duration-200 hover:bg-white/88 sm:min-h-0"
+            className="w-full sm:w-auto min-h-11 px-5 py-2.5 text-[10px] font-semibold tracking-[0.2em] uppercase bg-white text-black transition-colors duration-200 hover:bg-white/88 sm:min-h-0"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
             {applied ? "✓ Applied" : "START YOUR JOURNEY"}
@@ -224,4 +224,3 @@ export default function ProgramCard({
     </motion.div>
   );
 }
-

@@ -54,7 +54,6 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       lerp: reducedMotion ? 1 : 0.12,
       orientation: "vertical",
       smoothWheel: !reducedMotion,
-      smoothTouch: false,
       overscroll: false,
       autoRaf: true,
     });
