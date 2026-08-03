@@ -420,14 +420,14 @@ function HeroPlayer({
       touchHandled = false;
     };
     const onTouchMove = (e: TouchEvent) => {
-      if (window.innerWidth >= 640 || !e.touches[0]) return;
+      if (!e.touches[0]) return;
       if (touchHandled) {
         (e as TouchEvent & { lenisStopPropagation?: boolean }).lenisStopPropagation = true;
         if (e.cancelable) e.preventDefault();
         return;
       }
       const dy = touchY - e.touches[0].clientY;
-      if (Math.abs(dy) < 30) return;
+      if (Math.abs(dy) < 20) return;
 
       // Resolve mobile gestures while the finger is still moving. At the last
       // checkpoint go() starts Lenis and returns false, allowing this same
@@ -443,7 +443,7 @@ function HeroPlayer({
         return;
       }
       const dy = touchY - e.changedTouches[0].clientY;
-      if (Math.abs(dy) >= 30) go(dy);
+      if (Math.abs(dy) >= 20) go(dy);
     };
     const onTouchCancel = () => {
       touchHandled = false;

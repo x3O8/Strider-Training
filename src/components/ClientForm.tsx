@@ -86,7 +86,7 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
               className="text-[10px] text-white tracking-[0.5em] uppercase mb-5"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              Your Next Step
+              YOUR NEXT STEP
             </motion.p>
 
             <motion.h2
@@ -97,7 +97,7 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
               className="text-[clamp(52px,8vw,110px)] text-white leading-none mb-8"
               style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
             >
-              Request Your Free<br />{" "}Consultation.
+              REQUEST YOUR FREE<br />CONSULTATION.
             </motion.h2>
 
             <motion.div
@@ -114,30 +114,40 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
                 Every coaching journey begins with understanding the individual. Complete the form below and tell us about your goals, training history, lifestyle, injuries, or performance challenges. A Strider Performance Coach will personally review your enquiry and contact you to schedule your complimentary consultation.
               </p>
 
-              {/* Promises */}
-              {[
-                "Complimentary 30-minute consultation with a Strider Performance Coach",
-                "Discussion of your goals, current challenges, and training history",
-                "Initial recommendations based on your individual situation",
-                "An overview of how Strider can support your long-term health or performance goals",
-                "Transparent pricing, clear expectations, and no obligation to join",
-              ].map((p, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -16 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.3 + i * 0.1 }}
-                  className="flex items-start"
+              <div className="pt-2">
+                <p
+                  className="text-[11px] font-bold text-white tracking-[0.35em] uppercase mb-4"
+                  style={{ fontFamily: "var(--font-inter), sans-serif" }}
                 >
-                  <span
-                    className="text-sm text-white leading-relaxed"
-                    style={{ fontFamily: "var(--font-inter), sans-serif" }}
-                  >
-                    {p}
-                  </span>
-                </motion.div>
-              ))}
+                  WHAT TO EXPECT
+                </p>
+                <div className="space-y-3">
+                  {[
+                    "Complimentary 30-minute consultation with a Strider Performance Coach",
+                    "Discussion of your goals, current challenges, and training history",
+                    "Initial recommendations based on your individual situation",
+                    "An overview of how Strider can support your long-term health or performance goals",
+                    "Transparent pricing, clear expectations, and no obligation to join"
+                  ].map((p, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -16 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.25 + i * 0.08 }}
+                      className="flex items-start gap-2.5"
+                    >
+                      <span className="text-white text-xs mt-0.5">•</span>
+                      <span
+                        className="text-sm text-white/80 leading-relaxed"
+                        style={{ fontFamily: "var(--font-inter), sans-serif" }}
+                      >
+                        {p}
+                      </span>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
             </motion.div>
           </div>
 
@@ -187,7 +197,7 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
                         className="block text-[10px] text-white tracking-[0.35em] uppercase mb-3"
                         style={{ fontFamily: "var(--font-inter), sans-serif" }}
                       >
-                        Full Name *
+                        FULL NAME*
                       </label>
                       <input
                         type="text"
@@ -202,7 +212,7 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
                         className="block text-[10px] text-white tracking-[0.35em] uppercase mb-3"
                         style={{ fontFamily: "var(--font-inter), sans-serif" }}
                       >
-                        Email Address *
+                        EMAIL ADDRESS*
                       </label>
                       <input
                         type="email"
@@ -220,7 +230,7 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
                       className="block text-[9px] text-white tracking-[0.35em] uppercase mb-3"
                       style={{ fontFamily: "var(--font-inter), sans-serif" }}
                     >
-                      Phone Number
+                      PHONE NUMBER
                     </label>
                     <input
                       type="tel"
@@ -236,7 +246,7 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
                       className="block text-[9px] text-white tracking-[0.35em] uppercase mb-3"
                       style={{ fontFamily: "var(--font-inter), sans-serif" }}
                     >
-                      Primary Goal *
+                      PRIMARY GOAL*
                     </label>
                     <div className="flex flex-wrap gap-2">
                       {goalOptions.map((g) => (
@@ -262,7 +272,7 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
                       className="block text-[9px] text-white tracking-[0.35em] uppercase mb-3"
                       style={{ fontFamily: "var(--font-inter), sans-serif" }}
                     >
-                      Current Training Experience *
+                      CURRENT TRAINING EXPERIENCE*
                     </label>
                     <div className="flex flex-wrap gap-2">
                       {levelOptions.map((l) => (
@@ -288,7 +298,7 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
                       className="block text-[9px] text-white tracking-[0.35em] uppercase mb-3"
                       style={{ fontFamily: "var(--font-inter), sans-serif" }}
                     >
-                      Tell Us Your Story
+                      TELL US ABOUT YOUR JOURNEY
                     </label>
                     <textarea
                       rows={4}
@@ -319,7 +329,7 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
                         Submitting…
                       </>
                     ) : (
-                      "Request Free Consultation →"
+                      "REQUEST FREE CONSULTATION →"
                     )}
                   </motion.button>
 

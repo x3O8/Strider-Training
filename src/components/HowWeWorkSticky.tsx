@@ -54,30 +54,30 @@ const protocolSteps: typeof steps = [
   {
     step: "01",
     heading: "Assessment",
-    eyebrow: "Understand the individual",
+    eyebrow: "UNDERSTAND THE INDIVIDUAL",
     description:
-      "Before writing a single workout, we build a complete understanding of the individual. Movement capacity, recovery, lifestyle, health markers, training history, experience, and performance goals all become part of one comprehensive assessment. Because the best program isn't chosen, it's engineered.",
+      "Before writing a single workout, we build a complete understanding of the individual. Movement capacity, recovery, lifestyle, health markers, training history, experience, and performance goals all become part of one comprehensive assessment. Because the best program isn't chosen—it's engineered.",
   },
   {
     step: "02",
     heading: "Blueprint",
-    eyebrow: "Design the system",
+    eyebrow: "DESIGN THE SYSTEM",
     description:
       "Your assessment becomes the foundation for everything that follows. We combine movement, nutrition, recovery, lifestyle, health data, and long-term objectives into one adaptive performance blueprint engineered specifically for you. Nothing is random. Every recommendation serves a purpose.",
   },
   {
     step: "03",
     heading: "Execution",
-    eyebrow: "Execute the blueprint",
+    eyebrow: "EXECUTE THE BLUEPRINT",
     description:
-      "Your personalized blueprint now becomes action. Every training session, nutrition plan, cardio protocol, recovery strategy, and daily habit works together as one integrated system. As you progress, we continuously evaluate your performance, recovery, biofeedback, and adherence, refining every component to keep your program aligned with your body, your lifestyle, and your goals.",
+      "Your personalized blueprint now becomes action. Every training session, nutrition plan, cardio protocol, recovery strategy, and daily habit works together as one integrated system. As you progress, we continuously evaluate your performance, recovery, biofeedback, and adherence—refining every component to keep your program aligned with your body, your lifestyle, and your goals.",
   },
   {
     step: "04",
     heading: "Evolution",
-    eyebrow: "Adapt and evolve",
+    eyebrow: "ADAPT AND EVOLVE",
     description:
-      "Human performance is never static, and neither is your system. Every cycle of execution produces new insights. As your body adapts, your performance improves, and your goals evolve, your system evolves with you through reassessment, refinement, and continuous adaptation.",
+      "Human performance is never static—and neither is your system. Every cycle of execution produces new insights. As your body adapts, your performance improves, and your goals evolve, your system evolves with you. We reassess your progress, recovery, movement quality, health markers, and performance, then refine your training program, nutrition plan, cardio protocol, recovery strategies, and lifestyle habits to match your next stage of development. This continuous cycle of assessment, execution, and adaptation ensures your program remains effective, individualized, and aligned with your body—helping you achieve lasting health, performance, and longevity.",
   },
 ];
 
@@ -90,12 +90,12 @@ const phasePositions = [
 ];
 
 const assessmentMetrics = [
-  { label: "Movement capacity", value: 82 },
-  { label: "Structural integrity", value: 74 },
-  { label: "Health markers", value: 68 },
-  { label: "Recovery status", value: 71 },
-  { label: "Lifestyle habits", value: 79 },
-  { label: "Performance goals", value: 88 },
+  { label: "Movement Capacity", value: 82 },
+  { label: "Structural Integrity", value: 74 },
+  { label: "Recovery Capacity", value: 71 },
+  { label: "Health Markers", value: 68 },
+  { label: "Lifestyle Factors", value: 79 },
+  { label: "Goals & Objectives", value: 88 },
 ];
 
 const blueprintInputs = [
@@ -109,16 +109,18 @@ const blueprintInputs = [
   "Goals",
 ];
 
-const workoutPlan = [
-  { day: "Mon", session: "Lower-body strength", detail: "Squat · Hinge · Carry" },
-  { day: "Wed", session: "Movement + engine", detail: "Mobility · Zone 2" },
-  { day: "Fri", session: "Upper-body strength", detail: "Push · Pull · Stability" },
-  { day: "Sat", session: "Restore", detail: "Mobility · Recovery" },
+const performanceSystemItems = [
+  "TRAINING PROGRAM",
+  "NUTRITION PLAN",
+  "CARDIO PROTOCOL",
+  "RECOVERY PROTOCOL",
+  "LIFESTYLE HABITS",
+  "ADAPTIVE COACHING",
 ];
 
 const evolutionNodes = [
   { label: "Assessment", status: "Analyzed", statusColor: "text-emerald-400", position: "left-1/2 top-0 -translate-x-1/2" },
-  { label: "Blueprint", status: "Ready", statusColor: "text-emerald-400", position: "right-0 top-1/2 -translate-y-1/2 min-[360px]:-right-[9px]" },
+  { label: "Blueprint", status: "Customized", statusColor: "text-emerald-400", position: "right-0 top-1/2 -translate-y-1/2 min-[360px]:-right-[9px]" },
   { label: "Execution", status: "Active", statusColor: "text-emerald-400", position: "bottom-0 left-1/2 -translate-x-1/2" },
   { label: "Adaptation", status: "Achieved", statusColor: "text-emerald-400", position: "left-0 top-1/2 -translate-y-1/2 min-[360px]:-left-[9px]" },
 ];
@@ -354,30 +356,28 @@ function ExecuteWorkoutPlan({ opacity, x }: PanelMotion) {
       style={{ opacity, x }}
     >
       <GlassHighlights />
-      <div className="relative mb-3 flex items-end justify-between border-b border-white/10 pb-3 md:mb-4 md:pb-4">
-        <div>
-          <p className="text-[8px] uppercase tracking-[0.34em] text-white/40">STS Performance System</p>
-          <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/75">Foundation - Weeks 1-5</p>
-        </div>
-        <span className="text-[8px] uppercase tracking-[0.18em] text-orange-400/75">4 sessions</span>
+      <div className="relative mb-3 border-b border-white/10 pb-3 md:mb-4 md:pb-4">
+        <p className="text-[8px] uppercase tracking-[0.34em] text-white/40">STS Performance System</p>
+        <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/75">Foundation • Weeks 1–5</p>
       </div>
-      <div className="relative divide-y divide-white/[0.08]">
-        {workoutPlan.map((session, sessionIndex) => (
+      <div className="relative space-y-2 py-1">
+        {performanceSystemItems.map((item, itemIndex) => (
           <motion.div
-            key={session.day}
-            initial={{ opacity: 0, y: 6 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            key={item}
+            initial={{ opacity: 0, x: -6 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.35, delay: 0.1 + sessionIndex * 0.08 }}
-            className="grid grid-cols-[38px_1fr] gap-4 py-2.5 md:py-3"
+            transition={{ duration: 0.3, delay: 0.08 + itemIndex * 0.07 }}
+            className="flex items-center justify-between py-1"
           >
-            <span className="text-[9px] uppercase tracking-[0.16em] text-orange-400/80">{session.day}</span>
-            <div>
-              <p className="text-[10px] uppercase tracking-[0.14em] text-white/72">{session.session}</p>
-              <p className="mt-0.5 text-[9px] text-white/38">{session.detail}</p>
-            </div>
+            <span className="text-[9px] uppercase tracking-[0.16em] text-white/80">{item}</span>
+            <span className="text-[10px] text-emerald-400 font-semibold">✓</span>
           </motion.div>
         ))}
+      </div>
+      <div className="relative mt-4 border-t border-white/10 pt-3 flex items-center justify-between">
+        <span className="text-[8px] uppercase tracking-[0.28em] text-white/40">Status</span>
+        <span className="text-[9px] font-semibold uppercase tracking-[0.18em] text-emerald-400">System Active</span>
       </div>
     </motion.div>
   );
@@ -759,7 +759,7 @@ export default function HowWeWorkSticky({ preloadModel = false }: { preloadModel
             className="mb-3 text-[8px] uppercase tracking-[0.5em] text-white/40"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Four phases · One adaptive system
+            FOUR PHASES • ONE ADAPTIVE SYSTEM
           </p>
           <h2
             className="text-[clamp(34px,4.2vw,58px)] leading-[0.88] text-white"

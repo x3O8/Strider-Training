@@ -6,15 +6,6 @@ import Image from "next/image";
 import { blogPosts } from "@/data/blog";
 import MobileSwipeHint from "./MobileSwipeHint";
 
-const CATEGORY_COLORS: Record<string, string> = {
-  Training:  "rgba(255,255,255,0.28)",
-  Nutrition: "rgba(255,255,255,0.28)",
-  Recovery:  "rgba(255,255,255,0.28)",
-  Endurance: "rgba(255,255,255,0.28)",
-  Coaching:  "rgba(255,255,255,0.28)",
-  Mindset:   "rgba(255,255,255,0.28)",
-};
-
 function BlogCard({ post, large = false, index = 0 }: { post: typeof blogPosts[0]; large?: boolean; index?: number }) {
   return (
     <Link href={`/blog/${post.slug}`} className="group block h-[420px] snap-start sm:h-full">
@@ -121,19 +112,19 @@ export default function BlogSection() {
               className="text-[9px] text-white/28 tracking-[0.5em] uppercase mb-4"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              Knowledge Hub
+              KNOWLEDGE HUB
             </p>
             <h2
               className="text-[clamp(34px,10vw,48px)] text-white leading-[0.95] sm:text-[clamp(48px,6.5vw,88px)]"
               style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
             >
-              Learn the Science of Human Performance.
+              LEARN THE SCIENCE OF HUMAN PERFORMANCE.
             </h2>
             <p
               className="mt-5 max-w-3xl text-sm font-light leading-[1.8] text-white/48"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              Better decisions begin with better understanding. Explore evidence-based articles, practical guides, and actionable insights covering training, nutrition, recovery, movement, physiology, longevity, and human performance&mdash;so you understand not just what to do, but why it works.
+              Better decisions begin with better understanding. Explore evidence-based articles, practical guides, and actionable insights covering training, nutrition, recovery, movement, physiology, longevity, and human performance—so you understand not just what to do, but why it works.
             </p>
           </div>
           <Link
@@ -141,7 +132,7 @@ export default function BlogSection() {
             className="inline-flex min-h-11 sm:min-h-0 items-center gap-2 text-[10px] text-white/35 tracking-[0.25em] uppercase border border-white/14 px-6 py-3 hover:border-white/40 hover:text-white/70 transition-all duration-300 self-start md:self-auto"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Explore Knowledge Hub →
+            EXPLORE KNOWLEDGE HUB →
           </Link>
         </motion.div>
 

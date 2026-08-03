@@ -214,7 +214,7 @@ export default function ProgramCard({
             className="min-h-11 px-5 py-2.5 text-[10px] font-semibold tracking-[0.2em] uppercase bg-white text-black transition-colors duration-200 hover:bg-white/88 sm:min-h-0"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            {applied ? "✓ Applied" : "Start Your Journey"}
+            {applied ? "✓ Applied" : "START YOUR JOURNEY"}
           </motion.button>
         </div>
       </div>

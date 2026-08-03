@@ -29,7 +29,7 @@ export default function FinalCTA() {
             className="text-[9px] text-white/28 tracking-[0.5em] uppercase mb-6"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Your Journey Starts Here
+            YOUR JOURNEY STARTS HERE
           </motion.p>
 
           <motion.h2
@@ -37,10 +37,10 @@ export default function FinalCTA() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="mb-4 text-[clamp(58px,12vw,155px)] leading-none text-white"
+            className="mb-4 text-[clamp(58px,12vw,155px)] leading-none text-white uppercase"
             style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
           >
-            Ready to Realize<br />{" "}Your Potential?
+            READY TO REALIZE<br />YOUR POTENTIAL?
           </motion.h2>
 
           <motion.p
@@ -51,7 +51,7 @@ export default function FinalCTA() {
             className="mb-8 text-[11px] uppercase tracking-[0.46em] text-orange-500 md:mb-10 md:text-xs"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Join the Stride
+            JOIN THE STRIDE
           </motion.p>
 
           <motion.p
@@ -80,7 +80,7 @@ export default function FinalCTA() {
               className="px-16 py-4 bg-white text-black text-[10px] font-bold tracking-[0.3em] uppercase transition-colors duration-200"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              Book Free Consultation
+              BOOK FREE CONSULTATION
             </motion.a>
 
             <motion.a
@@ -91,8 +91,7 @@ export default function FinalCTA() {
               className="px-14 py-4 border text-white/38 text-[10px] tracking-[0.3em] uppercase transition-all duration-200 hover:text-white/65"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-
-              View Programs
+              VIEW PROGRAMS
             </motion.a>
           </motion.div>
         </div>

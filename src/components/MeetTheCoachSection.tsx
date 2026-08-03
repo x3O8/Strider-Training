@@ -16,7 +16,7 @@ export default function MeetTheCoachSection() {
             className="text-[clamp(40px,6vw,80px)] text-white leading-none mb-10 md:mb-12"
             style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
           >
-            Why I Built Strider
+            WHY I BUILT STRIDER
           </motion.h3>
 
           <div className="relative bg-[#080808] border border-white/[0.1] p-5 min-[360px]:p-6 sm:p-8 md:p-12 overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
@@ -56,7 +56,7 @@ export default function MeetTheCoachSection() {
                     className="mb-2 text-3xl leading-none text-white sm:mb-3 sm:text-4xl md:text-5xl"
                     style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.04em" }}
                   >
-                    Ashik Divakaran
+                    ASHIK DIVAKARAN
                   </h4>
                   <p
                     className="mb-4 text-[10px] uppercase tracking-[0.16em] text-white/60 min-[360px]:text-[11px] sm:mb-6 sm:text-[12px] sm:tracking-[0.2em]"
@@ -71,15 +71,17 @@ export default function MeetTheCoachSection() {
                   className="col-span-2 space-y-4 text-sm text-white/60 leading-relaxed font-light sm:col-auto"
                   style={{ fontFamily: "var(--font-inter), sans-serif" }}
                 >
-                  <p>I&apos;ve always been fascinated by the human body, not simply by how it looks, but by how it moves, adapts, heals, and performs. That curiosity led me into years of studying strength training, biomechanics, nutrition, physiology, and human performance, where one realization became impossible to ignore. Every individual is different, yet most people are still given the same programs, the same diets, and the same advice. To me, that was never enough. Strider was built to challenge that idea. Every system begins with the individual, integrating movement, anatomy, nutrition, recovery, health markers, lifestyle, experience, and personal goals into one adaptive framework that evolves over time.</p>
-                  <p></p>
-                  <p>As Founder and Lead Performance Coach, my role isn&apos;t simply to prescribe training. It&apos;s to design systems that help people move better, perform at their highest level, and build healthier, more resilient bodies for life.</p>
+                  <p>I&apos;ve always been fascinated by the human body—not simply by how it looks, but by how it moves, adapts, recovers, and performs.</p>
+                  <p>Years of studying strength training, biomechanics, nutrition, physiology, rehabilitation, and human performance led me to one conclusion: <strong className="text-white font-medium">no two people should follow the same program.</strong></p>
+                  <p>Every individual is shaped by a unique combination of anatomy, movement quality, health markers, recovery capacity, lifestyle, training history, and personal goals. Yet much of the fitness industry still relies on generic templates and one-size-fits-all solutions.</p>
+                  <p><strong className="text-white font-medium">Strider was built to challenge that approach.</strong></p>
+                  <p>Together with our team, we build individualized human performance systems by integrating training, nutrition, cardio, recovery, lifestyle, and continuous adaptation into one evolving blueprint—designed specifically around each individual.</p>
+                  <p>Our mission is simple: to help people move better, recover smarter, perform at their highest level, and build stronger, healthier, more resilient bodies for life.</p>
                   <Link
                     href="/team"
-                    className="group mt-7 inline-flex min-h-11 items-center gap-4 text-[10px] font-medium uppercase tracking-[0.24em] text-white transition-colors duration-300 hover:text-white/45"
+                    className="group mt-7 inline-flex min-h-11 items-center gap-3 text-[10px] font-medium uppercase tracking-[0.24em] text-white transition-colors duration-300 hover:text-white/45"
                   >
-                    Learn more about the team
-                    <span aria-hidden="true" className="text-[8px] transition-transform duration-300 group-hover:translate-x-1">&#9654;</span>
+                    MEET THE TEAM →
                   </Link>
                 </div>
               </div>

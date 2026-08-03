@@ -135,7 +135,7 @@ export default function Footer() {
             className="text-[9px] uppercase tracking-[0.22em] text-white/20"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Built for longevity. Engineered for performance.
+            BUILT FOR LONGEVITY. ENGINEERED FOR PERFORMANCE.
           </p>
 
           {/* Social icons */}

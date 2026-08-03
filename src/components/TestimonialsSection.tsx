@@ -28,13 +28,12 @@ function Sparkline({ data, invert }: { data: number[]; invert: boolean }) {
 
   const first = pts[0];
   const last = pts[pts.length - 1];
-  const improved = invert ? last.y < first.y : last.y < first.y;
 
   return (
     <svg viewBox={`0 0 ${w} ${h}`} width={w} height={h} className="overflow-visible">
-      <path d={d} fill="none" stroke="rgba(249,115,22,0.86)" strokeWidth="1.2" style={{ filter: "drop-shadow(0 0 4px rgba(249,115,22,0.35))" }} />
-      <circle cx={last.x} cy={last.y} r="2.7" fill="rgb(249,115,22)" />
-      <circle cx={first.x} cy={first.y} r="2" fill="rgba(255,255,255,0.25)" />
+      <path d={d} fill="none" stroke="rgba(249,115,22,0.9)" strokeWidth="1.6" style={{ filter: "drop-shadow(0 0 6px rgba(249,115,22,0.5))" }} />
+      <circle cx={last.x} cy={last.y} r="3.2" fill="rgb(249,115,22)" style={{ filter: "drop-shadow(0 0 8px rgba(249,115,22,0.9))" }} />
+      <circle cx={first.x} cy={first.y} r="2" fill="rgba(255,255,255,0.3)" />
     </svg>
   );
 }
@@ -74,19 +73,19 @@ export default function TestimonialsSection() {
               className="text-[9px] text-white/28 tracking-[0.5em] uppercase mb-4"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              The Strider Community
+              THE STRIDER COMMUNITY
             </p>
             <h2
               className="whitespace-nowrap text-[clamp(27px,8vw,40px)] text-white leading-none sm:text-[clamp(48px,6.5vw,88px)]"
               style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
             >
-              Real People. Real Progress.
+              REAL PEOPLE. REAL PROGRESS.
             </h2>
             <p
               className="mt-5 max-w-3xl text-sm font-light leading-[1.8] text-white/48"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              Every journey starts in a different place. Different goals. Different challenges. Different starting points. What connects them is an individualized coaching system that continuously adapts&mdash;helping every client build better health, higher performance, and lasting results.
+              Every journey starts in a different place. Different goals. Different challenges. Different starting points. What connects them is an individualized coaching system that continuously adapts—helping every client build better health, higher performance, and lasting results.
             </p>
           </div>
           <Link
@@ -94,7 +93,7 @@ export default function TestimonialsSection() {
             className="inline-flex min-h-11 sm:min-h-0 items-center gap-2 text-[10px] text-white/35 tracking-[0.25em] uppercase border border-white/14 px-6 py-3 hover:border-white/40 hover:text-white/70 transition-all duration-300 self-start md:self-auto"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            View All Journeys →
+            VIEW ALL JOURNEYS →
           </Link>
         </motion.div>
 
@@ -177,10 +176,10 @@ export default function TestimonialsSection() {
                   </div>
                   <div className="text-right">
                     <p
-                      className="text-2xl text-white leading-none"
+                      className="text-3xl sm:text-4xl text-white leading-none font-bold drop-shadow-[0_0_12px_rgba(249,115,22,0.3)]"
                       style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.04em" }}
                     >
-                      {story.stats[0].before}→{story.stats[0].after}
+                      {story.stats[0].before} → {story.stats[0].after}
                     </p>
                     <p
                       className="text-[9px] text-white/22 tracking-wider uppercase mt-0.5"
@@ -204,7 +203,7 @@ export default function TestimonialsSection() {
                     className="inline-flex min-h-11 items-center text-[10px] text-white/40 tracking-[0.22em] uppercase hover:text-white/75 transition-colors duration-200 sm:min-h-0"
                     style={{ fontFamily: "var(--font-inter), sans-serif" }}
                   >
-                    Full story →
+                    FULL STORY →
                   </Link>
                 </div>
               </div>
@@ -225,7 +224,7 @@ export default function TestimonialsSection() {
             className="inline-flex items-center gap-3 px-12 py-4 bg-white text-black text-xs font-bold tracking-[0.28em] uppercase hover:bg-white/88 transition-colors duration-200"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            View All Journeys →
+            VIEW ALL JOURNEYS →
           </Link>
         </motion.div>
 

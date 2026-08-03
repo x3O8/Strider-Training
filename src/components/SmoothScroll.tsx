@@ -33,11 +33,28 @@ declare global {
  */
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
+    // On mobile (< 640 px) Lenis's touch interception fights with the hero's
+    // own touchmove snap handler, locking scroll on both sides. Native scroll
+    // is already smooth on phones, so skip Lenis there entirely.
+    const isMobile = window.innerWidth < 640;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (isMobile) {
+      // Provide a no-op bridge so the rest of the code can call it safely.
+      window.__lenis = {
+        start: () => {},
+        stop: () => {},
+        scrollTo: (target, options) => {
+          const y = typeof target === "number" ? target : 0;
+          window.scrollTo({ top: y, behavior: options?.immediate ? "instant" : "smooth" });
+        },
+      };
+      return () => { delete window.__lenis; };
+    }
     const lenis = new Lenis({
       lerp: reducedMotion ? 1 : 0.12,
       orientation: "vertical",
       smoothWheel: !reducedMotion,
+      smoothTouch: false,
       overscroll: false,
       autoRaf: true,
     });

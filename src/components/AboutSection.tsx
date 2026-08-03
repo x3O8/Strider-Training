@@ -28,7 +28,7 @@ export default function AboutSection() {
             className="mb-5 text-[9px] uppercase tracking-[0.5em] text-white/40"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            The Strider Approach
+            THE STRIDER APPROACH
           </p>
 
           <div className="grid grid-cols-1 items-start gap-8 md:gap-12 lg:grid-cols-2">
@@ -91,7 +91,7 @@ export default function AboutSection() {
               className="mb-2 text-[8px] uppercase tracking-[0.5em] text-white/40 md:mb-3 md:text-[9px]"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              Rooted in Science • Primed for Results
+              ROOTED IN SCIENCE • PRIMED FOR RESULTS
             </p>
             <h3
               className="text-[clamp(22px,5vw,70px)] leading-none text-white"

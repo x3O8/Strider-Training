@@ -20,7 +20,7 @@ export const coachingPrograms: CoachingProgram[] = [
   {
     id: "general-fitness",
     name: "Foundational Fitness",
-    tagline: "The foundation for lifelong health and performance.",
+    tagline: "THE FOUNDATION FOR LIFELONG HEALTH AND PERFORMANCE.",
     description:
       "Build a stronger, healthier, and more capable body through individualized coaching designed around your physiology, goals, and lifestyle. By integrating training, nutrition, cardio, recovery, and sustainable habits into one adaptive system, Foundational Fitness helps you move better, feel better, and perform better—not just in the gym, but throughout everyday life.",
     price: "USD $99/month",
@@ -37,7 +37,7 @@ export const coachingPrograms: CoachingProgram[] = [
       "Reassessments as needed",
       "Ongoing analysis of training, nutrition, recovery, and wearable data (when available)",
       "Continuous program refinement",
-      "Coach support & feedback (Monday-Friday, 9:00 AM-6:00 PM GMT)",
+      "Coach support & feedback (Monday–Friday, 9:00 AM–6:00 PM GMT)",
     ],
     forWho: "Individuals who want to improve their health, body composition, strength, movement quality, energy, resilience, and long-term performance through structured, evidence-based coaching.",
     resultsTimeline: "Build strength, improve body composition, move better, develop sustainable habits, and create a healthier, more resilient body that performs better every day.",
@@ -47,7 +47,7 @@ export const coachingPrograms: CoachingProgram[] = [
   {
     id: "competition-prep",
     name: "Performance",
-    tagline: "For those who demand more from their body.",
+    tagline: "FOR THOSE WHO DEMAND MORE FROM THEIR BODY.",
     description:
       "Designed for athletes, martial artists, endurance athletes, HYROX competitors, dancers, and anyone pursuing exceptional physical performance. By integrating training, nutrition, cardio, recovery, and performance monitoring into one adaptive coaching system, Performance helps you maximize your potential when it matters most.",
     price: "USD $149/month",
@@ -67,7 +67,7 @@ export const coachingPrograms: CoachingProgram[] = [
       "Reassessments as needed",
       "Ongoing analysis of training, nutrition, recovery, and wearable data (when available)",
       "Continuous program refinement",
-      "Coach support (Monday-Friday, 9:00 AM-6:00 PM GMT)",
+      "Coach support (Monday–Friday, 9:00 AM–6:00 PM GMT)",
     ],
     forWho: "Athletes, competitors, martial artists, endurance athletes, dancers, and high performers seeking to improve strength, power, speed, endurance, movement efficiency, resilience, and sport-specific performance.",
     resultsTimeline: "Build strength, power, speed, endurance, and resilience while improving movement efficiency, reducing injury risk, and maximizing long-term athletic performance.",
