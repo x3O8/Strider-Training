@@ -46,7 +46,7 @@ const steps = [
     heading: "Evolution",
     eyebrow: "Adapt and evolve",
     description:
-      "Human performance is never static, and neither is your system. Every cycle of execution generates new data, leading to reassessment, refinement, and more precise decisions. As the cycle repeats, Strider continuously evolves your system to match your body's changing needs, helping you achieve better health, performance, and longevity.",
+      "Human performance is never static and neither is your system. As your body adapts and your goals evolve, your coaching evolves with you. Using ongoing assessments, performance data, recovery, movement quality, and health markers, we continually refine your training, nutrition, and recovery, keeping every phase aligned with where you are today, not where you started.",
   },
 ];
 
@@ -77,7 +77,7 @@ const protocolSteps: typeof steps = [
     heading: "Evolution",
     eyebrow: "ADAPT AND EVOLVE",
     description:
-      "Human performance is never static—and neither is your system. Every cycle of execution produces new insights. As your body adapts, your performance improves, and your goals evolve, your system evolves with you. We reassess your progress, recovery, movement quality, health markers, and performance, then refine your training program, nutrition plan, cardio protocol, recovery strategies, and lifestyle habits to match your next stage of development. This continuous cycle of assessment, execution, and adaptation ensures your program remains effective, individualized, and aligned with your body—helping you achieve lasting health, performance, and longevity.",
+      "Human performance is never static—and neither is your system. As your body adapts and your goals evolve, your coaching evolves with you. Using ongoing assessments, performance data, recovery, movement quality, and health markers, we continually refine your training, nutrition, and recovery—keeping every phase aligned with where you are today, not where you started.",
   },
 ];
 
