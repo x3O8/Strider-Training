@@ -549,7 +549,7 @@ function HeroPlayer({
         >
           <div>
             <p
-              className="text-[9px] text-white/25 tracking-[0.55em] uppercase mb-7"
+              className="text-[11px] text-white/30 tracking-[0.55em] uppercase mb-7"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
               Strider Training Systems
@@ -580,7 +580,7 @@ function HeroPlayer({
         >
           <div>
             <p
-              className="text-[9px] text-white/25 tracking-[0.3em] uppercase mb-4"
+              className="text-[11px] text-white/30 tracking-[0.3em] uppercase mb-4"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
               Individualized Systems
@@ -606,13 +606,13 @@ function HeroPlayer({
 
         {/* ── S2 : Muscle text — left of image ─────────────────────────────── */}
         <div
-          className="absolute top-1/2 -translate-y-1/2 left-8 md:left-16 pointer-events-none max-w-[280px]"
+          className="pointer-events-none absolute inset-0 mx-auto flex max-w-7xl items-center px-6 md:px-10"
           style={{
             ...fade(activeSection === 2),
-            transform: activeSection === 2 ? "translateX(0)" : "translateX(-36px)",
             zIndex: 5,
           }}
         >
+          <div className="max-w-[280px]" style={{ transform: activeSection === 2 ? "translateX(0)" : "translateX(-36px)", transition: "transform 0.55s ease" }}>
           <p
             className="text-[9px] text-white/25 tracking-[0.3em] uppercase mb-4"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
@@ -631,17 +631,18 @@ function HeroPlayer({
           >
             Train your body to move better, not just look better.
           </p>
+          </div>
         </div>
 
         {/* ── S3 : Skel text — right of image ──────────────────────────────── */}
         <div
-          className="absolute top-1/2 -translate-y-1/2 right-8 md:right-16 text-right pointer-events-none max-w-[280px]"
+          className="pointer-events-none absolute inset-0 mx-auto flex max-w-7xl items-center justify-end px-6 text-right md:px-10"
           style={{
             ...fade(activeSection === 3),
-            transform: activeSection === 3 ? "translateX(0)" : "translateX(36px)",
             zIndex: 5,
           }}
         >
+          <div className="max-w-[280px]" style={{ transform: activeSection === 3 ? "translateX(0)" : "translateX(36px)", transition: "transform 0.55s ease" }}>
           <p
             className="text-[9px] text-white/25 tracking-[0.3em] uppercase mb-4"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
@@ -660,34 +661,20 @@ function HeroPlayer({
           >
             Building resilient bodies that perform for life.
           </p>
+          </div>
         </div>
 
-        {/* ── CTA: visible on S3 (skel) ────────────────────────────────────── */}
-        <div
-          className="absolute bottom-16 left-1/2 -translate-x-1/2 pointer-events-none"
-          style={{ ...fade(activeSection === 3), zIndex: 5 }}
-        >
-          <button
-            className="pointer-events-auto px-12 py-3.5 bg-white text-black text-[10px] font-bold tracking-[0.3em] uppercase hover:bg-white/90 transition-colors duration-200"
-            style={{ fontFamily: "var(--font-inter), sans-serif" }}
-            onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
-          >
-            See How It Works
-          </button>
-        </div>
-
-        {/* ── Scroll indicator (S0 only) ────────────────────────────────────── */}
-        <div
-          className="absolute bottom-9 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 pointer-events-none"
-          style={{ ...fade(activeSection === 0), zIndex: 5 }}
-        >
-          <p
-            className="text-[8px] text-white/25 tracking-[0.55em] uppercase"
-            style={{ fontFamily: "var(--font-inter), sans-serif" }}
-          >
-            Scroll
-          </p>
-          <div className="w-px h-10 bg-gradient-to-b from-white/35 to-transparent" />
+        {/* One stable CTA position across every checkpoint. */}
+        <div className="pointer-events-none absolute bottom-16 left-1/2 z-[6] -translate-x-1/2" style={{ opacity: 1, transition: "opacity 0.35s ease" }}>
+          {activeSection === 3 ? (
+            <button className="pointer-events-auto inline-flex min-h-11 items-center border border-white/25 px-12 py-3.5 text-[10px] font-bold uppercase tracking-[0.3em] text-white transition-colors hover:border-white/60" style={{ fontFamily: "var(--font-inter), sans-serif" }} onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}>
+              See How It Works
+            </button>
+          ) : (
+            <a href="/#contact" className="pointer-events-auto inline-flex min-h-11 items-center bg-white px-12 py-3.5 text-[10px] font-bold uppercase tracking-[0.3em] text-black transition-colors hover:bg-orange-400" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+              Join The Stride
+            </a>
+          )}
         </div>
 
       </div>

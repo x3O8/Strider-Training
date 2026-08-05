@@ -54,22 +54,11 @@ export default function FinalCTA() {
             JOIN THE STRIDE
           </motion.p>
 
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-sm text-white/45 mb-10 max-w-md mx-auto leading-relaxed"
-            style={{ fontFamily: "var(--font-inter), sans-serif" }}
-          >
-            Every journey begins with understanding. Book a complimentary consultation to discuss your goals, evaluate where you are today, and discover how an individualized coaching system can help you build better health, higher performance, and lasting results.
-          </motion.p>
-
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.35 }}
+            transition={{ delay: 0.2 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
             <motion.a

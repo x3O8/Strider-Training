@@ -81,12 +81,6 @@ export default function TestimonialsSection() {
             >
               REAL PEOPLE. REAL PROGRESS.
             </h2>
-            <p
-              className="mt-5 max-w-3xl text-sm font-light leading-[1.8] text-white/48"
-              style={{ fontFamily: "var(--font-inter), sans-serif" }}
-            >
-              Every journey starts in a different place. Different goals. Different challenges. Different starting points. What connects them is an individualized coaching system that continuously adapts—helping every client build better health, higher performance, and lasting results.
-            </p>
           </div>
           <Link
             href="/client-stories"
@@ -150,22 +144,22 @@ export default function TestimonialsSection() {
 
                 {/* Short quote */}
                 <blockquote
-                  className="text-sm md:text-base text-white/55 leading-[1.8] italic"
+                  className="border-l border-white/20 pl-4 text-sm font-light leading-[1.8] tracking-[0.01em] text-white/65 not-italic md:h-[116px] md:pl-5 md:text-base md:[display:-webkit-box] md:[-webkit-box-orient:vertical] md:[-webkit-line-clamp:4] md:overflow-hidden"
                   style={{ fontFamily: "var(--font-inter), sans-serif" }}
                 >
                   "{story.shortQuote}"
                 </blockquote>
 
                 {/* Sparkline + key stat */}
-                <div className="flex items-center justify-between">
-                  <div>
+                <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-5 md:min-h-[72px]">
+                  <div className="min-w-0">
                     <p
                       className="text-[9px] text-white/22 tracking-[0.25em] uppercase mb-1"
                       style={{ fontFamily: "var(--font-inter), sans-serif" }}
                     >
                       {story.chartLabel} over {story.duration}
                     </p>
-                    <motion.div
+                    <motion.div className="w-full max-w-[120px]"
                       initial={{ scaleY: 0, originY: 1 }}
                       whileInView={{ scaleY: 1 }}
                       viewport={{ once: true, margin: "-50px" }}
@@ -174,9 +168,9 @@ export default function TestimonialsSection() {
                       <Sparkline data={story.progressData} invert={story.chartInvert} />
                     </motion.div>
                   </div>
-                  <div className="text-right">
+                  <div className="min-w-[96px] self-end text-right">
                     <p
-                      className="text-3xl sm:text-4xl text-white leading-none font-bold drop-shadow-[0_0_12px_rgba(249,115,22,0.3)]"
+                      className="whitespace-nowrap text-3xl sm:text-4xl text-white leading-none font-bold tabular-nums drop-shadow-[0_0_12px_rgba(249,115,22,0.3)]"
                       style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.04em" }}
                     >
                       {story.stats[0].before} → {story.stats[0].after}

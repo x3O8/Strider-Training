@@ -97,7 +97,7 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
               className="text-[clamp(52px,8vw,110px)] text-white leading-none mb-8"
               style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
             >
-              REQUEST YOUR FREE<br />CONSULTATION.
+              REQUEST FREE<br />CONSULTATION.
             </motion.h2>
 
             <motion.div

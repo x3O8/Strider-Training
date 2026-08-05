@@ -16,6 +16,7 @@ const allNavLinks = [...navLinksLeft];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [heroComplete, setHeroComplete] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -29,6 +30,25 @@ export default function Navbar() {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const updateHeroState = () => {
+      const hero = document.getElementById("hero-main-container");
+      if (!hero) {
+        setHeroComplete(true);
+        return;
+      }
+      const heroEnd = hero.offsetTop + hero.offsetHeight - window.innerHeight;
+      setHeroComplete(window.scrollY >= heroEnd - 8);
+    };
+    updateHeroState();
+    window.addEventListener("scroll", updateHeroState, { passive: true });
+    window.addEventListener("resize", updateHeroState);
+    return () => {
+      window.removeEventListener("scroll", updateHeroState);
+      window.removeEventListener("resize", updateHeroState);
+    };
   }, []);
 
   useEffect(() => {
@@ -105,15 +125,17 @@ export default function Navbar() {
 
           {/* ── RIGHT: Get Started CTA only ─────────────────────────── */}
           <div className="hidden md:flex items-center flex-1 justify-end">
-            <motion.a
-              href="/contact#contact"
-              whileHover={{ scale: 1.02, backgroundColor: "#e8e8e8" }}
-              whileTap={{ scale: 0.97 }}
-              className="flex items-center px-6 py-2.5 bg-white text-black rounded-full text-[10px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200"
-              style={{ fontFamily: "var(--font-inter), sans-serif" }}
-            >
-              Get Started
-            </motion.a>
+            {heroComplete && (
+              <motion.a
+                href="/contact#contact"
+                whileHover={{ scale: 1.02, backgroundColor: "#e8e8e8" }}
+                whileTap={{ scale: 0.97 }}
+                className="flex items-center px-6 py-2.5 bg-white text-black rounded-full text-[10px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200"
+                style={{ fontFamily: "var(--font-inter), sans-serif" }}
+              >
+                Get Started
+              </motion.a>
+            )}
           </div>
 
           {/* ── Premium Hamburger (mobile) ──────────────────────────── */}

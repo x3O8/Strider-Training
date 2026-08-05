@@ -68,20 +68,15 @@ export default function MeetTheCoachSection() {
                 </div>
 
                 <div
-                  className="col-span-2 space-y-4 text-sm text-white/60 leading-relaxed font-light sm:col-auto"
+                  className="col-span-2 text-sm leading-relaxed text-white/60 font-light sm:col-auto"
                   style={{ fontFamily: "var(--font-inter), sans-serif" }}
                 >
-                  <p>I&apos;ve always been fascinated by the human body—not simply by how it looks, but by how it moves, adapts, recovers, and performs.</p>
-                  <p>Years of studying strength training, biomechanics, nutrition, physiology, rehabilitation, and human performance led me to one conclusion: <strong className="text-white font-medium">no two people should follow the same program.</strong></p>
-                  <p>Every individual is shaped by a unique combination of anatomy, movement quality, health markers, recovery capacity, lifestyle, training history, and personal goals. Yet much of the fitness industry still relies on generic templates and one-size-fits-all solutions.</p>
-                  <p><strong className="text-white font-medium">Strider was built to challenge that approach.</strong></p>
-                  <p>Together with our team, we build individualized human performance systems by integrating training, nutrition, cardio, recovery, lifestyle, and continuous adaptation into one evolving blueprint—designed specifically around each individual.</p>
-                  <p>Our mission is simple: to help people move better, recover smarter, perform at their highest level, and build stronger, healthier, more resilient bodies for life.</p>
+                  <p>I&apos;ve always been fascinated by the human body—not simply by how it looks, but by how it moves, adapts, recovers, and performs. Years of studying strength training, biomechanics, nutrition, physiology, rehabilitation, and human performance led me to one conclusion: no two people should follow the same programme. Every individual is shaped by a unique combination of anatomy, movement quality, health markers, recovery capacity, lifestyle, training history, and personal goals, yet much of the fitness industry still relies on generic templates and one-size-fits-all solutions. Strider was built to challenge that approach. Together with our team, we build individualized human performance systems by integrating training, nutrition, cardio, recovery, lifestyle, and continuous adaptation into one evolving blueprint designed specifically around each individual. Our mission is simple: to help people move better, recover smarter, perform at their highest level, and build stronger, healthier, more resilient bodies for life.</p>
                   <Link
                     href="/team"
-                    className="group mt-7 inline-flex min-h-11 items-center gap-3 text-[10px] font-medium uppercase tracking-[0.24em] text-white transition-colors duration-300 hover:text-white/45"
+                    className="group mt-8 inline-flex min-h-12 items-center bg-white px-8 py-3 text-[10px] font-bold uppercase tracking-[0.24em] text-black transition-colors duration-300 hover:bg-orange-400"
                   >
-                    MEET THE TEAM →
+                    MEET THE TEAM &#9656;
                   </Link>
                 </div>
               </div>

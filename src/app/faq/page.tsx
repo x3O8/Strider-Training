@@ -88,13 +88,11 @@ export default function FAQPage() {
 
           <div className="relative mx-auto max-w-7xl">
             <p className="mb-5 text-[10px] uppercase tracking-[0.5em] text-orange-400" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-              Questions, answered
+              Frequently Asked Questions
             </p>
             <div className="grid items-end gap-8 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16">
               <h1 className="text-[clamp(58px,11vw,150px)] leading-[0.78] tracking-[0.025em] text-white" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
-                Frequently Asked
-                <br />
-                Questions.
+                F.A.Q
               </h1>
               <p className="max-w-xl text-base font-light leading-[1.9] text-white/58 md:text-lg" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
                 Learn how Strider works, what to expect, and how our coaching adapts to your goals. If you don&apos;t find the answer you&apos;re looking for, our team is here to help.
