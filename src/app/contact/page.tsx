@@ -87,9 +87,7 @@ export default function ContactPage() {
                 className="text-[clamp(68px,11vw,156px)] leading-[0.78] tracking-[0.025em] text-white"
                 style={{ fontFamily: "'Bebas Neue', sans-serif" }}
               >
-                Let&apos;s build
-                <br />
-                what&apos;s next.
+                what&apos;s next?
               </h1>
               <div className="max-w-xl lg:pb-2">
                 <BlogFeatureCarousel />

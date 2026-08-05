@@ -21,7 +21,7 @@ export default function BlogFeatureCarousel() {
   return (
     <aside className="hidden border border-white/[0.1] bg-white/[0.025] p-4 sm:p-5 md:block">
       <div className="mb-4 flex items-center justify-between gap-4">
-        <p className="text-[9px] uppercase tracking-[0.38em] text-white/45" style={{ fontFamily: "var(--font-inter), sans-serif" }}>Check out our blogs</p>
+        <p className="text-[9px] uppercase tracking-[0.38em] text-white/45" style={{ fontFamily: "var(--font-inter), sans-serif" }}>Recommended Reads</p>
         <div className="flex items-center gap-1.5">
           {posts.map((item, index) => <button key={item.slug} aria-label={`Show blog ${index + 1}`} onClick={() => setActive(index)} className={`h-1.5 w-1.5 rounded-full transition-colors ${index === active ? "bg-white" : "bg-white/20"}`} />)}
         </div>
