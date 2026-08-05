@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { clientStories, ClientStory } from "@/data/testimonials";
 import Navbar from "@/components/Navbar";
+import BlogFeatureCarousel from "@/components/BlogFeatureCarousel";
 
 // ── Full SVG line chart ────────────────────────────────────────────────────────
 function LineChart({ story }: { story: ClientStory }) {
@@ -316,15 +317,22 @@ export default function ClientStoriesPage() {
           <p className="text-[10px] text-orange-400 tracking-[0.5em] uppercase mb-5" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
             Proof. Not Promises.
           </p>
-          <h1
-            className="text-[37px] text-white leading-none mb-8 min-[320px]:text-[43px] min-[360px]:text-[54px] min-[430px]:text-[clamp(60px,12vw,160px)]"
-            style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
-          >
-            Client Stories.<br />Real Results.
-          </h1>
-          <p className="max-w-3xl text-sm font-light leading-[1.8] text-white/50 md:text-base" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-            Every client starts with different goals, challenges, and constraints. These case studies show how individualized coaching, continuous adaptation, and evidence-based decision making produce meaningful long-term results.
-          </p>
+          <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-start lg:gap-16">
+            <div>
+              <h1
+                className="mb-8 text-[30px] leading-none text-white min-[320px]:text-[36px] min-[360px]:text-[44px] min-[430px]:text-[clamp(48px,8vw,112px)]"
+                style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}
+              >
+                Client Stories.<br />Real Results.
+              </h1>
+              <p className="max-w-3xl text-sm font-light leading-[1.8] text-white/50 md:text-base" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+                Every client starts with different goals, challenges, and constraints. These case studies show how individualized coaching, continuous adaptation, and evidence-based decision making produce meaningful long-term results.
+              </p>
+            </div>
+            <div className="lg:ml-auto lg:w-full lg:max-w-[520px]">
+              <BlogFeatureCarousel />
+            </div>
+          </div>
         </div>
       </section>
 

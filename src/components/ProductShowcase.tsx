@@ -16,7 +16,7 @@ const comparisonContent = {
       "Build sustainable long-term habits",
     ],
     bestFor: ["General Fitness", "Fat Loss", "Strength", "Mobility", "Health"],
-    cta: "Choose Foundational",
+    cta: "Apply Now",
     supporting: "Build lifelong strength, health, and confidence.",
     goal: "General Fitness",
   },
@@ -30,7 +30,7 @@ const comparisonContent = {
       "Prepare for events and competitions",
     ],
     bestFor: ["Athletes", "HYROX", "Martial Arts", "Endurance", "Competition"],
-    cta: "Choose Performance",
+    cta: "Apply Now",
     supporting: "Train for higher athletic and competitive performance.",
     goal: "Sports Performance",
   },
@@ -128,7 +128,7 @@ export default function ProductShowcase({ onApply }: { onApply: (goal: string) =
                     <span className="whitespace-nowrap text-3xl leading-none text-white sm:text-4xl" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.04em" }}>{program.price}</span>
                     <span className="text-[9px] text-white/45" style={{ fontFamily: "var(--font-inter), sans-serif" }}>{program.per}</span>
                   </div>
-                  <button onClick={() => onApply(content.goal)} className="min-h-12 w-full bg-white px-5 py-3 text-[9px] font-bold uppercase tracking-[0.22em] text-black transition-colors hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400" style={{ fontFamily: "var(--font-inter), sans-serif" }}>{content.cta}</button>
+                  <button onClick={() => onApply(content.goal)} className="glow-on-hover min-h-12 w-full px-5 py-3 text-[9px] font-bold uppercase tracking-[0.22em] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400" style={{ fontFamily: "var(--font-inter), sans-serif" }}>{content.cta}</button>
                   <p className="mt-4 text-center text-[9px] leading-relaxed text-white/35" style={{ fontFamily: "var(--font-inter), sans-serif" }}>{content.supporting}</p>
                 </div>
               </motion.article>

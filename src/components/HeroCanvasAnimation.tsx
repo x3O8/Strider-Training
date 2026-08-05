@@ -671,7 +671,7 @@ function HeroPlayer({
               See How It Works
             </button>
           ) : (
-            <a href="/#contact" className="pointer-events-auto inline-flex min-h-11 items-center bg-white px-12 py-3.5 text-[10px] font-bold uppercase tracking-[0.3em] text-black transition-colors hover:bg-orange-400" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+            <a href="/#contact" className="glow-on-hover pointer-events-auto inline-flex min-h-11 items-center px-12 py-3.5 text-[10px] font-bold uppercase tracking-[0.3em]" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
               Join The Stride
             </a>
           )}

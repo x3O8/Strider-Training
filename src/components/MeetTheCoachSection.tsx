@@ -74,7 +74,7 @@ export default function MeetTheCoachSection() {
                   <p>I&apos;ve always been fascinated by the human body—not simply by how it looks, but by how it moves, adapts, recovers, and performs. Years of studying strength training, biomechanics, nutrition, physiology, rehabilitation, and human performance led me to one conclusion: no two people should follow the same programme. Every individual is shaped by a unique combination of anatomy, movement quality, health markers, recovery capacity, lifestyle, training history, and personal goals, yet much of the fitness industry still relies on generic templates and one-size-fits-all solutions. Strider was built to challenge that approach. Together with our team, we build individualized human performance systems by integrating training, nutrition, cardio, recovery, lifestyle, and continuous adaptation into one evolving blueprint designed specifically around each individual. Our mission is simple: to help people move better, recover smarter, perform at their highest level, and build stronger, healthier, more resilient bodies for life.</p>
                   <Link
                     href="/team"
-                    className="group mt-8 inline-flex min-h-12 items-center bg-white px-8 py-3 text-[10px] font-bold uppercase tracking-[0.24em] text-black transition-colors duration-300 hover:bg-orange-400"
+                    className="glow-on-hover group mt-8 inline-flex min-h-12 items-center px-8 py-3 text-[10px] font-bold uppercase tracking-[0.24em]"
                   >
                     MEET THE TEAM &#9656;
                   </Link>
