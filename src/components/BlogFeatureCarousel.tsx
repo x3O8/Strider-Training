@@ -8,7 +8,7 @@ import { blogPosts } from "@/data/blog";
 
 export default function BlogFeatureCarousel() {
   const [active, setActive] = useState(0);
-  const posts = blogPosts.slice(0, 2);
+  const posts = blogPosts;
 
   useEffect(() => {
     const timer = window.setInterval(() => setActive((current) => (current + 1) % posts.length), 5500);
@@ -19,7 +19,7 @@ export default function BlogFeatureCarousel() {
   const post = posts[active];
 
   return (
-    <aside className="border border-white/[0.1] bg-white/[0.025] p-4 sm:p-5">
+    <aside className="hidden border border-white/[0.1] bg-white/[0.025] p-4 sm:p-5 md:block">
       <div className="mb-4 flex items-center justify-between gap-4">
         <p className="text-[9px] uppercase tracking-[0.38em] text-white/45" style={{ fontFamily: "var(--font-inter), sans-serif" }}>Check out our blogs</p>
         <div className="flex items-center gap-1.5">
@@ -51,8 +51,8 @@ export default function BlogFeatureCarousel() {
         </AnimatePresence>
       </div>
       <div className="mt-3 flex justify-end gap-2">
-        <button aria-label="Previous blog" onClick={() => move(-1)} className="text-xs text-white/35 transition-colors hover:text-white">←</button>
-        <button aria-label="Next blog" onClick={() => move(1)} className="text-xs text-white/35 transition-colors hover:text-white">→</button>
+        <button aria-label="Previous blog" onClick={() => move(-1)} className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-sm text-white/45 transition-colors hover:border-white/40 hover:text-white">◀</button>
+        <button aria-label="Next blog" onClick={() => move(1)} className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-sm text-white/45 transition-colors hover:border-white/40 hover:text-white">▶</button>
       </div>
     </aside>
   );

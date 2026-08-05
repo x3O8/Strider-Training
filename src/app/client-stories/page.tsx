@@ -303,7 +303,7 @@ export default function ClientStoriesPage() {
       <Navbar />
 
       {/* Hero */}
-      <section className="relative border-b border-white/[0.07] pt-32 pb-20 overflow-hidden">
+      <section className="relative border-b border-white/[0.07] pt-36 pb-20 overflow-hidden md:pt-44">
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -314,7 +314,7 @@ export default function ClientStoriesPage() {
           }}
         />
         <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10">
-          <p className="text-[10px] text-orange-400 tracking-[0.5em] uppercase mb-5" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+          <p className="mb-5 text-[10px] uppercase tracking-[0.5em] text-orange-400" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
             Proof. Not Promises.
           </p>
           <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-start lg:gap-16">

@@ -76,7 +76,7 @@ export default function ContactPage() {
 
           <div className="relative mx-auto max-w-7xl">
             <p
-              className="mb-2 text-[10px] uppercase tracking-[0.5em] text-orange-400"
+              className="mb-5 text-[10px] uppercase tracking-[0.5em] text-orange-400"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
               Connect with Strider
@@ -94,7 +94,7 @@ export default function ContactPage() {
               <div className="max-w-xl lg:pb-2">
                 <BlogFeatureCarousel />
                 <p
-                  className="mt-6 text-base font-light leading-[1.9] text-white/58 md:text-lg"
+                  className="mt-6 text-sm font-light leading-[1.8] text-white/50 md:text-base"
                   style={{ fontFamily: "var(--font-inter), sans-serif" }}
                 >
                   Whether you&apos;re looking to improve your health, return from injury,
