@@ -80,7 +80,7 @@ export default function Navbar() {
         <div className="relative max-w-[1400px] mx-auto px-6 lg:px-10 h-20 flex items-center">
 
           {/* ── LEFT nav links ─────────────────────────────────────── */}
-          <div className="hidden flex-1 items-center justify-start gap-4 pl-36 md:flex lg:gap-8 lg:pl-40">
+          <div className="hidden flex-1 items-center justify-start gap-4 md:flex lg:gap-8">
             {navLinksLeft.map((link) => (
               <Link
                 key={link.label}
@@ -116,7 +116,7 @@ export default function Navbar() {
           </Link>
 
           {/* ── RIGHT: Get Started CTA only ─────────────────────────── */}
-          <div className="fixed left-6 top-5 hidden items-center md:flex lg:left-10">
+          <div className="hidden items-center md:flex flex-1 justify-end">
             <AnimatePresence initial={false}>
             {heroComplete && (
               <motion.a
