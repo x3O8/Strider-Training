@@ -41,6 +41,8 @@ export default function Home() {
 
   const handleLoadingComplete = useCallback(() => {
     setLoading(false);
+    document.documentElement.dataset.striderLoadingComplete = "true";
+    window.dispatchEvent(new Event("strider:loading-complete"));
   }, []);
 
   const handleHeroReady = useCallback(() => {

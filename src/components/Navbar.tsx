@@ -33,22 +33,14 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const updateHeroState = () => {
-      const hero = document.getElementById("hero-main-container");
-      if (!hero) {
-        setHeroComplete(true);
-        return;
-      }
-      const heroEnd = hero.offsetTop + hero.offsetHeight - window.innerHeight;
-      setHeroComplete(window.scrollY >= heroEnd - 8);
-    };
-    updateHeroState();
-    window.addEventListener("scroll", updateHeroState, { passive: true });
-    window.addEventListener("resize", updateHeroState);
-    return () => {
-      window.removeEventListener("scroll", updateHeroState);
-      window.removeEventListener("resize", updateHeroState);
-    };
+    const hero = document.getElementById("hero-main-container");
+    if (!hero) {
+      setHeroComplete(true);
+      return;
+    }
+    const handleLoadingComplete = () => setHeroComplete(true);
+    window.addEventListener("strider:loading-complete", handleLoadingComplete);
+    return () => window.removeEventListener("strider:loading-complete", handleLoadingComplete);
   }, []);
 
   useEffect(() => {
@@ -85,10 +77,10 @@ export default function Navbar() {
           ...diagonalPattern,
         }}
       >
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 h-20 flex items-center">
+        <div className="relative max-w-[1400px] mx-auto px-6 lg:px-10 h-20 flex items-center">
 
           {/* ── LEFT nav links ─────────────────────────────────────── */}
-          <div className="hidden flex-1 items-center justify-start gap-4 md:flex lg:gap-8">
+          <div className="hidden flex-1 items-center justify-start gap-4 pl-36 md:flex lg:gap-8 lg:pl-40">
             {navLinksLeft.map((link) => (
               <Link
                 key={link.label}
@@ -124,9 +116,14 @@ export default function Navbar() {
           </Link>
 
           {/* ── RIGHT: Get Started CTA only ─────────────────────────── */}
-          <div className="hidden md:flex items-center flex-1 justify-end">
+          <div className="fixed left-6 top-5 hidden items-center md:flex lg:left-10">
+            <AnimatePresence initial={false}>
             {heroComplete && (
               <motion.a
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4 }}
+                transition={{ duration: 0.45, ease: "easeOut" }}
                 href="/contact#contact"
                 whileHover={{ scale: 1.02, backgroundColor: "#e8e8e8" }}
                 whileTap={{ scale: 0.97 }}
@@ -136,6 +133,7 @@ export default function Navbar() {
                 Get Started
               </motion.a>
             )}
+            </AnimatePresence>
           </div>
 
           {/* ── Premium Hamburger (mobile) ──────────────────────────── */}
