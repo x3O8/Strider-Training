@@ -30,17 +30,16 @@ export default function ClientForm({ preselectedGoal }: { preselectedGoal: strin
     setSubmitting(true);
 
     try {
-      // Replace with your actual Google Apps Script Web App URL after deployment
-      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyH48_YOzcgta6-pR282e94v0VH0jUI2EE-u5lcBbO-SGC_TZiR_HqHizydf4hO8ZFZ/exec";
-
-      await fetch(SCRIPT_URL, {
+      const response = await fetch("/api/contact", {
         method: "POST",
-        mode: "no-cors",
-        body: JSON.stringify(form),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, submittedAt: new Date().toISOString() }),
       });
 
+      if (!response.ok) {
+        throw new Error("The contact endpoint returned an error");
+      }
 
-      // Since mode is 'no-cors', we proceed to success state
       setSubmitted(true);
     } catch (error) {
       console.error("Form submission error:", error);

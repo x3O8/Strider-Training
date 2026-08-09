@@ -60,7 +60,7 @@ export default function ProductShowcase({ onApply }: { onApply: (goal: string) =
           </p>
         </motion.header>
 
-        <div className="grid items-stretch gap-4 md:grid-cols-2">
+        <div className="-mx-6 flex snap-x snap-mandatory items-stretch gap-4 overflow-x-auto overflow-y-visible px-6 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:snap-none md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0">
           {coachingPrograms.map((program, index) => {
             const content = comparisonContent[program.id as keyof typeof comparisonContent];
             return (
@@ -70,7 +70,7 @@ export default function ProductShowcase({ onApply }: { onApply: (goal: string) =
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className={`group flex h-full flex-col border p-6 sm:p-7 ${index === 1 ? "border-white/20 bg-[#101010]" : "border-white/[0.1] bg-[#0a0a0a]"}`}
+                className={`group flex h-full w-[84vw] max-w-[340px] shrink-0 snap-start flex-col border p-6 sm:p-7 md:w-auto md:max-w-none ${index === 1 ? "border-white/20 bg-[#101010]" : "border-white/[0.1] bg-[#0a0a0a]"}`}
               >
                 <div className="relative -mx-6 -mt-6 mb-6 h-44 overflow-hidden border-b border-white/[0.1] bg-[#0c0c0c] sm:-mx-7 sm:-mt-7 sm:h-48">
                   <Image src={program.image} alt="" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover opacity-60 grayscale transition-all duration-700 group-hover:scale-105 group-hover:opacity-80 group-hover:grayscale-0" />

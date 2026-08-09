@@ -549,7 +549,7 @@ function HeroPlayer({
         >
           <div>
             <p
-              className="text-[11px] text-white/30 tracking-[0.55em] uppercase mb-7"
+              className="text-[12px] text-white/30 tracking-[0.55em] uppercase mb-7"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
               Strider Training Systems
@@ -580,7 +580,7 @@ function HeroPlayer({
         >
           <div>
             <p
-              className="text-[11px] text-white/30 tracking-[0.3em] uppercase mb-4"
+              className="text-[12px] text-white/30 tracking-[0.3em] uppercase mb-4"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
               Individualized Systems
@@ -614,7 +614,7 @@ function HeroPlayer({
         >
           <div className="max-w-[280px]" style={{ transform: activeSection === 2 ? "translateX(0)" : "translateX(-36px)", transition: "transform 0.55s ease" }}>
           <p
-            className="text-[9px] text-white/25 tracking-[0.3em] uppercase mb-4"
+            className="text-[11px] text-white/25 tracking-[0.3em] uppercase mb-4"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
             Movement Systems
@@ -644,7 +644,7 @@ function HeroPlayer({
         >
           <div className="max-w-[280px]" style={{ transform: activeSection === 3 ? "translateX(0)" : "translateX(36px)", transition: "transform 0.55s ease" }}>
           <p
-            className="text-[9px] text-white/25 tracking-[0.3em] uppercase mb-4"
+            className="text-[11px] text-white/25 tracking-[0.3em] uppercase mb-4"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
             Structure + control
